@@ -8,3 +8,5 @@ Repository for the exam in ITPE3200
 Very nice documentation
 ## Part 2
 Very nice documentation
+## Part 3
+Very great part
