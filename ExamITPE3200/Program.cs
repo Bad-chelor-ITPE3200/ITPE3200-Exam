@@ -1,15 +1,18 @@
 using ExamITPE3200.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 //Fixing a db 
-builder.Services.AddDbContext<FastFlatDbContext>(Options =>
-{ Options.UseSqlite(
-    builder.Configuration["ConnectionStrings:ItemDbConnect"]);
-});
+/*builder.Services.AddDbContext<FastFlatDbContext>(Options =>
+{
+    Options.UseSqlite(
+        builder.Configuration["ConnectionStrings:FastFlatDbContextConnection"]);
+});*/
+builder.Services.AddDbContext<FastFlatDbContext>(Option => Option.UseSqlite("Datasource=FastFlat.db"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

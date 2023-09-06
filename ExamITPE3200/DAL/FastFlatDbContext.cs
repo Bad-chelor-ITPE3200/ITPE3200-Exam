@@ -8,14 +8,23 @@ public class FastFlatDbContext : DbContext
 {
     public FastFlatDbContext(DbContextOptions<FastFlatDbContext> options) : base(options)
     {
-        Database.EnsureCreated(); 
+        Database.EnsureCreated();
     }
 
-    public DbSet<BookingModel> bookings;
-    public DbSet<CityModel> cities;
-    public DbSet<ContryModel> countries;
-    public DbSet<landlordModel> landlord;
-    public DbSet<RenterModel> renter;
-    public DbSet<ListingModel> listing;
-    public DbSet<UserModel> users; 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Datasource=FastFlat.db");
+    }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+    }
+
+    public DbSet<BookingModel> bookings { get; set; }
+    public DbSet<CityModel> cities { get; set; }
+    public DbSet<ContryModel> countries { get; set; }
+    public DbSet<landlordModel> landlord { get; set; }
+    public DbSet<RenterModel> renter { get; set; }
+    public DbSet<ListingModel> listing { get; set; }
+    public DbSet<UserModel> users { get; set; }
 }
