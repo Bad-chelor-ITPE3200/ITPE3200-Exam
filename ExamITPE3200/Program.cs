@@ -1,8 +1,15 @@
+using ExamITPE3200.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+//Fixing a db 
+builder.Services.AddDbContext<FastFlatDbContext>(Options =>
+{ Options.UseSqlite(
+    builder.Configuration["ConnectionStrings:ItemDbConnect"]);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

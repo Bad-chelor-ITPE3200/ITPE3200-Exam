@@ -20,6 +20,4 @@ public class UserModel
         this.phone = phone;
         this.email = email; 
     }
-  
-    
 }
