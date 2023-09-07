@@ -1,10 +1,16 @@
 using exam_personal.Models;
+using ExamITPE3200.Models;
 
 namespace ExamITPE3200.Controllers;
 
 public class UserController
 {
     //database
+//    private readonly FastFlatDbContext _fastFlatDbContext;
+//
+  //{
+   //     db = _fastFlatDbContext;
+   //}
     
     public void validateUser()
     {

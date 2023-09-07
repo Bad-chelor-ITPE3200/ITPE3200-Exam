@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
     Options.UseSqlite(
         builder.Configuration["ConnectionStrings:FastFlatDbContextConnection"]);
 });*/
-builder.Services.AddDbContext<FastFlatDbContext>(Option => Option.UseSqlite("Datasource=FastFlat.db"));
+builder.Services.AddDbContext<FastFlatDbContext>(Option => Option.UseSqlite("FastFlatDbContextConnection"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

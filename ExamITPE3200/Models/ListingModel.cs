@@ -1,10 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace exam_personal.Models;
 
 public class ListingModel
 {
-    private int id { get; set; }
+    [Key]
+    private int Id { get; set; }
  // private String imgurl { get; set; }
     private string listingName { get; set; }
+    private string username { get; set; }
     private int noOfBeds { get; set; }
     private string city { get; set; }
     private int area { get; set; }
@@ -13,11 +17,12 @@ public class ListingModel
     private bool available { get; set; }
 
 
-    public ListingModel(int id ,string listingName,int noOfBeds, string city, int area, float rating, List<BookingModel> bookings,
+    public ListingModel(int Id ,string listingName,int noOfBeds, string city, int area, float rating, List<BookingModel> bookings,
         bool available)
     {
-        this.id = id;
+        this.Id = Id;
         //this.imgurl = imgurl; 
+        this.username = username; 
         this.listingName = listingName; 
         this.noOfBeds = noOfBeds;
         this.city = city;

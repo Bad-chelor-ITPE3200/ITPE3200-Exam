@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace exam_personal.Models;
 
 public class UserModel
 {
-    private int id { get; set; }
+    [Key]
+    private int Id { get; set; }
     private String username { get; set; }
     private String password { get; set; } //of course this will be hashed
     private String firstName { get; set;  }
@@ -10,7 +13,7 @@ public class UserModel
     private String phone { get; set; }
     private String email { get; set;  }
 
-    public UserModel(int id, String username, String password, String firstName, String lastName, String phone, String email )
+   /* public UserModel(int id, String username, String password, String firstName, String lastName, String phone, String email )
     {
         this.id = id;
         this.username = username;
@@ -19,5 +22,5 @@ public class UserModel
         this.lastName = lastName;
         this.phone = phone;
         this.email = email; 
-    }
+    }*/
 }
