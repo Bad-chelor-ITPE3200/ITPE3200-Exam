@@ -1,0 +1,246 @@
+@page
+@model ExamITPE3200.Views.Home.rentals
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<body>
+    <header>
+        <nav>
+            <h1 id="--nav-logo">Fast&Flat</h1>
+            <ul class="--nav-tabs">
+                <li>
+                    <a href="./index.html" >Home</a>
+                </li>
+                <li>
+                    <a href="#" class="active">Rentals</a>
+                </li>
+                <li>
+                    <a href="#">Help</a>
+                </li>
+            </ul>
+            <div id="--nav-profile">
+                <div class="icon">
+                    <!--<img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >-->
+                    <a href="./login.html">Login</a>
+                    <div class="out">
+                        <div>
+                            <a href="index.html">Home</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Reflection-Essay/Reflection-Essay.html">Reflection Essay</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Accessibility/Accessibility.html">Accessibility</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Topical-Information/Topical-information.html">Topical</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Fun/Fun.html">FUN</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <section class="hero">
+        <div class="search-section">
+            <div class="searchbar">
+                <div class="location">
+                    <label for="location" class="searchbar-title">Hvor</label>
+                    <input type="text" placeholder="Søk etter lokasjon" id="location">
+                </div>
+                <div class="fromDate">
+                    <label for="fromDate" class="searchbar-title">Innsjekking</label>
+                    <input type="text" placeholder="Legg til dato" id="fromDate">
+                </div>
+                <div class="toDate">
+                    <label for="toDate" class="searchbar-title">Utsjekking</label>
+                    <input type="text" placeholder="Legg til dato" id="toDate">
+                </div>
+                <div class="guests">
+                    <label for="guests" class="searchbar-title">Gjester</label>
+                    <input type="number" placeholder="Legg til gjester" id="guests">
+                </div>
+                <div id="submit-btn">
+                    <img src="./pictures/search.svg">
+                </div>
+            </div>
+        </div>
+        <div id="filters">
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+            <div class="filter-icon">
+                <img src="Images/house_filter.svg">
+            </div>
+        </div>
+        <div class="result-wrapper">
+            <div id="results">
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="./pictures/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+                <div class="rental_card">
+                    <img src="Images/sample_rental.png">
+                    <div class="card_info">
+                        <h5>Bahamas Quality Resort</h5>
+                        <p>16. - 21. sep</p>
+                        <p><span class="pricePerNight">kr 1340.40</span> natt.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="map">
+
+            </div>
+        </div>
+    </section>
+</body>
