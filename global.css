@@ -17,6 +17,7 @@ body {
     background-image: url("./pictures/world.svg");
     background-attachment: fixed;
     background-repeat: none;
+    overflow-x: hidden;
 }
 
 nav {
@@ -82,6 +83,9 @@ nav {
     width: 80%;
     font-size: 0.9rem;
     border: none;
+}
+.searchbar > div > input:focus {
+    outline: none;
 }
 .location {
     width: 30%;
