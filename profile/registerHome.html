@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register Home</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Register Your Home</h1>
+      <form action="/submit_endpoint" method="post">
+          <label for="houseName">House Name:</label>
+          <input type="text" id="houseName" name="houseName" required>
+
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" required>
+
+          <label for="price">Price per night (NOK):</label>
+          <input type="number" id="price" name="price" required>
+
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" required></textarea>
+
+          <label for="imageUrl">Image URL:</label>
+          <input type="url" id="imageUrl" name="imageUrl">
+
+          <input type="submit" value="Register">
+      </form>
+  </div>
+  </body>
+</html>

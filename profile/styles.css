@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 700px; /* 600px eller 700px er grei */
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block; 
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+textarea {
+    box-sizing: border-box; /* Med dette vil child containers følge max width til parent container uansett hvor mye padding og margins den har. Ellers vil den overflowe parent container*/
+    width: 100%;
+    max-width: 100%; /* For å sikre at descripton box ikke kan overflowe containeren og at den ikke blir komisk liten*/
+    min-width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    display: block;
+    width: 100%; /* Kunne fjernet den her og hatt en mindre knapp på nedre side */
+    padding: 10px;
+    background-color: #7f78fe;  
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
