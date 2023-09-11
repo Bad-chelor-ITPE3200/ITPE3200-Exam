@@ -1,0 +1,14 @@
+﻿@model IEnumerable<FastFlat.Models.Rental>
+<div id="results">
+    @foreach (var rental in Model)
+    {
+        <div class="rental_card">
+            <img src="#">
+            <div class="card_info">
+                <h5>@rental.name</h5>
+                <p>@rental.fromDate - @rental.toDate</p>
+                <p><span class="pricePerNight">kr @rental.price</span> natt.</p>
+            </div>
+        </div>
+    }
+</div>
