@@ -17,7 +17,7 @@ public class ListingModel
     private bool available { get; set; }
 
 
-    public ListingModel(int Id ,string listingName,int noOfBeds, string city, int area, float rating, List<BookingModel> bookings,
+    /*public ListingModel(int Id ,string listingName,int noOfBeds, string city, int area, float rating, List<BookingModel> bookings,
         bool available)
     {
         this.Id = Id;
@@ -30,5 +30,5 @@ public class ListingModel
         this.rating = rating;
         this.bookings = bookings;
         this.available = available; 
-    }
+    }*/
 }

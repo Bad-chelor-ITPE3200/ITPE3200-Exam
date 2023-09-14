@@ -5,11 +5,11 @@ namespace exam_personal.Models;
 public class UserModel
 {
     [Key]
-    private int Id { get; set; }
-    private String username { get; set; }
-    private String password { get; set; } //of course this will be hashed
-    private String firstName { get; set;  }
-    private String lastName { get; set; }
+    private int UserModelId { get; set; }
+    private String? username { get; set; }
+    private String? password { get; set; } //of course this will be hashed
+    private String? firstName { get; set;  }
+    private String? lastName { get; set; }
     private String phone { get; set; }
     private String email { get; set;  }
 
