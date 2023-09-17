@@ -5,15 +5,15 @@ namespace exam_personal.Models;
 public class ListingModel
 {
     [Key]
-    private int Id { get; set; }
+    private int listingId { get; set; }
  // private String imgurl { get; set; }
-    private string listingName { get; set; }
-    private string username { get; set; }
+    private string? listingName { get; set; }
+    private string? username { get; set; }
     private int noOfBeds { get; set; }
-    private string city { get; set; }
+    private string? city{ get; set; }
     private int area { get; set; }
     private float rating { get; set; }
-    private List<BookingModel> bookings { get; set; }
+    private List<BookingModel>? bookings { get; set; }
     private bool available { get; set; }
 
 

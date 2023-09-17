@@ -9,17 +9,17 @@ namespace ExamITPE3200.Controllers;
 
 public class ListingController : Controller
 {
-    private readonly FastFlatDbContext _flatDbContext;
+    private readonly FastFlatDbContext _fastFlatDbContext;
 
    
     public ListingController(FastFlatDbContext fastFlatDbContext)
     {
-        fastFlatDbContext = _flatDbContext; 
+        fastFlatDbContext = _fastFlatDbContext; 
     }
-    public IActionResult Index()
+   /* public IActionResult Index()
     {
-        return View(Index); 
-    }
+       //return View(Index); 
+    }*/
     //if we got time, before saving 
     [HttpPost]
     public void validateListing(ListingModel Listing)
@@ -28,6 +28,11 @@ public class ListingController : Controller
         FastFlatDbContext*/ 
     }
 
+    public List<ListingModel> getAllListings()
+    {
+        var all = _fastFlatDbContext.Listings.ToList();
+        return all; 
+    }
     public void createListing(ListingModel listing)
     {
         

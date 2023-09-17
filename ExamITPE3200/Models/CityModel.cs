@@ -6,11 +6,11 @@ namespace exam_personal.Models;
 public class CityModel
 {
     [Key]
-    private int CityModelId { get; set; }
+    public int CityModelId { get; set; }
     
-    private string name { get; set; }
-    private ContryModel country { get; set; } = null;  //may have to change this one due to DB management, FK 
-
+    public string? cityName { get; set; }
+    public string country { get; set; } = null;  //may have to change this one due to DB management, FK
+   
 
 
 }

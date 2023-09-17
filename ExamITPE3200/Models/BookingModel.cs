@@ -5,7 +5,8 @@ namespace exam_personal.Models;
 
 public class BookingModel
 {
-    private int bookingModelId { get; set; }
-    private String dates { get; set; } = null;//might need to change, json object?
-    private String bookingName { get; set; } 
+    [Key]
+    public int bookingModelId { get; set; }
+    public string dates { get; set; } //might need to change, json object?
+    public string? bookingName { get; set; } 
    }

@@ -6,9 +6,9 @@ namespace exam_personal.Models;
 public class ContryModel
 {
     [Key]
-    private int ContryModelId { get; set; }
+    private int ContryId { get; set; }
     
-    private string name { get; set; }
+    private string? Contryname { get; set; }
 
     /*public ContryModel(int id, string name)
     {
