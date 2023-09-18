@@ -1,4 +1,4 @@
-using ExamITPE3200.Models;
+using ExamITPE3200.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

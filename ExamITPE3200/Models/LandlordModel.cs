@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace exam_personal.Models;
+namespace ExamITPE3200.Models;
 
-public class landlordModel  /*: UserModel*/ //refactor, landlord != utleier??
+public class LandlordModel  /*: UserModel*/ //refactor, landlord != utleier??
 {
     [Key]
     public int landlordModelId { get; set;  }

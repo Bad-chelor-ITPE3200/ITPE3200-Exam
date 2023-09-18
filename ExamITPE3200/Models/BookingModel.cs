@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace exam_personal.Models;
+namespace ExamITPE3200.Models;
 
 public class BookingModel
 {

@@ -1,9 +1,10 @@
 using System.Reflection.Metadata.Ecma335;
-using exam_personal.Models;
 using ExamITPE3200.Models;
+using ExamITPE3200.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Index = Microsoft.EntityFrameworkCore.Metadata.Internal.Index;
 
 namespace ExamITPE3200.Controllers;
 
@@ -14,8 +15,9 @@ public class ListingController : Controller
    
     public ListingController(FastFlatDbContext FastFlatDbContext)
     {
-        FastFlatDbContext = _FastFlatDbContext; 
+        _FastFlatDbContext = FastFlatDbContext; 
     }
+    
     
     //if we got time, before saving 
     [HttpPost]

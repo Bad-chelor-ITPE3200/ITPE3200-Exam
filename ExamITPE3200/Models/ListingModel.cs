@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace exam_personal.Models;
+namespace ExamITPE3200.Models;
 
 public class ListingModel
 {

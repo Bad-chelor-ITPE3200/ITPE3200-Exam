@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace exam_personal.Models;
+namespace ExamITPE3200.Models;
 
 public class CityModel
 {
@@ -9,7 +9,7 @@ public class CityModel
     public int CityModelId { get; set; }
     
     public string? cityName { get; set; }
-    public string country { get; set; } = null;  //may have to change this one due to DB management, FK
+    public string? country { get; set; }  //may have to change this one due to DB management, FK
    
 
 

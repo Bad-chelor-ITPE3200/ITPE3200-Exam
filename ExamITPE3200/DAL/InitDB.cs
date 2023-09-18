@@ -1,6 +1,5 @@
-using exam_personal.Models;
-
-namespace ExamITPE3200.Models;
+using ExamITPE3200.Models;
+namespace ExamITPE3200.DAL;
 
 public class InitDB
 {
@@ -46,7 +45,7 @@ public class InitDB
 
         if (!context.Landlord.Any())
         {
-            var landord = new List<landlordModel>();
+            var landord = new List<LandlordModel>();
             context.AddRange(landord);
             context.SaveChanges();
         }
