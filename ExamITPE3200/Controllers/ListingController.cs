@@ -50,7 +50,7 @@ public class ListingController : Controller
         var listingUpdate = _FastFlatDbContext.Listings.Find(id); 
         //reference to the update form for the listing
     }
-    [HttpDelete] //can be changed to post
+    [HttpPost] //can be changed to post
     public void DeleteListing(int id)
     {
         var listingdelete = _FastFlatDbContext.Listings.Find(id);
