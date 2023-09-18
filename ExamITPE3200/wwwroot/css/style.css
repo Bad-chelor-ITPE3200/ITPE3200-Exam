@@ -46,7 +46,7 @@
     aspect-ratio: 1/1;
     border-radius: 20px;
     position: relative;
-    background-image: url("./pictures/sample_rental.png");
+    background-image: url("images/sample_rental.png");
     background-size: cover;
 }
 .thumbnail-marker {

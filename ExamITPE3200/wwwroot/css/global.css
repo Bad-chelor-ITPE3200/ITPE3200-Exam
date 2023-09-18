@@ -14,7 +14,7 @@ body {
     margin: 0;
     padding: 0;
     color: var(--main-text-color);
-    background-image: url("Images/world.svg");
+    background-image: url("images/world.svg");
     background-attachment: fixed;
     background-repeat: none;
 }

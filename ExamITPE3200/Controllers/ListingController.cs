@@ -9,17 +9,14 @@ namespace ExamITPE3200.Controllers;
 
 public class ListingController : Controller
 {
-    private readonly FastFlatDbContext _fastFlatDbContext;
+    private readonly FastFlatDbContext _FastFlatDbContext;
 
    
-    public ListingController(FastFlatDbContext fastFlatDbContext)
+    public ListingController(FastFlatDbContext FastFlatDbContext)
     {
-        fastFlatDbContext = _fastFlatDbContext; 
+        FastFlatDbContext = _FastFlatDbContext; 
     }
-   /* public IActionResult Index()
-    {
-       //return View(Index); 
-    }*/
+    
     //if we got time, before saving 
     [HttpPost]
     public void validateListing(ListingModel Listing)
@@ -27,14 +24,34 @@ public class ListingController : Controller
        /* List<ListingModel> all = FastFlatDbContext.Listing.ToList();
         FastFlatDbContext*/ 
     }
-
-    public List<ListingModel> getAllListings()
+    [HttpGet]
+    public List<ListingModel> GetAllListings()
     {
-        var all = _fastFlatDbContext.Listings.ToList();
+        var all = _FastFlatDbContext.Listings.ToList(); //find all listings
         return all; 
     }
-    public void createListing(ListingModel listing)
+    [HttpPost]
+    public void CreateListing(ListingModel listing)
     {
-        
+        //create
+        if (ModelState.IsValid)
+        {
+            _FastFlatDbContext.Listings.Add(listing);
+            _FastFlatDbContext.SaveChanges();
+        }
+       
+    }
+    
+
+    public void UpdateListing(int id)
+    {
+        var listingUpdate = _FastFlatDbContext.Listings.Find(id); 
+        //reference to the update form for the listing
+    }
+    [HttpDelete] //can be changed to post
+    public void DeleteListing(int id)
+    {
+        var listingdelete = _FastFlatDbContext.Listings.Find(id);
+        _FastFlatDbContext.Remove(listingdelete); 
     }
 }
