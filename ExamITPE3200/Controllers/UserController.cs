@@ -1,16 +1,23 @@
 
+using ExamITPE3200.DAL;
 using ExamITPE3200.Models;
 
 namespace ExamITPE3200.Controllers;
 
 public class UserController
-{
+{ 
     //database
-//    private readonly FastFlatDbContext _fastFlatDbContext;
-//
-  //{
-   //     db = _fastFlatDbContext;
-   //}
+private readonly FastFlatDbContext _fastFlatDbContext;
+
+public UserController(FastFlatDbContext db){
+   db = _fastFlatDbContext;
+}
+
+public void createuser(UserModel user)
+{
+    _fastFlatDbContext.Users.Add(user);
+    _fastFlatDbContext.SaveChanges(); 
+}
     
     public void validateUser()
     {

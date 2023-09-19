@@ -67,6 +67,17 @@ public class InitDb
         if (!context.Users.Any())
         {
             var users = new List<UserModel>(); // should prob not be in a pure list
+            UserModel test = new UserModel
+                {
+                    firstName = "Per",
+                    lastName = "asplin",
+                    email = "Asplin@hotmail.com",
+                    password = "superhashed",
+                    phone = "00478549009131",
+                    username = "asperman"
+                };
+            
+                users.Add(test);
             context.AddRange(users);
             context.SaveChanges();
         }
