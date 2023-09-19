@@ -6,9 +6,9 @@ namespace ExamITPE3200.Models;
 public class ContryModel
 {
     [Key]
-    private int ContryId { get; set; }
-    
-    private string? Contryname { get; set; }
+    public int ContryId { get; set; }
+
+    public string? Contryname { get; set; }
 
     /*public ContryModel(int id, string name)
     {

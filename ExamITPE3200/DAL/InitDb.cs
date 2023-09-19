@@ -1,7 +1,7 @@
 using ExamITPE3200.Models;
 namespace ExamITPE3200.DAL;
 
-public class InitDB
+public class InitDb
 {
     //here we can put filler data and load it to a database
     public static void seed(IApplicationBuilder app) //seeding 

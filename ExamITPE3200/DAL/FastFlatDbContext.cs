@@ -11,9 +11,6 @@ public class FastFlatDbContext : DbContext
         Database.EnsureCreated();
     }
 
- 
-    
-  
 
     public DbSet<BookingModel> Bookings { get; set; }
     public DbSet<CityModel> Cities { get; set; }
@@ -22,4 +19,5 @@ public class FastFlatDbContext : DbContext
     public DbSet<RenterModel> Renters { get; set; }
     public DbSet<ListingModel> Listings { get; set; }
     public DbSet<UserModel> Users { get; set; }
+   
 }
