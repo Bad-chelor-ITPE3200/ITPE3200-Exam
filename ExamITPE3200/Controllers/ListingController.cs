@@ -53,7 +53,11 @@ public class ListingController : Controller
     [HttpPost] //can be changed to post
     public void DeleteListing(int id)
     {
+        
         var listingdelete = _FastFlatDbContext.Listings.Find(id);
-        _FastFlatDbContext.Remove(listingdelete); 
+        if (ModelState.IsValid) //simpel value check
+        {
+            _FastFlatDbContext.Remove(listingdelete); 
+        }
     }
 }

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ExamITPE3200.Views.Home;
+namespace ExamITPE3200.Views.Home.User;
 
-public class login : PageModel
+public class CreateUser : PageModel
 {
     public void OnGet()
     {

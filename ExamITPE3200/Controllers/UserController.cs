@@ -1,6 +1,8 @@
 
 using ExamITPE3200.DAL;
 using ExamITPE3200.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ExamITPE3200.Controllers;
 
@@ -11,6 +13,11 @@ private readonly FastFlatDbContext _fastFlatDbContext;
 
 public UserController(FastFlatDbContext db){
    db = _fastFlatDbContext;
+}
+
+public IActionResult login(UserModel user)
+{
+
 }
 
 public void createuser(UserModel user)
