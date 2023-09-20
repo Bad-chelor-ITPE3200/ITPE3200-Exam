@@ -1,6 +1,7 @@
 
 using ExamITPE3200.DAL;
 using ExamITPE3200.Models;
+using ExamITPE3200.Views.Home.User; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -15,11 +16,16 @@ public UserController(FastFlatDbContext db){
    db = _fastFlatDbContext;
 }
 
-public IActionResult login(UserModel user)
+/*public IActionResult login(UserModel user)
 {
 
-}
+}*/
+    public IActionResult CreateUser()
+    {
+     //   var createUsermodel = new 
+        return View(CreateUser); 
 
+    }
 public void createuser(UserModel user)
 {
     _fastFlatDbContext.Users.Add(user);
