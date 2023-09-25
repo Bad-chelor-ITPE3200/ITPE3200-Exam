@@ -3,6 +3,6 @@ namespace FastFlat.DAL
 {
     public interface IRentalRepository
     {
-        Task<IEnumerable<Rental>> getAll();
+        Task<IEnumerable<ListningModel>> getAll();
     }
 }

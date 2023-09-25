@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using FastFlat.Models;
 
+
 namespace FastFlat.DAL;
 
 public class RentalDbContext : IdentityDbContext
@@ -11,9 +12,20 @@ public class RentalDbContext : IdentityDbContext
         //Database.EnsureCreated();
     }
 
-    public DbSet<Rental> Rentals { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<Booking> Bookings { get; set; }
+    public DbSet<ListningModel> Rentals { get; set; }
+    public DbSet<UserModel> Users { get; set; }
+    public DbSet<BookingModel> Bookings { get; set; }
+
+    public DbSet<CityModel> Cities { get; set; }
+
+    public DbSet<ContryModel> Countries { get; set; }
+
+    public DbSet<LandlordModel> Landlord { get; set; }
+
+    public DbSet<RenterModel> Renters { get; set; }
+
+    
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

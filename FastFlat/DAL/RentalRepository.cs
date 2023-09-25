@@ -11,7 +11,7 @@ namespace FastFlat.DAL
         {
               _db = db;
         }
-        public async Task<IEnumerable<Rental>> getAll()
+        public async Task<IEnumerable<ListningModel>> getAll()
         {
             return await _db.Rentals.ToListAsync();
         }

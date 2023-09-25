@@ -15,13 +15,13 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<UserModel> userManager,
+            SignInManager<UserModel> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;

@@ -15,13 +15,13 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<UserModel> userManager,
+            SignInManager<UserModel> signInManager,
             ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;

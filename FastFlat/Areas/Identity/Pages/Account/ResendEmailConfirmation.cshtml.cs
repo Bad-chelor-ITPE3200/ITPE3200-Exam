@@ -20,10 +20,10 @@ namespace FastFlat.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<UserModel> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

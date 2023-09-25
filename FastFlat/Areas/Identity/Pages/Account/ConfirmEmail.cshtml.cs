@@ -17,9 +17,9 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
 
-        public ConfirmEmailModel(UserManager<User> userManager)
+        public ConfirmEmailModel(UserManager<UserModel> userManager)
         {
             _userManager = userManager;
         }

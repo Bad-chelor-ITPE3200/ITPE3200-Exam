@@ -17,13 +17,13 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<LoginWith2faModel> _logger;
 
         public LoginWith2faModel(
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
+            SignInManager<UserModel> signInManager,
+            UserManager<UserModel> userManager,
             ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
@@ -113,17 +113,17 @@ namespace FastFlat.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
+                _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.UserModelId);
                 return LocalRedirect(returnUrl);
             }
             else if (result.IsLockedOut)
             {
-                _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
+                _logger.LogWarning("User with ID '{UserId}' account locked out.", user.UserModelId);
                 return RedirectToPage("./Lockout");
             }
             else
             {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
+                _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.UserModelId);
                 ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
                 return Page();
             }
