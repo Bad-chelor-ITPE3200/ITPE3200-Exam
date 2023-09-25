@@ -10,7 +10,7 @@ namespace FastFlat.DAL
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
             //context.Database.EnsureDeleted();
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             //City
             if(!context.Cities.Any())
