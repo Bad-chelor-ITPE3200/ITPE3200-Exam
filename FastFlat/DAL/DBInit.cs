@@ -154,7 +154,7 @@ namespace FastFlat.DAL
             ListningPrice = 2000,
             fromDate = DateOnly.FromDateTime(DateTime.Today),
             toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            ListningImageURL = "/images/rental2.png"
+            ListningImageURL = "/images/rentals/rental2.png"
         },
         new ListningModel
         {
@@ -168,7 +168,7 @@ namespace FastFlat.DAL
             ListningPrice = 3000,
             fromDate = DateOnly.FromDateTime(DateTime.Today),
             toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            ListningImageURL = "/images/rental1.png"
+            ListningImageURL = "/images/rentals/rental1.png"
         }
     };
 
