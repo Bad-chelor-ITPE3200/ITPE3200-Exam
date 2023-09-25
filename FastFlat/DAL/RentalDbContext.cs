@@ -24,7 +24,7 @@ public class RentalDbContext : IdentityDbContext
 
     public DbSet<RenterModel> Renters { get; set; }
 
-    
+    public DbSet<AmenityModel> Amenity { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
