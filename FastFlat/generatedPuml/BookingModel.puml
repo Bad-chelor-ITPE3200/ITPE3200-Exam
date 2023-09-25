@@ -1,0 +1,11 @@
+@startuml
+class BookingModel {
+    + BookingId : int <<get>> <<set>>
+    + TotalPrice : decimal <<get>> <<set>>
+    + SpecialRequests : string? <<get>> <<set>>
+}
+BookingModel o-> "Renter" UserModel
+BookingModel o-> "Property" ListningModel
+BookingModel --> "FromDate" DateOnly
+BookingModel --> "ToDate" DateOnly
+@enduml

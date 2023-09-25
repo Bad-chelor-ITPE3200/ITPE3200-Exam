@@ -1,0 +1,16 @@
+@startuml
+class UserModel {
+    + UserModelId : int <<get>> <<set>>
+    + Username : string? <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+    + FirstName : string? <<get>> <<set>>
+    + LastName : string? <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Phone : int? <<get>> <<set>>
+    + ProfilePicture : string? <<get>> <<set>> = "wwwroot/UserImages/standard.jpg"
+}
+class "List`1"<T> {
+}
+UserModel o-> "Rentals<ListningModel>" "List`1"
+UserModel o-> "Bookings<BookingModel>" "List`1"
+@enduml
