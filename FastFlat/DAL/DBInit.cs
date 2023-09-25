@@ -147,6 +147,7 @@ namespace FastFlat.DAL
             user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
             ListningName = "Sentrum Leilighet",
             ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
+            City = context.Cities.FirstOrDefault(u => u.CityName == "Oslo"), // Linker denne eiendommen til by Oslo
             NoOfBeds = 2,
             SquareMeter = 75,
             Rating = 4.5f,
@@ -161,6 +162,7 @@ namespace FastFlat.DAL
             user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
             ListningName = "Fjellhytte",
             ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
+            City = context.Cities.FirstOrDefault(u => u.CityName == "Trondheim"), // Linker denne eiendommen til by Oslo
             NoOfBeds = 5,
             SquareMeter = 100,
             Rating = 4.8f,

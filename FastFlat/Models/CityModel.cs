@@ -12,5 +12,4 @@ public class CityModel
     public string? Country { get; set; }  //may have to change this one due to DB management, FK
    
 
-
 }
