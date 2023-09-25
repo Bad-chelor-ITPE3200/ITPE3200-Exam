@@ -9,16 +9,16 @@ namespace FastFlat.DAL
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             //Amenity
-            if (!context.Cities.Any())
+            if (!context.Amenities.Any())
             {
                 var amenities = new List<AmenityModel>
                 {
                 new AmenityModel
-                {
+                {   
                     AmenityName="Bathtub",
                     AmenityDescription="A tub to relax in and take a bath.",
                     AmenityLogo="/images/amenity/Bathtub.svg"
@@ -89,7 +89,7 @@ namespace FastFlat.DAL
 
                 new AmenityModel
                 {
-                    AmenityName="TV", // Might want to change this to "WashingMachine"
+                    AmenityName="Waching Machine", // Might want to change this to "WashingMachine"
                     AmenityDescription="A machine for cleaning clothes.",
                     AmenityLogo="/images/amenity/WachingMachine.svg"
                 },
@@ -234,7 +234,14 @@ namespace FastFlat.DAL
 
             if (!context.Rentals.Any())
             {
+                var tvAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
+                var poolAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
+                var wifiAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
+                var kitchenAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
+                var beachAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
+                var gymAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
                 var listnings = new List<ListningModel>
+
     {
         new ListningModel
         {
@@ -249,7 +256,8 @@ namespace FastFlat.DAL
             ListningPrice = 2000,
             fromDate = DateOnly.FromDateTime(DateTime.Today),
             toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            ListningImageURL = "/images/rentals/rental2.png"
+            ListningImageURL = "/images/rentals/rental2.png",
+            Amenities = new List<AmenityModel> { tvAmenity, poolAmenity, wifiAmenity } // Add the amenities to the listing
         },
         new ListningModel
         {
@@ -264,7 +272,8 @@ namespace FastFlat.DAL
             ListningPrice = 3000,
             fromDate = DateOnly.FromDateTime(DateTime.Today),
             toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            ListningImageURL = "/images/rentals/rental1.png"
+            ListningImageURL = "/images/rentals/rental1.png",
+            Amenities = new List<AmenityModel> { gymAmenity, beachAmenity, kitchenAmenity } // Add the amenities to the listing
         }
     };
 

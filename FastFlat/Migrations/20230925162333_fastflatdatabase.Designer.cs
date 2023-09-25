@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFlat.Migrations
 {
     [DbContext(typeof(RentalDbContext))]
-    [Migration("20230925115918_fastflatdatabase")]
+    [Migration("20230925162333_fastflatdatabase")]
     partial class fastflatdatabase
     {
         /// <inheritdoc />
@@ -23,6 +23,31 @@ namespace FastFlat.Migrations
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
+
+            modelBuilder.Entity("FastFlat.Models.AmenityModel", b =>
+                {
+                    b.Property<int>("AmenitylId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AmenityDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AmenityLogo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AmenityName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ListningModelListningId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AmenitylId");
+
+                    b.HasIndex("ListningModelListningId");
+
+                    b.ToTable("Amenities");
+                });
 
             modelBuilder.Entity("FastFlat.Models.BookingModel", b =>
                 {
@@ -195,7 +220,12 @@ namespace FastFlat.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("landlordModelId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("UserModelId");
+
+                    b.HasIndex("landlordModelId");
 
                     b.ToTable("Users");
                 });
@@ -396,6 +426,13 @@ namespace FastFlat.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FastFlat.Models.AmenityModel", b =>
+                {
+                    b.HasOne("FastFlat.Models.ListningModel", null)
+                        .WithMany("Amenities")
+                        .HasForeignKey("ListningModelListningId");
+                });
+
             modelBuilder.Entity("FastFlat.Models.BookingModel", b =>
                 {
                     b.HasOne("FastFlat.Models.ListningModel", "Property")
@@ -428,6 +465,13 @@ namespace FastFlat.Migrations
                         .IsRequired();
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("FastFlat.Models.UserModel", b =>
+                {
+                    b.HasOne("FastFlat.Models.LandlordModel", null)
+                        .WithMany("users")
+                        .HasForeignKey("landlordModelId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -481,8 +525,15 @@ namespace FastFlat.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FastFlat.Models.LandlordModel", b =>
+                {
+                    b.Navigation("users");
+                });
+
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>
                 {
+                    b.Navigation("Amenities");
+
                     b.Navigation("bookings");
                 });
 
