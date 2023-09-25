@@ -2,11 +2,13 @@
 
 namespace FastFlat.Controllers
 {
-    public class HomeController : Controller
+    public class SessionController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }
+
+
     }
 }

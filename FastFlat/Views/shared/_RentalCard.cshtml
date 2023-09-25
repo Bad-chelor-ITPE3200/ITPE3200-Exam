@@ -1,0 +1,10 @@
+﻿@model Rental
+
+<div class="rental_card">
+    <img src="~/images/rental2.png">
+    <div class="card_info">
+        <h5>@Model.name</h5>
+        <p>@Model.fromDate - @Model.toDate</p>
+        <p><span class="pricePerNight">kr @Model.price</span> natt.</p>
+    </div>
+</div>
