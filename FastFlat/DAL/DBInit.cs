@@ -12,8 +12,102 @@ namespace FastFlat.DAL
             //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
+            //Amenity
+            if (!context.Cities.Any())
+            {
+                var amenities = new List<AmenityModel>
+                {
+                new AmenityModel
+                {
+                    AmenityName="Bathtub",
+                    AmenityDescription="A tub to relax in and take a bath.",
+                    AmenityLogo="/images/amenity/Bathtub.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Beach",
+                    AmenityDescription="Proximity to a sandy beach.",
+                    AmenityLogo="/images/amenity/Beach.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Fireplace",
+                    AmenityDescription="A cozy fireplace to warm up.",
+                    AmenityLogo="/images/amenity/Fireplace.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Gym",
+                    AmenityDescription="Fitness area with exercise equipment.",
+                    AmenityLogo="/images/amenity/Gym.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Hairdrier",
+                    AmenityDescription="A device to dry and style hair.",
+                    AmenityLogo="/images/amenity/Hairdrier.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Ironing",
+                    AmenityDescription="Iron and board for clothes pressing.",
+                    AmenityLogo="/images/amenity/Ironing.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Kitchen",
+                    AmenityDescription="A fully equipped kitchen for cooking.",
+                    AmenityLogo="/images/amenity/Kitchen.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="ParkingPlace",
+                    AmenityDescription="Dedicated space for vehicle parking.",
+                    AmenityLogo="/images/amenity/ParkingPlace.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Pool",
+                    AmenityDescription="A pool for swimming and relaxation.",
+                    AmenityLogo="/images/amenity/Pool.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="TV",
+                    AmenityDescription="Entertainment system with multiple channels.",
+                    AmenityLogo="/images/amenity/TV.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="TV", // Might want to change this to "WashingMachine"
+                    AmenityDescription="A machine for cleaning clothes.",
+                    AmenityLogo="/images/amenity/WachingMachine.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Wifi",
+                    AmenityDescription="Wireless internet connectivity.",
+                    AmenityLogo="/images/amenity/Wifi.svg"
+                },
+            };
+                context.AddRange(amenities);
+                context.SaveChanges();
+            }
+
+
             //City
-            if(!context.Cities.Any())
+            if (!context.Cities.Any())
             {
                 var cities = new List<CityModel>
                 {
@@ -147,7 +241,7 @@ namespace FastFlat.DAL
             user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
             ListningName = "Sentrum Leilighet",
             ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
-            City = context.Cities.FirstOrDefault(u => u.CityName == "Oslo"), // Linker denne eiendommen til by Oslo
+            
             NoOfBeds = 2,
             SquareMeter = 75,
             Rating = 4.5f,
@@ -162,7 +256,7 @@ namespace FastFlat.DAL
             user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
             ListningName = "Fjellhytte",
             ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
-            City = context.Cities.FirstOrDefault(u => u.CityName == "Trondheim"), // Linker denne eiendommen til by Oslo
+            
             NoOfBeds = 5,
             SquareMeter = 100,
             Rating = 4.8f,

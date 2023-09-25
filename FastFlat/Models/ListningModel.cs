@@ -14,7 +14,7 @@ namespace FastFlat.Models
         public string ListningAddress { get; set; } = string.Empty;
         public double ListningPrice { get; set; }
 
-        public virtual CityModel City { get; set; } //legger til city
+        //public virtual CityModel City { get; set; } //legger til city
 
 
         public DateOnly fromDate { get; set; }

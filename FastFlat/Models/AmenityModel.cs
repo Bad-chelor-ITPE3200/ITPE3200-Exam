@@ -11,6 +11,5 @@ namespace FastFlat.Models
 
         public string? AmenityLogo { get; set; } 
 
-
     }
 }
