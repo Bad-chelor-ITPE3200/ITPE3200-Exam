@@ -27,6 +27,12 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\Home\User\CreateUser.cshtml" />
       <_ContentIncludedByDefault Remove="Views\User\CreateUser.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\User\CreateUser.cshtml" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Home\User\CreateUser.cshtml" />
     </ItemGroup>
 
 </Project>

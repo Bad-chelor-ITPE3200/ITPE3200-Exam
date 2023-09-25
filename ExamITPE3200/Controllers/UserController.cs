@@ -20,11 +20,6 @@ public UserController(FastFlatDbContext db){
 {
 
 }*/
-    /*public IActionResult CreateUser()
-    {
-     //   var createUsermodel = new 
-        //return View(CreateUser); 
-    }*/
 public void newUser(UserModel user)
 {
     _fastFlatDbContext.Users.Add(user);
