@@ -9,10 +9,5 @@ public class ContryModel
     public int ContryId { get; set; }
 
     public string? Contryname { get; set; }
-
-    /*public ContryModel(int id, string name)
-    {
-        this.id = id;
-        this.name = name;
-    }*/
+    
 }

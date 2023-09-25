@@ -17,18 +17,4 @@ public class ListingModel
     public bool available { get; set; }
 
 
-    /*public ListingModel(int Id ,string listingName,int noOfBeds, string city, int area, float rating, List<BookingModel> bookings,
-        bool available)
-    {
-        this.Id = Id;
-        //this.imgurl = imgurl;
-        this.username = username;
-        this.listingName = listingName;
-        this.noOfBeds = noOfBeds;
-        this.city = city;
-        this.area = area;
-        this.rating = rating;
-        this.bookings = bookings;
-        this.available = available;
-    }*/
 }

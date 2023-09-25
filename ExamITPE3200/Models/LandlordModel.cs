@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ExamITPE3200.Models;
 
-public class LandlordModel  /*: UserModel*/ //refactor, landlord != utleier??
+public class LandlordModel  /*: UserModel *///refactor, landlord != utleier??
 {
     [Key]
     public int landlordModelId { get; set;  }

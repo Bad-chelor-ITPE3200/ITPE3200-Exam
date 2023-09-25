@@ -1,7 +1,6 @@
 
 using ExamITPE3200.DAL;
 using ExamITPE3200.Models;
-using ExamITPE3200.Views.Home.User; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 

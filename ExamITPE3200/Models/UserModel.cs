@@ -20,15 +20,7 @@ public class UserModel
     public string? email { get; set;  }
 
     public string? profilePicture { get; set; } = "wwwroot/UserImages/standard.jpg";
-
-    /* public UserModel(int id, String username, String password, String firstName, String lastName, String phone, String email )
-     {
-         this.id = id;
-         this.username = username;
-         this.password = password;
-         this.firstName = firstName;
-         this.lastName = lastName;
-         this.phone = phone;
-         this.email = email;
-     }*/
+    public string? renterId { get; set; }
+    public string? landlordId { get; set; }
+    
 }
