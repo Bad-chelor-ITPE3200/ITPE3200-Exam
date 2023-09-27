@@ -1,4 +1,5 @@
 ﻿using FastFlat.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.DAL
@@ -167,11 +168,77 @@ namespace FastFlat.DAL
                 context.SaveChanges();
             }
 
-
-
             if (!context.Users.Any())
             {
+                 var users = new List<IdentityUser>
+                {
+                    
+                    new IdentityUser
+                    {   
+                        UserName = "Olidrav",
+                        FirstName="Oliver",
+                        LastName="Dragland",
+                        Email="oliver@gmail.com",
+                        Password="1234",
+                        Phone=99999999,
+                        ProfilePicture = "/images/profilepicture/oliver.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    },
+
+                    new UserModel
+                    {
+                        Username = "JP",
+                        FirstName="Jon",
+                        LastName="Petter",
+                        Email="jp@gmail.com",
+                        Password="1234",
+                        Phone=9988888,
+                        ProfilePicture = "/images/profilepicture/jp.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    },
+
+                    new UserModel
+                    {
+                        Username = "Gistrong",
+                        FirstName="Gisle",
+                        LastName="Na",
+                        Email="Gisle@gmail.com",
+                        Password="1234",
+                        Phone=99777777,
+                        ProfilePicture = "/images/profilepicture/gisle.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    },
+
+                    new UserModel
+                    {
+                        Username = "Alinam",
+                        FirstName="Ali",
+                        LastName="Anjum",
+                        Email="Ali@gmail.com",
+                        Password="1234",
+                        Phone=99666666,
+                        ProfilePicture = "/images/profilepicture/ali.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    }
+                };
+                context.AddRange(users);
+                context.SaveChanges();
+            }
+
+            /*if (!context.Users.Any())
+            {
                 var users = new List<UserModel>
+                {
+                    new UserModel
+                    {   
+                        Username = "Olidrav",
+                        FirstName="Oliver",
+                        LastName="Dragland",
+                 var users = new List<UserModel>
                 {
                     new UserModel
                     {   
@@ -226,8 +293,56 @@ namespace FastFlat.DAL
                     }
                 };
                 context.AddRange(users);
+                context.SaveChanges();        Email="oliver@gmail.com",
+                        Password="1234",
+                        Phone=99999999,
+                        ProfilePicture = "/images/profilepicture/oliver.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    },
+
+                    new UserModel
+                    {
+                        Username = "JP",
+                        FirstName="Jon",
+                        LastName="Petter",
+                        Email="jp@gmail.com",
+                        Password="1234",
+                        Phone=9988888,
+                        ProfilePicture = "/images/profilepicture/jp.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    },
+
+                    new UserModel
+                    {
+                        Username = "Gistrong",
+                        FirstName="Gisle",
+                        LastName="Na",
+                        Email="Gisle@gmail.com",
+                        Password="1234",
+                        Phone=99777777,
+                        ProfilePicture = "/images/profilepicture/gisle.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    },
+
+                    new UserModel
+                    {
+                        Username = "Alinam",
+                        FirstName="Ali",
+                        LastName="Anjum",
+                        Email="Ali@gmail.com",
+                        Password="1234",
+                        Phone=99666666,
+                        ProfilePicture = "/images/profilepicture/ali.jpg",
+                        Rentals=new List<ListningModel>{},
+                        Bookings=new List<BookingModel>{},
+                    }
+                };
+                context.AddRange(users);
                 context.SaveChanges();
-            }
+            }*/
 
             if (!context.Rentals.Any())
             {

@@ -13,7 +13,7 @@ public class RentalDbContext : IdentityDbContext
     }
 
     public DbSet<ListningModel> Rentals { get; set; }
-    public DbSet<UserModel> Users { get; set; }
+  //  public DbSet<UserModel> Users { get; set; }
     public DbSet<BookingModel> Bookings { get; set; }
 
     //public DbSet<CityModel> Cities { get; set; }
