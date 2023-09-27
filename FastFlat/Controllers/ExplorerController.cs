@@ -9,15 +9,18 @@ namespace FastFlat.Controllers
     {
 
         private readonly IRentalRepository<ListningModel> _rentalRepo;
-        public ExplorerController(IRentalRepository<ListningModel> rentalRepo)
+        private readonly IRentalRepository<AmenityModel> _amenityRepo;
+        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo)
         {
             _rentalRepo = rentalRepo;
+            _amenityRepo = amenityRepo;
         }
         public async Task<IActionResult> Explore()
         {
 
             var rentalList =await _rentalRepo.GetAll();
-            var rentalListViewModel = new RentalListViewModel(rentalList, "Card");
+            var amenityList = await _amenityRepo.GetAll();
+            var rentalListViewModel = new RentalListViewModel(rentalList, amenityList, "Card");
             return View(rentalListViewModel);
         }
     }
