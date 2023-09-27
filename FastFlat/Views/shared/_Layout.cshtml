@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="~/css/global.css"/>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav>
+            <h1 id="--nav-logo">Fast&Flat</h1>
+            <ul class="--nav-tabs">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="active">Home</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Explorer" asp-action="Explore">Rentals</a>
+                </li>
+                <li>
+                    <a href="#">Help</a>
+                </li>
+            </ul>
+            <div id="--nav-profile">
+                <div class="icon">
+                    <!--<img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >-->
+                    <a asp-area="" asp-controller="Session" asp-action="Login">Login</a>
+                    <div class="out">
+                        <div>
+                            <a href="index.html">Home</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Reflection-Essay/Reflection-Essay.html">Reflection Essay</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Accessibility/Accessibility.html">Accessibility</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Topical-Information/Topical-information.html">Topical</a>
+                        </div>
+                        <div>
+                            <a href="Nettsider/Fun/Fun.html">FUN</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @RenderBody()
+    <footer>
+        <div class="container">
+            <p class="lead">Copyright</p>
+        </div>
+    </footer>
+</body>
+</html>

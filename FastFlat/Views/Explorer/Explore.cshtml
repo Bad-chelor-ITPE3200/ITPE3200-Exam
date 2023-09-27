@@ -1,0 +1,50 @@
+﻿@model RentalListViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/explore.css" />
+}
+
+<section class="hero">
+    <div class="search-section">
+        <partial name="_SearchBar"/>
+    </div>
+    <div id="filters">
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+        <div class="filter-icon">
+            <img src="~/images/icons/house_filter.svg">
+        </div>
+    </div>
+    <div class="result-wrapper">
+        <div id="results">
+            @foreach (var rental in Model.Rentals)
+            {
+                <partial name="_RentalCard" model="rental" />
+            }
+        </div>
+        <div class="map">
+        </div>
+    </div>
+</section>
