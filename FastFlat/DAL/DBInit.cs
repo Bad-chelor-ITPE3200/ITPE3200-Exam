@@ -72,28 +72,24 @@ namespace FastFlat.DAL
                     AmenityDescription="Dedicated space for vehicle parking.",
                     AmenityLogo="/images/amenity/ParkingPlace.svg"
                 },
-
                 new AmenityModel
                 {
                     AmenityName="Pool",
                     AmenityDescription="A pool for swimming and relaxation.",
                     AmenityLogo="/images/amenity/Pool.svg"
                 },
-
                 new AmenityModel
                 {
                     AmenityName="TV",
                     AmenityDescription="Entertainment system with multiple channels.",
                     AmenityLogo="/images/amenity/TV.svg"
                 },
-
                 new AmenityModel
                 {
                     AmenityName="Waching Machine", // Might want to change this to "WashingMachine"
                     AmenityDescription="A machine for cleaning clothes.",
                     AmenityLogo="/images/amenity/WachingMachine.svg"
                 },
-
                 new AmenityModel
                 {
                     AmenityName="Wifi",
