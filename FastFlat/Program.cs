@@ -21,7 +21,7 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RentalDbContext>();
 
-builder.Services.AddScoped<IRentalRepository, RentalRepository>();
+builder.Services.AddScoped(typeof(IRentalRepository<>), typeof(RentalRepository<>));
 
 builder.Services.AddRazorPages();
 
