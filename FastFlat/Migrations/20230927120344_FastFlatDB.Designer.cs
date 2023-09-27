@@ -11,13 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFlat.Migrations
 {
     [DbContext(typeof(RentalDbContext))]
-<<<<<<<< HEAD:FastFlat/Migrations/20230925145934_FastFlatDB.Designer.cs
-    [Migration("20230925145934_FastFlatDB")]
+    [Migration("20230927120344_FastFlatDB")]
     partial class FastFlatDB
-========
-    [Migration("20230925162333_fastflatdatabase")]
-    partial class fastflatdatabase
->>>>>>>> 914b8d12b21334082f5b058782d0dca4e757edce:FastFlat/Migrations/20230925162333_fastflatdatabase.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
