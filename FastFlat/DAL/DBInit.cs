@@ -107,7 +107,8 @@ namespace FastFlat.DAL
 
 
             //City
-            if (!context.Cities.Any())
+            /*
+            if(!context.Cities.Any())
             {
                 var cities = new List<CityModel>
                 {
@@ -143,7 +144,7 @@ namespace FastFlat.DAL
                 };
                 context.AddRange(cities);
                 context.SaveChanges();
-            }
+            }*/
 
             //Country
             if (!context.Countries.Any())
@@ -279,8 +280,8 @@ namespace FastFlat.DAL
 
                 context.AddRange(listnings);
                 context.SaveChanges();
-            }
-        }
+             }
+         }
         
     }
 }

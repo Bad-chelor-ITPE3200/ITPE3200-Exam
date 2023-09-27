@@ -1,0 +1,6 @@
+@startuml
+class ContryModel {
+    + ContryId : int <<get>> <<set>>
+    + Contryname : string? <<get>> <<set>>
+}
+@enduml

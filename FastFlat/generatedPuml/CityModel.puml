@@ -1,0 +1,7 @@
+@startuml
+class CityModel {
+    + CityModelId : int <<get>> <<set>>
+    + CityName : string? <<get>> <<set>>
+    + Country : string? <<get>> <<set>>
+}
+@enduml
