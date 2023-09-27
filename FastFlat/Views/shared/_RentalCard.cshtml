@@ -5,8 +5,6 @@
         <h5>@Model.ListningName</h5>
         <p>@Model.fromDate - @Model.toDate</p>
         <p><span class="pricePerNight">kr @Model.ListningPrice</span> natt.</p>
-    </div>
-    <div class="card-footer">
         <ul class="list-inline">
             @foreach (var amenity in Model.Amenities)
             {
@@ -15,5 +13,8 @@
                 </li>
             }
         </ul>
+    </div>
+    <div class="card-footer">
+        
     </div>
 </div>

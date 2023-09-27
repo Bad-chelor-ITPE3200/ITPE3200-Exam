@@ -9,33 +9,10 @@
         <partial name="_SearchBar"/>
     </div>
     <div id="filters">
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
-        <div class="filter-icon">
-            <img src="~/images/icons/house_filter.svg">
-        </div>
+        @foreach (var amenity in Model.Amenities)
+        {
+            <partial name="_AmenityCard" model="amenity" />
+        }
     </div>
     <div class="result-wrapper">
         <div id="results">
