@@ -13,6 +13,7 @@ namespace FastFlat.DAL
             context.Database.EnsureCreated();
 
             //City
+            /*
             if(!context.Cities.Any())
             {
                 var cities = new List<CityModel>
@@ -49,7 +50,7 @@ namespace FastFlat.DAL
                 };
                 context.AddRange(cities);
                 context.SaveChanges();
-            }
+            }*/
 
             //Country
             if (!context.Countries.Any())
@@ -141,43 +142,41 @@ namespace FastFlat.DAL
             if (!context.Rentals.Any())
             {
                 var listnings = new List<ListningModel>
-    {
-        new ListningModel
-        {
-            user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
-            ListningName = "Sentrum Leilighet",
-            ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
-            City = context.Cities.FirstOrDefault(u => u.CityName == "Oslo"), // Linker denne eiendommen til by Oslo
-            NoOfBeds = 2,
-            SquareMeter = 75,
-            Rating = 4.5f,
-            ListningAddress = "Osloveien 123, 0456 Oslo",
-            ListningPrice = 2000,
-            fromDate = DateOnly.FromDateTime(DateTime.Today),
-            toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            ListningImageURL = "/images/rentals/rental2.png"
-        },
-        new ListningModel
-        {
-            user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
-            ListningName = "Fjellhytte",
-            ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
-            City = context.Cities.FirstOrDefault(u => u.CityName == "Trondheim"), // Linker denne eiendommen til by Oslo
-            NoOfBeds = 5,
-            SquareMeter = 100,
-            Rating = 4.8f,
-            ListningAddress = "Fjellveien 567, 1234 Fjellby",
-            ListningPrice = 3000,
-            fromDate = DateOnly.FromDateTime(DateTime.Today),
-            toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            ListningImageURL = "/images/rentals/rental1.png"
-        }
-    };
+                {
+                    new ListningModel
+                    {
+                        user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
+                        ListningName = "Sentrum Leilighet",
+                        ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
+                        NoOfBeds = 2,
+                        SquareMeter = 75,
+                        Rating = 4.5f,
+                        ListningAddress = "Osloveien 123, 0456 Oslo",
+                        ListningPrice = 2000,
+                        fromDate = DateOnly.FromDateTime(DateTime.Today),
+                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+                        ListningImageURL = "/images/rentals/rental2.png"
+                    },
+                    new ListningModel
+                    {
+                        user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
+                        ListningName = "Fjellhytte",
+                        ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
+                        NoOfBeds = 5,
+                        SquareMeter = 100,
+                        Rating = 4.8f,
+                        ListningAddress = "Fjellveien 567, 1234 Fjellby",
+                        ListningPrice = 3000,
+                        fromDate = DateOnly.FromDateTime(DateTime.Today),
+                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+                        ListningImageURL = "/images/rentals/rental1.png"
+                    }
+                };
 
                 context.AddRange(listnings);
                 context.SaveChanges();
-            }
-        }
+             }
+         }
         
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FastFlat.Migrations
 {
     /// <inheritdoc />
-    public partial class fastflatdatabase : Migration
+    public partial class FastFlatDBUpdated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,20 +51,6 @@ namespace FastFlat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
-                {
-                    CityModelId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CityName = table.Column<string>(type: "TEXT", nullable: true),
-                    Country = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cities", x => x.CityModelId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
                 {
@@ -88,6 +74,21 @@ namespace FastFlat.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Landlord", x => x.landlordModelId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LocationModel",
+                columns: table => new
+                {
+                    LocationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: false),
+                    Country = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocationModel", x => x.LocationID);
                 });
 
             migrationBuilder.CreateTable(
@@ -241,6 +242,7 @@ namespace FastFlat.Migrations
                     Rating = table.Column<float>(type: "REAL", nullable: false),
                     ListningAddress = table.Column<string>(type: "TEXT", nullable: false),
                     ListningPrice = table.Column<double>(type: "REAL", nullable: false),
+                    LocationID = table.Column<int>(type: "INTEGER", nullable: false),
                     fromDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     toDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     ListningImageURL = table.Column<string>(type: "TEXT", nullable: true)
@@ -248,6 +250,12 @@ namespace FastFlat.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rentals", x => x.ListningId);
+                    table.ForeignKey(
+                        name: "FK_Rentals_LocationModel_LocationID",
+                        column: x => x.LocationID,
+                        principalTable: "LocationModel",
+                        principalColumn: "LocationID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Rentals_Users_UserModelId",
                         column: x => x.UserModelId,
@@ -345,6 +353,11 @@ namespace FastFlat.Migrations
                 column: "RenterUserModelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rentals_LocationID",
+                table: "Rentals",
+                column: "LocationID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rentals_UserModelId",
                 table: "Rentals",
                 column: "UserModelId");
@@ -372,9 +385,6 @@ namespace FastFlat.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Cities");
-
-            migrationBuilder.DropTable(
                 name: "Countries");
 
             migrationBuilder.DropTable(
@@ -391,6 +401,9 @@ namespace FastFlat.Migrations
 
             migrationBuilder.DropTable(
                 name: "Renters");
+
+            migrationBuilder.DropTable(
+                name: "LocationModel");
 
             migrationBuilder.DropTable(
                 name: "Users");

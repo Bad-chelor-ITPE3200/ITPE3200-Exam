@@ -3,6 +3,7 @@ using System;
 using FastFlat.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFlat.Migrations
 {
     [DbContext(typeof(RentalDbContext))]
-    partial class RentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230925144550_FastFlatDBUpdated")]
+    partial class FastFlatDBUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +113,7 @@ namespace FastFlat.Migrations
                     b.Property<double>("ListningPrice")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("LocationID")
+                    b.Property<int>("LocationID")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("NoOfBeds")
@@ -431,7 +434,9 @@ namespace FastFlat.Migrations
                 {
                     b.HasOne("FastFlat.Models.LocationModel", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationID");
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FastFlat.Models.UserModel", "user")
                         .WithMany("Rentals")

@@ -8,6 +8,7 @@ namespace FastFlat.Models
         public int BookingId { get; set; }
         public virtual UserModel Renter { get; set; }= default!; 
         public virtual ListningModel Property { get; set; } = default!;
+
         public DateOnly FromDate { get; set; }
         public DateOnly ToDate { get; set; }
         public decimal TotalPrice { get; set; } //endret fra price til TotalPrice

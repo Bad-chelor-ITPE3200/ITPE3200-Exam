@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFlat.Migrations
 {
     [DbContext(typeof(RentalDbContext))]
-    [Migration("20230925115918_fastflatdatabase")]
-    partial class fastflatdatabase
+    [Migration("20230925145934_FastFlatDB")]
+    partial class FastFlatDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,23 +60,6 @@ namespace FastFlat.Migrations
                     b.HasIndex("renterModelId");
 
                     b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("FastFlat.Models.CityModel", b =>
-                {
-                    b.Property<int>("CityModelId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CityModelId");
-
-                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("FastFlat.Models.ContryModel", b =>
@@ -130,6 +113,9 @@ namespace FastFlat.Migrations
                     b.Property<double>("ListningPrice")
                         .HasColumnType("REAL");
 
+                    b.Property<int?>("LocationID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("NoOfBeds")
                         .HasColumnType("INTEGER");
 
@@ -150,9 +136,34 @@ namespace FastFlat.Migrations
 
                     b.HasKey("ListningId");
 
+                    b.HasIndex("LocationID");
+
                     b.HasIndex("UserModelId");
 
                     b.ToTable("Rentals");
+                });
+
+            modelBuilder.Entity("FastFlat.Models.LocationModel", b =>
+                {
+                    b.Property<int>("LocationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LocationID");
+
+                    b.ToTable("LocationModel");
                 });
 
             modelBuilder.Entity("FastFlat.Models.RenterModel", b =>
@@ -421,11 +432,17 @@ namespace FastFlat.Migrations
 
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>
                 {
+                    b.HasOne("FastFlat.Models.LocationModel", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationID");
+
                     b.HasOne("FastFlat.Models.UserModel", "user")
                         .WithMany("Rentals")
                         .HasForeignKey("UserModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Location");
 
                     b.Navigation("user");
                 });

@@ -17,7 +17,7 @@ namespace FastFlat.Controllers
         {
 
             var rentalList =await _rentalRepo.getAll();
-            var rentalListViewModel = new RentalListViewModel(rentalList, "Card");
+            var rentalListViewModel = new RentalListViewModel(rentalList, "Explore");
             return View(rentalListViewModel);
         }
     }
