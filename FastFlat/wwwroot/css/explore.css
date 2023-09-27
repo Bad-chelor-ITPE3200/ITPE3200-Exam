@@ -59,10 +59,11 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
     overflow-y: scroll;
     padding-top: 10px;
     padding-right: 30px;
+    gap : 2rem;
 }
 
 .map {
@@ -111,3 +112,33 @@
     font-weight: bold;
     font-size: 0.9rem;
 }
+
+.card-footer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: nowrap; /* Prevents the flex items from wrapping */
+}
+
+.list-inline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap; /* Prevents the flex items from wrapping */
+}
+
+.list-inline-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .list-inline-item img {
+        width: 24px;
+        height: 24px;
+        max-width: 100%;
+    }
+
+

@@ -15,13 +15,13 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class LoginWithRecoveryCodeModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
         public LoginWithRecoveryCodeModel(
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
+            SignInManager<UserModel> signInManager,
+            UserManager<UserModel> userManager,
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;
@@ -94,7 +94,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
+                _logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.UserModelId);
                 return LocalRedirect(returnUrl ?? Url.Content("~/"));
             }
             if (result.IsLockedOut)
@@ -104,7 +104,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
             }
             else
             {
-                _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
+                _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.UserModelId);
                 ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
                 return Page();
             }

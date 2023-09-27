@@ -1,10 +1,19 @@
-﻿@model Rental
-
+﻿
 <div class="rental_card">
-    <img src="~/images/rental2.png">
+    <img src="@Model.ListningImageURL" alt="Rental Image">
     <div class="card_info">
-        <h5>@Model.name</h5>
+        <h5>@Model.ListningName</h5>
         <p>@Model.fromDate - @Model.toDate</p>
-        <p><span class="pricePerNight">kr @Model.price</span> natt.</p>
+        <p><span class="pricePerNight">kr @Model.ListningPrice</span> natt.</p>
+    </div>
+    <div class="card-footer">
+        <ul class="list-inline">
+            @foreach (var amenity in Model.Amenities)
+            {
+                <li class="list-inline-item">
+                    <img src="@amenity.AmenityLogo" alt="@amenity.AmenityName">
+                </li>
+            }
+        </ul>
     </div>
 </div>
