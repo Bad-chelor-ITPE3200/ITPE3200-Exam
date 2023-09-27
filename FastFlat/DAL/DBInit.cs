@@ -176,14 +176,14 @@ namespace FastFlat.DAL
                     new IdentityUser
                     {   
                         UserName = "Olidrav",
-                        FirstName="Oliver",
-                        LastName="Dragland",
+                        //FirstName="Oliver",
+                        //LastName="Dragland",
                         Email="oliver@gmail.com",
-                        Password="1234",
-                        Phone=99999999,
-                        ProfilePicture = "/images/profilepicture/oliver.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
+                        //Password="1234",
+                       // Phone=99999999,
+                        //ProfilePicture = "/images/profilepicture/oliver.jpg",
+                        //Rentals=new List<ListningModel>{},
+                        //Bookings=new List<BookingModel>{},
                     },
 
                     new UserModel
