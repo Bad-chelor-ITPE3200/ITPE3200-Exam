@@ -22,5 +22,9 @@ namespace FastFlat.Models
         public string? ListningImageURL { get; set; }
 
         public virtual List<BookingModel>? bookings { get; set; }
+
+        public virtual List<AmenityModel>? Amenities { get; set; }
+
+        //public virtual ICollection<AmenityModel> Amenities { get; set; }
     }
 }

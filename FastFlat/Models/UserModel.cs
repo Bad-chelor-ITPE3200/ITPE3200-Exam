@@ -18,7 +18,7 @@ namespace FastFlat.Models
         public string Email { get; set; } = string.Empty;  
         public int? Phone { get; set; }
 
-        public string? ProfilePicture { get; set; } = "wwwroot/UserImages/standard.jpg";
+        public string? ProfilePicture { get; set; } = "wwwroot/images/profilepicture/standard.jpg";
 
 
         public virtual List<ListningModel> Rentals { get; set; } = default!;

@@ -9,8 +9,102 @@ namespace FastFlat.DAL
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+
+            //Amenity
+            if (!context.Amenities.Any())
+            {
+                var amenities = new List<AmenityModel>
+                {
+                new AmenityModel
+                {   
+                    AmenityName="Bathtub",
+                    AmenityDescription="A tub to relax in and take a bath.",
+                    AmenityLogo="/images/amenity/Bathtub.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Beach",
+                    AmenityDescription="Proximity to a sandy beach.",
+                    AmenityLogo="/images/amenity/Beach.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Fireplace",
+                    AmenityDescription="A cozy fireplace to warm up.",
+                    AmenityLogo="/images/amenity/Fireplace.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Gym",
+                    AmenityDescription="Fitness area with exercise equipment.",
+                    AmenityLogo="/images/amenity/Gym.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Hairdrier",
+                    AmenityDescription="A device to dry and style hair.",
+                    AmenityLogo="/images/amenity/Hairdrier.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Ironing",
+                    AmenityDescription="Iron and board for clothes pressing.",
+                    AmenityLogo="/images/amenity/Ironing.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Kitchen",
+                    AmenityDescription="A fully equipped kitchen for cooking.",
+                    AmenityLogo="/images/amenity/Kitchen.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="ParkingPlace",
+                    AmenityDescription="Dedicated space for vehicle parking.",
+                    AmenityLogo="/images/amenity/ParkingPlace.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Pool",
+                    AmenityDescription="A pool for swimming and relaxation.",
+                    AmenityLogo="/images/amenity/Pool.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="TV",
+                    AmenityDescription="Entertainment system with multiple channels.",
+                    AmenityLogo="/images/amenity/TV.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Waching Machine", // Might want to change this to "WashingMachine"
+                    AmenityDescription="A machine for cleaning clothes.",
+                    AmenityLogo="/images/amenity/WachingMachine.svg"
+                },
+
+                new AmenityModel
+                {
+                    AmenityName="Wifi",
+                    AmenityDescription="Wireless internet connectivity.",
+                    AmenityLogo="/images/amenity/Wifi.svg"
+                },
+            };
+                context.AddRange(amenities);
+                context.SaveChanges();
+            }
+
 
             //City
             /*
@@ -141,37 +235,48 @@ namespace FastFlat.DAL
 
             if (!context.Rentals.Any())
             {
+                var tvAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
+                var poolAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
+                var wifiAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
+                var kitchenAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
+                var beachAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
+                var gymAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
                 var listnings = new List<ListningModel>
-                {
-                    new ListningModel
-                    {
-                        user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
-                        ListningName = "Sentrum Leilighet",
-                        ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
-                        NoOfBeds = 2,
-                        SquareMeter = 75,
-                        Rating = 4.5f,
-                        ListningAddress = "Osloveien 123, 0456 Oslo",
-                        ListningPrice = 2000,
-                        fromDate = DateOnly.FromDateTime(DateTime.Today),
-                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-                        ListningImageURL = "/images/rentals/rental2.png"
-                    },
-                    new ListningModel
-                    {
-                        user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
-                        ListningName = "Fjellhytte",
-                        ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
-                        NoOfBeds = 5,
-                        SquareMeter = 100,
-                        Rating = 4.8f,
-                        ListningAddress = "Fjellveien 567, 1234 Fjellby",
-                        ListningPrice = 3000,
-                        fromDate = DateOnly.FromDateTime(DateTime.Today),
-                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-                        ListningImageURL = "/images/rentals/rental1.png"
-                    }
-                };
+
+    {
+        new ListningModel
+        {
+            user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
+            ListningName = "Sentrum Leilighet",
+            ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
+            
+            NoOfBeds = 2,
+            SquareMeter = 75,
+            Rating = 4.5f,
+            ListningAddress = "Osloveien 123, 0456 Oslo",
+            ListningPrice = 2000,
+            fromDate = DateOnly.FromDateTime(DateTime.Today),
+            toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+            ListningImageURL = "/images/rentals/rental2.png",
+            Amenities = new List<AmenityModel> { tvAmenity, poolAmenity, wifiAmenity } // Add the amenities to the listing
+        },
+        new ListningModel
+        {
+            user = context.Users.FirstOrDefault(u => u.Username == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
+            ListningName = "Fjellhytte",
+            ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
+            
+            NoOfBeds = 5,
+            SquareMeter = 100,
+            Rating = 4.8f,
+            ListningAddress = "Fjellveien 567, 1234 Fjellby",
+            ListningPrice = 3000,
+            fromDate = DateOnly.FromDateTime(DateTime.Today),
+            toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+            ListningImageURL = "/images/rentals/rental1.png",
+            Amenities = new List<AmenityModel> { gymAmenity, beachAmenity, kitchenAmenity } // Add the amenities to the listing
+        }
+    };
 
                 context.AddRange(listnings);
                 context.SaveChanges();
