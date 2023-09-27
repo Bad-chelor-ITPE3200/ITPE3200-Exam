@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FastFlat.Models;
 
-public class RenterModel /*: UserModel*/
+public class RenterModel : UserModel
 {
     [Key]
     public int renterModelId { get; set; }

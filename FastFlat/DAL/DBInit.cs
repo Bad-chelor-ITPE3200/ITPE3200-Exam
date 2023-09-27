@@ -170,17 +170,17 @@ namespace FastFlat.DAL
 
             if (!context.Users.Any())
             {
-                 var users = new List<IdentityUser>
+                 var users = new List<UserModel>
                 {
                     
-                    new IdentityUser
+                    new UserModel
                     {   
                         UserName = "Olidrav",
                         FirstName="Oliver",
                         LastName="Dragland",
                         Email="oliver@gmail.com",
-                        Password="1234",
-                        Phone=99999999,
+                        PassWord="1234",
+                        Phone="99999999",
                         ProfilePicture = "/images/profilepicture/oliver.jpg",
                         Rentals=new List<ListningModel>{},
                         Bookings=new List<BookingModel>{},
@@ -188,12 +188,12 @@ namespace FastFlat.DAL
 
                     new UserModel
                     {
-                        Username = "JP",
+                        UserName = "JP",
                         FirstName="Jon",
                         LastName="Petter",
                         Email="jp@gmail.com",
-                        Password="1234",
-                        Phone=9988888,
+                        PassWord="1234",
+                        Phone="9988888",
                         ProfilePicture = "/images/profilepicture/jp.jpg",
                         Rentals=new List<ListningModel>{},
                         Bookings=new List<BookingModel>{},
@@ -201,12 +201,12 @@ namespace FastFlat.DAL
 
                     new UserModel
                     {
-                        Username = "Gistrong",
+                        UserName = "Gistrong",
                         FirstName="Gisle",
                         LastName="Na",
                         Email="Gisle@gmail.com",
-                        Password="1234",
-                        Phone=99777777,
+                        PassWord="1234",
+                        Phone="99777777",
                         ProfilePicture = "/images/profilepicture/gisle.jpg",
                         Rentals=new List<ListningModel>{},
                         Bookings=new List<BookingModel>{},
@@ -214,12 +214,12 @@ namespace FastFlat.DAL
 
                     new UserModel
                     {
-                        Username = "Alinam",
+                        UserName = "Alinam",
                         FirstName="Ali",
                         LastName="Anjum",
                         Email="Ali@gmail.com",
-                        Password="1234",
-                        Phone=99666666,
+                        PassWord="1234",
+                        Phone="99666666",
                         ProfilePicture = "/images/profilepicture/ali.jpg",
                         Rentals=new List<ListningModel>{},
                         Bookings=new List<BookingModel>{},
