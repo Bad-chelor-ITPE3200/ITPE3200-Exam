@@ -3,6 +3,7 @@ using FastFlat.DAL;
 using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("RentalDbContextConnection") ?? throw new 
     InvalidOperationException("Connection string 'RentalDbContextConnection' not found.");

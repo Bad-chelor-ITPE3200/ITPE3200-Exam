@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+
 namespace FastFlat.Models
 {
     public class ListningModel
     {
         [Key]
         public int ListningId { get; set; }
-        public virtual UserModel user { get; set; } = default!;
+        public virtual IdentityUser? user { get; set; } = default!;
         public string ListningName { get; set; } = string.Empty;
         public string? ListningDescription { get; set; }
         public int NoOfBeds { get; set; }
