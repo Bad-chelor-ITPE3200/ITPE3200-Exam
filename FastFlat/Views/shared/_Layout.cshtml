@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,30 +28,17 @@
                 <div class="icon">
                     <!--<img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >-->
                     <a asp-area="" asp-controller="Session" asp-action="Login">Login</a>
-                    <partial name="_LoginPartial"/>
+                 <partial name="_LoginPartial"/>
                     <div class="out">
-                        <div>
-                            <a href="index.html">Home</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Reflection-Essay/Reflection-Essay.html">Reflection Essay</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Accessibility/Accessibility.html">Accessibility</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Topical-Information/Topical-information.html">Topical</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Fun/Fun.html">FUN</a>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
         </nav>
     </header>
     @RenderBody()
-    <footer>
+@RenderSection("Scripts", false)
+<footer>
         <div class="container">
             <p class="lead">Copyright</p>
         </div>
