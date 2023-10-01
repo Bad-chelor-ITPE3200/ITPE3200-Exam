@@ -6,6 +6,7 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
+        
         public static void Seed(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
@@ -170,10 +171,10 @@ namespace FastFlat.DAL
 
             if (!context.Users.Any())
             {
-                 var users = new List<IdentityUser>
+                 var users = new List<UserModel>
                 {
                     
-                    new IdentityUser
+                    new UserModel
                     {   
                         UserName = "Olidrav",
                         FirstName = "Oliver",

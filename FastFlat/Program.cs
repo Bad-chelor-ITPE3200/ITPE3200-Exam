@@ -20,7 +20,9 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
     options.UseSqlite(builder.Configuration["ConnectionStrings:RentalDbContextConnection"]);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RentalDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RentalDbContext>();
+builder.Services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>();
+
 
 builder.Services.AddScoped(typeof(IRentalRepository<>), typeof(RentalRepository<>));
 
@@ -29,7 +31,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddSession();
 
 var app = builder.Build();
-
 
 if (app.Environment.IsDevelopment())
 { 
