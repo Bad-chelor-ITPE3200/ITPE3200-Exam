@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using FastFlat.DAL;
 using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
+using Serilog.Core;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +21,15 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration["ConnectionStrings:RentalDbContextConnection"]);
 });
+//configure logger
+var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
+    .File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}"); 
 
-//builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RentalDbContext>();
+//creating logger
+var logger = loggerConf.CreateLogger();
+builder.Logging.AddSerilog(logger); 
+
 builder.Services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>();
-
 
 builder.Services.AddScoped(typeof(IRentalRepository<>), typeof(RentalRepository<>));
 

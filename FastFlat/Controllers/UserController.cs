@@ -15,7 +15,7 @@ public class UserController : Controller
     }
     
 
-    public async Task<IActionResult> landing(UserModel user)
+    /*public async Task<IActionResult> landing(UserModel user)
     {
         if (user.UserModelId > 0) 
         {
@@ -26,5 +26,5 @@ public class UserController : Controller
         {
             
         }
-    }
+    }*/
 }
