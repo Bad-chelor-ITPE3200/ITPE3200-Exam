@@ -29,7 +29,7 @@ var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
 var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger); 
 
-builder.Services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>();
+builder.Services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>().AddDefaultUI();
 
 builder.Services.AddScoped(typeof(IRentalRepository<>), typeof(RentalRepository<>));
 
