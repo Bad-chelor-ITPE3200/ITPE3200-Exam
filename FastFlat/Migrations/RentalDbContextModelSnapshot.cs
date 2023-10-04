@@ -147,7 +147,11 @@ namespace FastFlat.Migrations
                     b.Property<int>("SquareMeter")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserModelId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateOnly>("fromDate")
@@ -159,6 +163,8 @@ namespace FastFlat.Migrations
                     b.HasKey("ListningId");
 
                     b.HasIndex("LocationID");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("UserModelId");
 
@@ -235,7 +241,7 @@ namespace FastFlat.Migrations
 
                     b.HasIndex("landlordModelId");
 
-                    b.ToTable("Users");
+                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -470,15 +476,19 @@ namespace FastFlat.Migrations
                         .WithMany()
                         .HasForeignKey("LocationID");
 
-                    b.HasOne("FastFlat.Models.UserModel", "user")
-                        .WithMany("Rentals")
-                        .HasForeignKey("UserModelId")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FastFlat.Models.UserModel", null)
+                        .WithMany("Rentals")
+                        .HasForeignKey("UserModelId");
+
                     b.Navigation("Location");
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FastFlat.Models.UserModel", b =>

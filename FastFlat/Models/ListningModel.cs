@@ -1,11 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace FastFlat.Models
 {
     public class ListningModel
     {
         [Key]
         public int ListningId { get; set; }
-        public virtual UserModel user { get; set; } = default!;
+        [ForeignKey("User")]  // Dette indikerer at 'UserId' er fremmednøkkelen for 'User' navigeringsegenskapen
+        public string UserId { get; set; }  // Dette er selve fremmednøkkelen som peker til 'Id' feltet i 'AspNetUsers' tabellen
+
+        public virtual IdentityUser User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
+
         public string ListningName { get; set; } = string.Empty;
         public string? ListningDescription { get; set; }
         public int NoOfBeds { get; set; }

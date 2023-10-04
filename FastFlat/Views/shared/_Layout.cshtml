@@ -22,33 +22,28 @@
                 <li>
                     <a href="#">Help</a>
                 </li>
+                
             </ul>
+
+            <partial name="_LoginPartial" />
+
+            <!--
             <div id="--nav-profile">
                 <div class="icon">
-                    <!--<img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >-->
-                    <a asp-area="" asp-controller="Session" asp-action="Login">Login</a>
+                    <img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >
                     <div class="out">
                         <div>
-                            <a href="index.html">Home</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Reflection-Essay/Reflection-Essay.html">Reflection Essay</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Accessibility/Accessibility.html">Accessibility</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Topical-Information/Topical-information.html">Topical</a>
-                        </div>
-                        <div>
-                            <a href="Nettsider/Fun/Fun.html">FUN</a>
+                          
                         </div>
                     </div>
                 </div>
+
             </div>
+            -->
         </nav>
     </header>
     @RenderBody()
+    @RenderSection("scripts", required: false)
     <footer>
         <div class="container">
             <p class="lead">Copyright</p>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FastFlat.Migrations
 {
     /// <inheritdoc />
-    public partial class FastFlatDB : Migration
+    public partial class AspNetUserAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -210,7 +210,7 @@ namespace FastFlat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "UserModel",
                 columns: table => new
                 {
                     UserModelId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -226,9 +226,9 @@ namespace FastFlat.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserModelId);
+                    table.PrimaryKey("PK_UserModel", x => x.UserModelId);
                     table.ForeignKey(
-                        name: "FK_Users_Landlord_landlordModelId",
+                        name: "FK_UserModel_Landlord_landlordModelId",
                         column: x => x.landlordModelId,
                         principalTable: "Landlord",
                         principalColumn: "landlordModelId");
@@ -240,7 +240,7 @@ namespace FastFlat.Migrations
                 {
                     ListningId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserModelId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
                     ListningName = table.Column<string>(type: "TEXT", nullable: false),
                     ListningDescription = table.Column<string>(type: "TEXT", nullable: true),
                     NoOfBeds = table.Column<int>(type: "INTEGER", nullable: false),
@@ -251,22 +251,28 @@ namespace FastFlat.Migrations
                     LocationID = table.Column<int>(type: "INTEGER", nullable: true),
                     fromDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     toDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    ListningImageURL = table.Column<string>(type: "TEXT", nullable: true)
+                    ListningImageURL = table.Column<string>(type: "TEXT", nullable: true),
+                    UserModelId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rentals", x => x.ListningId);
+                    table.ForeignKey(
+                        name: "FK_Rentals_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Rentals_LocationModel_LocationID",
                         column: x => x.LocationID,
                         principalTable: "LocationModel",
                         principalColumn: "LocationID");
                     table.ForeignKey(
-                        name: "FK_Rentals_Users_UserModelId",
+                        name: "FK_Rentals_UserModel_UserModelId",
                         column: x => x.UserModelId,
-                        principalTable: "Users",
-                        principalColumn: "UserModelId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "UserModel",
+                        principalColumn: "UserModelId");
                 });
 
             migrationBuilder.CreateTable(
@@ -319,9 +325,9 @@ namespace FastFlat.Migrations
                         principalTable: "Renters",
                         principalColumn: "renterModelId");
                     table.ForeignKey(
-                        name: "FK_Bookings_Users_RenterUserModelId",
+                        name: "FK_Bookings_UserModel_RenterUserModelId",
                         column: x => x.RenterUserModelId,
-                        principalTable: "Users",
+                        principalTable: "UserModel",
                         principalColumn: "UserModelId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -389,13 +395,18 @@ namespace FastFlat.Migrations
                 column: "LocationID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rentals_UserId",
+                table: "Rentals",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rentals_UserModelId",
                 table: "Rentals",
                 column: "UserModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_landlordModelId",
-                table: "Users",
+                name: "IX_UserModel_landlordModelId",
+                table: "UserModel",
                 column: "landlordModelId");
         }
 
@@ -430,19 +441,19 @@ namespace FastFlat.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Rentals");
 
             migrationBuilder.DropTable(
                 name: "Renters");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "LocationModel");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserModel");
 
             migrationBuilder.DropTable(
                 name: "Landlord");
