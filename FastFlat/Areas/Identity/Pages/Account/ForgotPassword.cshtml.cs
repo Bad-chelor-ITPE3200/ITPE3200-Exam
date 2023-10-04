@@ -19,10 +19,10 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly UserManager<AspNetUsers> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<UserModel> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<AspNetUsers> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

@@ -16,10 +16,10 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<AspNetUsers> _userManager;
+        private readonly SignInManager<AspNetUsers> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        public ConfirmEmailChangeModel(UserManager<AspNetUsers> userManager, SignInManager<AspNetUsers> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

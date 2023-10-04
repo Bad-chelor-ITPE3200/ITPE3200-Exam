@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Identity;
 namespace FastFlat.Models;
 
 public class RenterModel 
 {
-    [Key]
     public int renterModelId { get; set; }
     public virtual List<BookingModel>?bookings { get; set; }
 

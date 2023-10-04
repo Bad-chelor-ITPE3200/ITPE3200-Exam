@@ -17,9 +17,9 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly UserManager<AspNetUsers> _userManager;
 
-        public ResetPasswordModel(UserManager<UserModel> userManager)
+        public ResetPasswordModel(UserManager<AspNetUsers> userManager)
         {
             _userManager = userManager;
         }

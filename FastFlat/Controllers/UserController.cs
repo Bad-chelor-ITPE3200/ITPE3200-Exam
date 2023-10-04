@@ -7,24 +7,24 @@ namespace FastFlat.Controllers;
 
 public class UserController : Controller
 {
-    private readonly IRentalRepository<UserModel> _UserRepository;
+    private readonly IRentalRepository<AspNetUsers> _UserRepository;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(IRentalRepository<UserModel> UserRepo)
+    public UserController(IRentalRepository<AspNetUsers> UserRepo, ILogger<UserController> logger)
     {
-        _UserRepository = UserRepo; 
+        _UserRepository = UserRepo;
+        _logger = logger; 
     }
     
 
-    /*public async Task<IActionResult> landing(UserModel user)
+    public async Task<IActionResult> landing(AspNetUsers aspNetUsers)
     {
-        if (user.UserModelId > 0) 
+        var account = await _UserRepository.GetById(aspNetUsers.UserModelId);
+        if (account != null)
         {
-            
+            return View(landing);
         }
-        var account = await _UserRepository.GetById(user.UserModelId);
-        if ()
-        {
-            
-        }
-    }*/
+
+        return null; 
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.DAL
@@ -9,6 +10,7 @@ namespace FastFlat.DAL
         
         public static void Seed(IApplicationBuilder app)
         {
+            var passwordhasher = new PasswordHasher<AspNetUsers>(null);
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
             context.Database.EnsureDeletedAsync();
@@ -169,57 +171,85 @@ namespace FastFlat.DAL
                 context.SaveChanges();
             }
 
+            if (!context.Roles.Any())
+                //roles for the acess controll
+                //we let the controller control everything about what they can edit or not
+            {
+                var roles = new List<IdentityRole>
+                {
+                    new IdentityRole
+                    {
+                        Id = "0", Name = "Admin" //BIG BOSS, can do everything
+                        
+                    },
+                    new IdentityRole
+                    {
+                        Id = "1", Name = "Landlord" // can edit their OWN listings
+                    },
+                    new IdentityRole
+                    {
+                        Id = "2", Name = "Renter" //BUY THING
+                    }
+                }; 
+                context.AddRange(roles);
+                context.SaveChanges(); 
+            }
             if (!context.Users.Any())
             {
-                 var users = new List<UserModel>
+                var users = new List<AspNetUsers>
                 {
                     
-                    new UserModel
+                    new AspNetUsers
                     {   
                         UserName = "Olidrav",
                         FirstName = "Oliver",
                         LastName = "Dragland",
                         Email = "oliver@gmail.com",
                         PassWord = "1234",
+                        PasswordHash = passwordhasher.HashPassword(null,"1234"),
                         Phone = "99999999",
                         ProfilePicture = "/images/profilepicture/oliver.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
                     },
 
-                    new UserModel
+                    new AspNetUsers
                     {
                         UserName = "JP",
                         FirstName = "Jon",
                         LastName = "Petter",
                         Email = "jp@gmail.com",
-                        PassWord = "1234",
+                        NormalizedEmail = "JP@GMAIL.COM",
+                        PassWord = "QbTJiimV@%b*JAqcTc5D5T4z*h!",
+                        PasswordHash = passwordhasher.HashPassword(null,"QbTJiimV@%b*JAqcTc5D5T4z*h!"),
                         Phone = "9988888",
                         ProfilePicture = "/images/profilepicture/jp.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
                     },
 
-                    new UserModel
+                    new AspNetUsers
                     {
                         UserName = "Gistrong",
                         FirstName = "Gisle",
                         LastName = "Na",
                         Email = "Gisle@gmail.com",
                         PassWord = "1234",
+                        PasswordHash = passwordhasher.HashPassword(null,"1234"),
                         Phone = "99777777",
                         ProfilePicture = "/images/profilepicture/gisle.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
                     },
 
-                    new UserModel
+                    new AspNetUsers
                     {
                         UserName = "Alinam",
                         FirstName = "Ali",
                         LastName = "Anjum",
                         Email = "Ali@gmail.com",
                         PassWord = "1234",
+                        PasswordHash = passwordhasher.HashPassword(null,"1234"),
                         Phone = "99666666",
                         ProfilePicture = "/images/profilepicture/ali.jpg",
                         Rentals = new List<ListningModel> { },
@@ -380,7 +410,7 @@ namespace FastFlat.DAL
                             u.UserName == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
                         ListningName = "Fjellhytte",
                         ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
-
+                        
                         NoOfBeds = 5,
                         SquareMeter = 100,
                         Rating = 4.8f,

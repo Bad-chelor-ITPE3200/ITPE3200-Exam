@@ -24,17 +24,17 @@ namespace FastFlat.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<UserModel> _signInManager;
-        private readonly UserManager<UserModel> _userManager;
-        private readonly IUserStore<UserModel> _userStore;
-        private readonly IUserEmailStore<UserModel> _emailStore;
+        private readonly SignInManager<AspNetUsers> _signInManager;
+        private readonly UserManager<AspNetUsers> _userManager;
+        private readonly IUserStore<AspNetUsers> _userStore;
+        private readonly IUserEmailStore<AspNetUsers> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<UserModel> signInManager,
-            UserManager<UserModel> userManager,
-            IUserStore<UserModel> userStore,
+            SignInManager<AspNetUsers> signInManager,
+            UserManager<AspNetUsers> userManager,
+            IUserStore<AspNetUsers> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
@@ -198,11 +198,11 @@ namespace FastFlat.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private UserModel CreateUser()
+        private AspNetUsers CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<UserModel>();
+                return Activator.CreateInstance<AspNetUsers>();
             }
             catch
             {
@@ -212,13 +212,13 @@ namespace FastFlat.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<UserModel> GetEmailStore()
+        private IUserEmailStore<AspNetUsers> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<UserModel>)_userStore;
+            return (IUserEmailStore<AspNetUsers>)_userStore;
         }
     }
 }

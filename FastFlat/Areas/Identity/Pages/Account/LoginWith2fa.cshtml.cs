@@ -17,13 +17,13 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<UserModel> _signInManager;
-        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<AspNetUsers> _signInManager;
+        private readonly UserManager<AspNetUsers> _userManager;
         private readonly ILogger<LoginWith2faModel> _logger;
 
         public LoginWith2faModel(
-            SignInManager<UserModel> signInManager,
-            UserManager<UserModel> userManager,
+            SignInManager<AspNetUsers> signInManager,
+            UserManager<AspNetUsers> userManager,
             ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;

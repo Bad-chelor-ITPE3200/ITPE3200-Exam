@@ -23,13 +23,13 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 });
 //configure logger
 var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
-    .File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}"); 
+    .File($"Logs/appLog.txt"); 
 
 //creating logger
 var logger = loggerConf.CreateLogger();
-builder.Logging.AddSerilog(logger); 
+builder.Logging.AddSerilog(logger);
 
-builder.Services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>().AddDefaultUI();
+builder.Services.AddIdentity<AspNetUsers, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>().AddDefaultUI(); 
 
 builder.Services.AddScoped(typeof(IRentalRepository<>), typeof(RentalRepository<>));
 
@@ -50,8 +50,8 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseSession();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization(); 
 
 app.MapDefaultControllerRoute();
 

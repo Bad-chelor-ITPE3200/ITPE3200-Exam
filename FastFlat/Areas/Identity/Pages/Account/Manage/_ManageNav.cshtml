@@ -1,4 +1,5 @@
-@inject SignInManager<UserModel> SignInManager
+@using IdentityUser = FastFlat.Models.AspNetUsers
+@inject SignInManager<IdentityUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

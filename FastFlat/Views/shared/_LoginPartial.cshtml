@@ -1,8 +1,8 @@
 @using Microsoft.AspNetCore.Identity
 @using FastFlat.Models
-
-@inject SignInManager<UserModel> SignInManager
-@inject UserManager<UserModel> UserManager
+@using IdentityUser = FastFlat.Models.AspNetUsers
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

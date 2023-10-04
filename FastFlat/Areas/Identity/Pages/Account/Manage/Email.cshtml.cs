@@ -18,13 +18,13 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<AspNetUsers> _userManager;
+        private readonly SignInManager<AspNetUsers> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
-            UserManager<UserModel> userManager,
-            SignInManager<UserModel> signInManager,
+            UserManager<AspNetUsers> userManager,
+            SignInManager<AspNetUsers> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -74,9 +74,9 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(UserModel user)
+        private async Task LoadAsync(AspNetUsers aspNetUsers)
         {
-            var email = await _userManager.GetEmailAsync(user);
+            var email = await _userManager.GetEmailAsync(aspNetUsers);
             Email = email;
 
             Input = new InputModel
@@ -84,7 +84,7 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
                 NewEmail = email,
             };
 
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(aspNetUsers);
         }
 
         public async Task<IActionResult> OnGetAsync()

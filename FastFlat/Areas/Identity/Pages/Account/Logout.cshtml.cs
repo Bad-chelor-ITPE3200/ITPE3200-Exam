@@ -15,10 +15,10 @@ namespace FastFlat.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly SignInManager<AspNetUsers> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<UserModel> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(SignInManager<AspNetUsers> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

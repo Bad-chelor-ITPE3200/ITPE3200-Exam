@@ -14,12 +14,12 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<AspNetUsers> _userManager;
+        private readonly SignInManager<AspNetUsers> _signInManager;
 
         public SetPasswordModel(
-            UserManager<UserModel> userManager,
-            SignInManager<UserModel> signInManager)
+            UserManager<AspNetUsers> userManager,
+            SignInManager<AspNetUsers> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

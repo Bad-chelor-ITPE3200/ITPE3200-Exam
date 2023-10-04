@@ -15,11 +15,11 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly UserManager<AspNetUsers> _userManager;
         private readonly ILogger<GenerateRecoveryCodesModel> _logger;
 
         public GenerateRecoveryCodesModel(
-            UserManager<UserModel> userManager,
+            UserManager<AspNetUsers> userManager,
             ILogger<GenerateRecoveryCodesModel> logger)
         {
             _userManager = userManager;
