@@ -6,15 +6,68 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
-        public static void Seed(IApplicationBuilder app)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RentalDbContext _context;
+
+        public DBInit(UserManager<IdentityUser> userManager, RentalDbContext context)
         {
-            using var serviceScope = app.ApplicationServices.CreateScope();
-            RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            //context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            _userManager = userManager;
+            _context = context;
+        }
+        public async Task Seed()
+        {
+            //using var serviceScope = app.ApplicationServices.CreateScope();
+            //RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
+            //_context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
+            //usermanager
+
+            /*
+
+            if (!_userManager.Users.Any())
+            {
+                var users = new List<IdentityUser>
+    {
+        new IdentityUser
+        {
+            UserName = "oliver",
+            Email = "oliver@gmail.com",
+            PhoneNumber = "99666666",
+            PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "Password123!"),
+            //SecurityStamp = "/images/profilepicture/oliver.jpg"
+            // Remember: SecurityStamp is NOT for images. It's a security feature.
+            //SecurityStamp = Guid.NewGuid().ToString()
+        },
+        new IdentityUser
+        {
+            UserName = "ali.jobb@live.com", // Must be unique
+            Email = "ali.jobb@live.com",    // Must be unique
+            PhoneNumber = "99666667",
+            PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "Password123!"),
+            //SecurityStamp = "/images/profilepicture/ali.jpg"
+            //SecurityStamp = Guid.NewGuid().ToString()
+        }
+    };
+
+                foreach (var user in users)
+                {
+                    var result = await _userManager.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        // Handle errors or log them.
+                        foreach (var error in result.Errors)
+                        {
+                            Console.WriteLine(error.Description);
+                        }
+                    }
+                }
+            }
+            */
+
 
             //Amenity
-            if (!context.Amenities.Any())
+            if (!_context.Amenities.Any())
             {
                 var amenities = new List<AmenityModel>
                 {
@@ -98,8 +151,8 @@ namespace FastFlat.DAL
                         AmenityLogo="/images/amenity/Wifi.svg"
                     },
                 };
-                    context.AddRange(amenities);
-                    context.SaveChanges();
+                    _context.AddRange(amenities);
+                    _context.SaveChanges();
             }
 
 
@@ -144,7 +197,7 @@ namespace FastFlat.DAL
             }*/
 
             //Country
-            if (!context.Countries.Any())
+            if (!_context.Countries.Any())
             {
                 var country = new List<ContryModel>
                 {
@@ -164,13 +217,13 @@ namespace FastFlat.DAL
                     },
 
                 };
-                context.AddRange(country);
-                context.SaveChanges();
+                _context.AddRange(country);
+                _context.SaveChanges();
             }
 
 
 
-            if (!context.Users.Any())
+            if (!_context.Users.Any())
             {
                 var users = new List<UserModel>
                 {
@@ -226,32 +279,35 @@ namespace FastFlat.DAL
                         Bookings=new List<BookingModel>{},
                     }
                 };
-                context.AddRange(users);
-                context.SaveChanges();
+                _context.AddRange(users);
+                _context.SaveChanges();
             }
 
 
-            /*
+            
 
-            if (!context.Rentals.Any())
+            if (!_context.Rentals.Any())
             {
-                var tvAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
-                var poolAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
-                var wifiAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
-                var kitchenAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
-                var beachAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
-                var gymAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
-                var user = userManager.FindByName("imran.jobb@gmail.com");
+                var tvAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
+                var poolAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
+                var wifiAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
+                var kitchenAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
+                var beachAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
+                var gymAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
+                var userEmail1 = "ali.jobb@live.com"; // replace with a real email78 from your DB
+                var userEmail2 = "imran.jobb@gmail.com";
+                var user1 = _userManager.FindByEmailAsync(userEmail1).Result;
+                var user2 = _userManager.FindByEmailAsync(userEmail2).Result;
+
                 var listnings = new List<ListningModel>
                 
                 {
 
                     new ListningModel
                     {
-                        User = user,
-                        ListningName = "Sentrum Leilighet",
+                        User = user1,
+                        ListningName = "Kylling Hotellet ",
                         ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
-
                         NoOfBeds = 2,
                         SquareMeter = 75,
                         Rating = 4.5f,
@@ -261,14 +317,30 @@ namespace FastFlat.DAL
                         toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
                         ListningImageURL = "/images/rentals/rental2.png",
                         Amenities = new List<AmenityModel> { tvAmenity, poolAmenity, wifiAmenity } // Add the amenities to the listing
+                    },
+                    
+                    new ListningModel
+                    {
+                        User = user2,
+                        ListningName = "GateKjøkken Leilighet",
+                        ListningDescription = "Rett ved stranda.",
+                        NoOfBeds = 2,
+                        SquareMeter = 75,
+                        Rating = 4.5f,
+                        ListningAddress = "Osloveien 123, 0456 Oslo",
+                        ListningPrice = 2000,
+                        fromDate = DateOnly.FromDateTime(DateTime.Today),
+                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+                        ListningImageURL = "/images/rentals/rental1.png",
+                        Amenities = new List<AmenityModel> { kitchenAmenity, gymAmenity, wifiAmenity } // Add the amenities to the listing
                     }
-                    };
-                    context.AddRange(listnings);
-                    context.SaveChanges();
-               }
-            */
+                    
+                };
+                _context.AddRange(listnings);
+                _context.SaveChanges();
             
-
+            }
+                       
         }
     }
 }

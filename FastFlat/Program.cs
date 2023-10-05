@@ -4,8 +4,6 @@ using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("RentalDbContextConnection") ?? throw new 
-    InvalidOperationException("Connection string 'RentalDbContextConnection' not found.");
 
 builder.Services.AddControllersWithViews();
 
@@ -27,16 +25,20 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddSession();
 
+// Register DBInit as a transient service
+builder.Services.AddTransient<DBInit>();
+
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
-{ 
+{
     app.UseDeveloperExceptionPage();
-    DBInit.Seed(app);
+
+    // Create an instance of DBInit and call Seed
+    using var scope = app.Services.CreateScope();
+    var dbInit = scope.ServiceProvider.GetRequiredService<DBInit>();
+    dbInit.Seed(); // This line calls the Seed method on the DBInit instance.
 }
-
-
 
 app.UseStaticFiles();
 

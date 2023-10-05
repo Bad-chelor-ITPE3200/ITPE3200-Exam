@@ -12,7 +12,7 @@ public class RentalDbContext : IdentityDbContext
         //Database.EnsureCreated();
     }
 
-    public DbSet<IdentityUser> AspNetUsers { get; set; }
+    //public DbSet<IdentityUser> AspNetUsers { get; set; }
 
     public DbSet<ListningModel> Rentals { get; set; }
 

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFlat.Migrations
 {
     [DbContext(typeof(RentalDbContext))]
-    [Migration("20231004160714_AspNetUserAdded")]
-    partial class AspNetUserAdded
+    [Migration("20231005134206_ProfileAdded")]
+    partial class ProfileAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,9 +1,11 @@
 ﻿using FastFlat.DAL;
 using FastFlat.Models;
+using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FastFlat.Controllers
 {
@@ -23,9 +25,14 @@ namespace FastFlat.Controllers
         public async Task<IActionResult> Profile()
         {
             var user = await _userManager.GetUserAsync(User);
-            //var users = await _userManager.Users.;
-            return View(user);
-        }
+            var rentalList = await _listningRepository.GetAllById(user.Id);
+            var bookingList = await _bookingRepository.GetAllById(user.Id);
+            var profileViewModel = new ProfileViewModel(rentalList,bookingList,user, "Profile");
+            return View(profileViewModel);
 
+        }
+           
+            
     }
+
 }

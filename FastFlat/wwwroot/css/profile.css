@@ -1,0 +1,90 @@
+﻿.hero {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-settings {
+    height: 100%;
+    background-color: aliceblue;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 1rem;
+    align-items: center;
+    gap: 2rem;
+}
+
+    .profile-settings hr {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+.profile-image {
+    background-color: gray;
+    width: 90%;
+    aspect-ratio: 1/1;
+    border-radius: 90%;
+}
+
+.user-content {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding-left: 1rem;
+    gap: 2rem;
+    background-image: url("../images/backgrounds/world.svg");
+    background-attachment: fixed;
+    background-repeat: none;
+}
+
+.user-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: start;
+    align-items: start;
+}
+
+.form-control {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+    .form-control label {
+        color: rgb(129, 129, 129);
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .form-control input {
+        border: none;
+        height: 1.5rem;
+        background-color: transparent;
+        color: rgb(68, 68, 68);
+    }
+
+.user-contents {
+    background-color: white;
+    width: 75%;
+    height: 30%;
+    padding: 1rem;
+    border-radius: 20px;
+    border: 1px solid rgb(238, 238, 238);
+}
+
+    .user-contents h4, p {
+        margin: 0;
+    }
+
+.user-contents-title {
+    display: flex;
+    justify-content: space-between;
+}

@@ -18,7 +18,16 @@ namespace FastFlat.DAL
         {
             return await _dbSet.ToListAsync();
         }
+        public async Task<IEnumerable<T>> GetAllById(string Id)
+        {
+            var allEntities = await _dbSet.ToListAsync();
+            return allEntities
+                            .Where(entity => typeof(T).GetProperty("UserId") != null &&
+                                             typeof(T).GetProperty("UserId").PropertyType == typeof(string) &&
+                                             entity.GetType().GetProperty("UserId").GetValue(entity).ToString() == Id).ToList();
 
+
+        }
         public async Task<T> GetById(int id)
         {
             return await _dbSet.FindAsync(id);

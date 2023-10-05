@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FastFlat.Migrations
 {
     /// <inheritdoc />
-    public partial class AspNetUserAdded : Migration
+    public partial class ProfileAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

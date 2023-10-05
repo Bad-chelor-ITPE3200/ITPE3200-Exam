@@ -9,7 +9,9 @@ namespace FastFlat.Models
         public string? AmenityName { get; set; }
         public string? AmenityDescription { get; set; }
 
-        public string? AmenityLogo { get; set; } 
+        public string? AmenityLogo { get; set; }
+
+        //public virtual List<ListningModel>? Listnings { get; set; } = default!;
 
     }
 }

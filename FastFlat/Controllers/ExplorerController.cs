@@ -10,6 +10,7 @@ namespace FastFlat.Controllers
 
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
+
         public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo)
         {
             _rentalRepo = rentalRepo;
