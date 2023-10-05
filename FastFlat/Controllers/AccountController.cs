@@ -13,6 +13,7 @@ namespace FastFlat.Controllers
         {
             _userManager = userManager;
         }
+
         [Authorize]
         public async Task<IActionResult> Account()
         {
