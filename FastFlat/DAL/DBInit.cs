@@ -7,15 +7,23 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
-        
-        public static void Seed(IApplicationBuilder app)
+        private readonly UserManager<AspNetUsers> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public DBInit(UserManager<AspNetUsers> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _userManager = userManager;
+            _roleManager = roleManager; 
+        }
+        public static async Task Seed(IApplicationBuilder app)
+        {
+          
             var passwordhasher = new PasswordHasher<AspNetUsers>(null);
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            context.Database.EnsureDeletedAsync();
-            context.Database.EnsureCreatedAsync();
-
+            await context.Database.EnsureDeletedAsync();
+           await context.Database.EnsureCreatedAsync();
+            
             //Amenity
             if (!context.Amenities.Any())
             {
@@ -167,8 +175,8 @@ namespace FastFlat.DAL
                     },
 
                 };
-                context.AddRange(country);
-                context.SaveChanges();
+                await context.AddRangeAsync(country);
+                await context.SaveChangesAsync();
             }
 
             if (!context.Roles.Any())
@@ -191,8 +199,8 @@ namespace FastFlat.DAL
                         Id = "2", Name = "Renter" //BUY THING
                     }
                 }; 
-                context.AddRange(roles);
-                context.SaveChanges(); 
+               await context.AddRangeAsync(roles);
+               await context.SaveChangesAsync(); 
             }
             if (!context.Users.Any())
             {
@@ -206,7 +214,7 @@ namespace FastFlat.DAL
                         LastName = "Dragland",
                         Email = "oliver@gmail.com",
                         PassWord = "1234",
-                        PasswordHash = passwordhasher.HashPassword(null,"1234"),
+                       // PasswordHash = passwordhasher.HashPassword(null,"1234"),
                         Phone = "99999999",
                         ProfilePicture = "/images/profilepicture/oliver.jpg",
                         Rentals = new List<ListningModel> { },
@@ -219,9 +227,9 @@ namespace FastFlat.DAL
                         FirstName = "Jon",
                         LastName = "Petter",
                         Email = "jp@gmail.com",
-                        NormalizedEmail = "JP@GMAIL.COM",
+                       // NormalizedEmail = "JP@GMAIL.COM",
                         PassWord = "QbTJiimV@%b*JAqcTc5D5T4z*h!",
-                        PasswordHash = passwordhasher.HashPassword(null,"QbTJiimV@%b*JAqcTc5D5T4z*h!"),
+                     //   PasswordHash = passwordhasher.HashPassword(null,"QbTJiimV@%b*JAqcTc5D5T4z*h!"),
                         Phone = "9988888",
                         ProfilePicture = "/images/profilepicture/jp.jpg",
                         Rentals = new List<ListningModel> { },
@@ -235,7 +243,7 @@ namespace FastFlat.DAL
                         LastName = "Na",
                         Email = "Gisle@gmail.com",
                         PassWord = "1234",
-                        PasswordHash = passwordhasher.HashPassword(null,"1234"),
+                      //  PasswordHash = passwordhasher.HashPassword(null,"1234"),
                         Phone = "99777777",
                         ProfilePicture = "/images/profilepicture/gisle.jpg",
                         Rentals = new List<ListningModel> { },
@@ -249,15 +257,16 @@ namespace FastFlat.DAL
                         LastName = "Anjum",
                         Email = "Ali@gmail.com",
                         PassWord = "1234",
-                        PasswordHash = passwordhasher.HashPassword(null,"1234"),
+                      //  PasswordHash = passwordhasher.HashPassword(null,"1234"),
                         Phone = "99666666",
                         ProfilePicture = "/images/profilepicture/ali.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
                     }
                 };
-                context.AddRange(users);
-                context.SaveChanges();
+                await addusers(users);
+        
+
             }
 
             /*if (!context.Users.Any())
@@ -423,10 +432,19 @@ namespace FastFlat.DAL
                             { gymAmenity, beachAmenity, kitchenAmenity } // Add the amenities to the listing
                     }
                 };
-
+    
                 context.AddRange(listnings);
                 context.SaveChanges();
             }
+        }
+
+        public  async Task addusers(List<AspNetUsers> users)
+        {
+            foreach (var u in users)
+            {
+               await _userManager.CreateAsync(u); 
+            }
+            
         }
     }
 }
