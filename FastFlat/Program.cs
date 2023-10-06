@@ -36,7 +36,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<RentalDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
 
 builder.Services.AddDistributedMemoryCache();
 
