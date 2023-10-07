@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFlat.Migrations
 {
     [DbContext(typeof(RentalDbContext))]
-    [Migration("20231005134206_ProfileAdded")]
-    partial class ProfileAdded
+    [Migration("20231007085853_FastFlatAdded")]
+    partial class FastFlatAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,10 @@ namespace FastFlat.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("renterModelId")
                         .HasColumnType("INTEGER");
 
@@ -81,6 +85,8 @@ namespace FastFlat.Migrations
                     b.HasIndex("PropertyListningId");
 
                     b.HasIndex("RenterUserModelId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("renterModelId");
 
@@ -386,11 +392,9 @@ namespace FastFlat.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
@@ -428,11 +432,9 @@ namespace FastFlat.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
@@ -464,6 +466,12 @@ namespace FastFlat.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FastFlat.Models.RenterModel", null)
                         .WithMany("bookings")
                         .HasForeignKey("renterModelId");
@@ -471,6 +479,8 @@ namespace FastFlat.Migrations
                     b.Navigation("Property");
 
                     b.Navigation("Renter");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>

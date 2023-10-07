@@ -150,6 +150,13 @@ namespace FastFlat.DAL
                         AmenityDescription="Wireless internet connectivity.",
                         AmenityLogo="/images/amenity/Wifi.svg"
                     },
+
+                     new AmenityModel
+                    {
+                        AmenityName="Fjert",
+                        AmenityDescription="Wireless internet connectivity.",
+                        AmenityLogo="/images/amenity/Wifi.svg"
+                    },
                 };
                     _context.AddRange(amenities);
                     _context.SaveChanges();
@@ -299,6 +306,7 @@ namespace FastFlat.DAL
                 var user1 = _userManager.FindByEmailAsync(userEmail1).Result;
                 var user2 = _userManager.FindByEmailAsync(userEmail2).Result;
 
+                
                 var listnings = new List<ListningModel>
                 
                 {
@@ -338,6 +346,8 @@ namespace FastFlat.DAL
                 };
                 _context.AddRange(listnings);
                 _context.SaveChanges();
+
+                
             
             }
                        

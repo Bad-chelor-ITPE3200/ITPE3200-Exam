@@ -25,14 +25,16 @@ namespace FastFlat.Controllers
         public async Task<IActionResult> Profile()
         {
             var user = await _userManager.GetUserAsync(User);
-            var rentalList = await _listningRepository.GetAllById(user.Id);
-            var bookingList = await _bookingRepository.GetAllById(user.Id);
-            var profileViewModel = new ProfileViewModel(rentalList,bookingList,user, "Profile");
+            var userRentals = (await _listningRepository.GetAll()).Where(r => r.UserId == user.Id).ToList();
+
+            var userBookings = (await _bookingRepository.GetAll()).Where(b => b.UserId == user.Id).ToList();
+
+            var profileViewModel = new ProfileViewModel(userRentals, userBookings, user, "Profile");
             return View(profileViewModel);
 
         }
-           
-            
+
+
     }
 
 }

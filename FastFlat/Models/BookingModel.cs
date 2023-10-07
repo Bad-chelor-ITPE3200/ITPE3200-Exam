@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace FastFlat.Models
 
 {
@@ -6,6 +9,10 @@ namespace FastFlat.Models
     {
         [Key] 
         public int BookingId { get; set; }
+        public string UserId { get; set; }  // Dette er selve fremmednøkkelen som peker til 'Id' feltet i 'AspNetUsers' tabellen
+        
+        public virtual IdentityUser User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
+
         public virtual UserModel Renter { get; set; }= default!; 
         public virtual ListningModel Property { get; set; } = default!;
 
