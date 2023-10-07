@@ -1,5 +1,6 @@
 ﻿using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,14 +8,10 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
-        private readonly UserManager<AspNetUsers> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-
-        public DBInit(UserManager<AspNetUsers> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager; 
-        }
+        private  static readonly UserManager<AspNetUsers> _userManager;
+        private static readonly UserStore<AspNetUsers> _userStore;
+        private static readonly RoleManager<AspNetUsers> _roleManager;
+      //  private static readonly IUserEmailStore<>
         public static async Task Seed(IApplicationBuilder app)
         {
           
@@ -202,20 +199,23 @@ namespace FastFlat.DAL
                await context.AddRangeAsync(roles);
                await context.SaveChangesAsync(); 
             }
+
             if (!context.Users.Any())
             {
+
+
                 var users = new List<AspNetUsers>
                 {
-                    
+
                     new AspNetUsers
-                    {   
+                    {
                         UserName = "Olidrav",
                         FirstName = "Oliver",
                         LastName = "Dragland",
                         Email = "oliver@gmail.com",
-                        PassWord = "1234",
-                       // PasswordHash = passwordhasher.HashPassword(null,"1234"),
-                        Phone = "99999999",
+                       // PassWord = "Password123!",
+                     //   PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        PhoneNumber = "99999999",
                         ProfilePicture = "/images/profilepicture/oliver.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
@@ -227,10 +227,10 @@ namespace FastFlat.DAL
                         FirstName = "Jon",
                         LastName = "Petter",
                         Email = "jp@gmail.com",
-                       // NormalizedEmail = "JP@GMAIL.COM",
-                        PassWord = "QbTJiimV@%b*JAqcTc5D5T4z*h!",
-                     //   PasswordHash = passwordhasher.HashPassword(null,"QbTJiimV@%b*JAqcTc5D5T4z*h!"),
-                        Phone = "9988888",
+                     //   NormalizedEmail = "JP@GMAIL.COM",
+                    //    PassWord = "Password123!",
+                        //PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        PhoneNumber = "9988888",
                         ProfilePicture = "/images/profilepicture/jp.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
@@ -242,9 +242,9 @@ namespace FastFlat.DAL
                         FirstName = "Gisle",
                         LastName = "Na",
                         Email = "Gisle@gmail.com",
-                        PassWord = "1234",
-                      //  PasswordHash = passwordhasher.HashPassword(null,"1234"),
-                        Phone = "99777777",
+                      //  PassWord = "Password123!",
+                       // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        PhoneNumber = "99777777",
                         ProfilePicture = "/images/profilepicture/gisle.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
@@ -256,18 +256,40 @@ namespace FastFlat.DAL
                         FirstName = "Ali",
                         LastName = "Anjum",
                         Email = "Ali@gmail.com",
-                        PassWord = "1234",
-                      //  PasswordHash = passwordhasher.HashPassword(null,"1234"),
-                        Phone = "99666666",
+                       // PassWord = "Password123!",
+                       // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        PhoneNumber = "99666666",
                         ProfilePicture = "/images/profilepicture/ali.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
                     }
                 };
-                await addusers(users);
-        
+                //Activator.CreateInstance<AspNetUsers>();
+               
+                await context.AddRangeAsync(users);
+                await context.SaveChangesAsync();
+                foreach (var u in users)
+                {
+                    u.PasswordHash = passwordhasher.HashPassword(u, u.PassWord);
+                    u.NormalizedEmail = u.Email.ToUpper();
+                    u.NormalizedUserName = u.Email.ToUpper();
+                    if (await _userManager.FindByEmailAsync(u.Email) == null)
+                    {
+                      
+                        await _userManager.CreateAsync(u, u.PassWord);
+                        
+                                
+                    }
+                }
+               
 
+               
             }
+            //await Addusers(users);
+                
+
+        
+                
 
             /*if (!context.Users.Any())
             {
@@ -432,19 +454,12 @@ namespace FastFlat.DAL
                             { gymAmenity, beachAmenity, kitchenAmenity } // Add the amenities to the listing
                     }
                 };
-    
+                
                 context.AddRange(listnings);
                 context.SaveChanges();
             }
         }
 
-        public  async Task addusers(List<AspNetUsers> users)
-        {
-            foreach (var u in users)
-            {
-               await _userManager.CreateAsync(u); 
-            }
-            
-        }
+       
     }
 }

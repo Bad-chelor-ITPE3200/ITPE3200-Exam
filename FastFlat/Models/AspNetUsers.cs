@@ -15,8 +15,8 @@ namespace FastFlat.Models
 
         public string? LastName { get; set; }
 
-       // public string Email { get; set; } = string.Empty; 
-        public string Phone { get; set; }
+       // public string Email { get; set; } = string.Empty;
+       // public string Phone { get; set; }
         public int roles; 
 
         public string? ProfilePicture { get; set; } = "wwwroot/images/profilepicture/standard.jpg";
