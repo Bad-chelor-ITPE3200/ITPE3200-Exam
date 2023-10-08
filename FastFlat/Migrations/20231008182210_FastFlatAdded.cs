@@ -12,6 +12,21 @@ namespace FastFlat.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AmenityModel",
+                columns: table => new
+                {
+                    AmenityId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AmenityName = table.Column<string>(type: "TEXT", nullable: true),
+                    AmenityDescription = table.Column<string>(type: "TEXT", nullable: true),
+                    AmenityLogo = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AmenityModel", x => x.AmenityId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -240,17 +255,17 @@ namespace FastFlat.Migrations
                 {
                     ListningId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
                     ListningName = table.Column<string>(type: "TEXT", nullable: false),
                     ListningDescription = table.Column<string>(type: "TEXT", nullable: true),
-                    NoOfBeds = table.Column<int>(type: "INTEGER", nullable: false),
-                    SquareMeter = table.Column<int>(type: "INTEGER", nullable: false),
-                    Rating = table.Column<float>(type: "REAL", nullable: false),
-                    ListningAddress = table.Column<string>(type: "TEXT", nullable: false),
+                    NoOfBeds = table.Column<int>(type: "INTEGER", nullable: true),
+                    SquareMeter = table.Column<int>(type: "INTEGER", nullable: true),
+                    Rating = table.Column<float>(type: "REAL", nullable: true),
+                    ListningAddress = table.Column<string>(type: "TEXT", nullable: true),
                     ListningPrice = table.Column<double>(type: "REAL", nullable: false),
                     LocationID = table.Column<int>(type: "INTEGER", nullable: true),
-                    fromDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    toDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    fromDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    toDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     ListningImageURL = table.Column<string>(type: "TEXT", nullable: true),
                     UserModelId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
@@ -261,8 +276,7 @@ namespace FastFlat.Migrations
                         name: "FK_Rentals_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Rentals_LocationModel_LocationID",
                         column: x => x.LocationID,
@@ -273,27 +287,6 @@ namespace FastFlat.Migrations
                         column: x => x.UserModelId,
                         principalTable: "UserModel",
                         principalColumn: "UserModelId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Amenities",
-                columns: table => new
-                {
-                    AmenitylId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AmenityName = table.Column<string>(type: "TEXT", nullable: true),
-                    AmenityDescription = table.Column<string>(type: "TEXT", nullable: true),
-                    AmenityLogo = table.Column<string>(type: "TEXT", nullable: true),
-                    ListningModelListningId = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Amenities", x => x.AmenitylId);
-                    table.ForeignKey(
-                        name: "FK_Amenities_Rentals_ListningModelListningId",
-                        column: x => x.ListningModelListningId,
-                        principalTable: "Rentals",
-                        principalColumn: "ListningId");
                 });
 
             migrationBuilder.CreateTable(
@@ -339,10 +332,31 @@ namespace FastFlat.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Amenities_ListningModelListningId",
-                table: "Amenities",
-                column: "ListningModelListningId");
+            migrationBuilder.CreateTable(
+                name: "ListningAmenity",
+                columns: table => new
+                {
+                    ListningAmenityId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ListningId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AmenityId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ListningAmenity", x => x.ListningAmenityId);
+                    table.ForeignKey(
+                        name: "FK_ListningAmenity_AmenityModel_AmenityId",
+                        column: x => x.AmenityId,
+                        principalTable: "AmenityModel",
+                        principalColumn: "AmenityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ListningAmenity_Rentals_ListningId",
+                        column: x => x.ListningId,
+                        principalTable: "Rentals",
+                        principalColumn: "ListningId",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -402,6 +416,16 @@ namespace FastFlat.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ListningAmenity_AmenityId",
+                table: "ListningAmenity",
+                column: "AmenityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ListningAmenity_ListningId",
+                table: "ListningAmenity",
+                column: "ListningId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rentals_LocationID",
                 table: "Rentals",
                 column: "LocationID");
@@ -426,9 +450,6 @@ namespace FastFlat.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Amenities");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -450,13 +471,19 @@ namespace FastFlat.Migrations
                 name: "Countries");
 
             migrationBuilder.DropTable(
+                name: "ListningAmenity");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Rentals");
+                name: "Renters");
 
             migrationBuilder.DropTable(
-                name: "Renters");
+                name: "AmenityModel");
+
+            migrationBuilder.DropTable(
+                name: "Rentals");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

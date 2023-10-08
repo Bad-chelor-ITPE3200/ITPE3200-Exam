@@ -39,18 +39,26 @@
                 <h4>Dine eindommer:</h4>
                 <p>X</p>
                 
+               
                 <div id="results">
                     @foreach (var rental in Model.Rentals)
                     {
                         <partial name="_RentalCard" model="rental" />
 
-                        <!--Her skal man bruke SQL syntax for å hente innold som bare er knyttet til usermanager
-                            <partial name="_RentalCard" model="rental" Where ... />
-                        -->
+                        
+                        
                     }
                 </div>
                 
+            <p>
+                    <a class="btn btn-primary"
+                       asp-controller="Profile"
+                       asp-action="NewListning">
+                        Registrer nytt rom
+                    </a>
+                </p>
             </div>
+
         </div>
         <div class="user-contents">
             <div class="user-contents-title">

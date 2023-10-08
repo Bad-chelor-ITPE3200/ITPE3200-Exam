@@ -16,6 +16,8 @@ public class RentalDbContext : IdentityDbContext
 
     public DbSet<ListningModel> Rentals { get; set; }
 
+    public DbSet<AmenityModel> ListningAmenities { get; set; }
+
     //public DbSet<AspNetUsers> Users { get; set; }
 
     //public DbSet<UserModel> Users { get; set; }

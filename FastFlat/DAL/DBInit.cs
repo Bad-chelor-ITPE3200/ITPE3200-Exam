@@ -290,7 +290,7 @@ namespace FastFlat.DAL
                 _context.SaveChanges();
             }
 
-
+            /*
             
 
             if (!_context.Rentals.Any())
@@ -350,7 +350,8 @@ namespace FastFlat.DAL
                 
             
             }
-                       
+            */
+
         }
     }
 }

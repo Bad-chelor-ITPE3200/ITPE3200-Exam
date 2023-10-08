@@ -19,8 +19,8 @@ namespace FastFlat.Controllers
         public async Task<IActionResult> Explore()
         {
 
-            var rentalList =await _rentalRepo.GetAll();
-            var amenityList = await _amenityRepo.GetAll();
+            var rentalList = _rentalRepo.GetAll();
+            var amenityList =  _amenityRepo.GetAll();
             var rentalListViewModel = new RentalListViewModel(rentalList, amenityList, "Card");
             return View(rentalListViewModel);
         }

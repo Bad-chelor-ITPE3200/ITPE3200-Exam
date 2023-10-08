@@ -8,10 +8,10 @@
     </div>
     <div class="card-footer">
         <ul class="list-inline">
-            @foreach (var amenity in Model.Amenities)
+            @foreach (var listningAmenity in Model.ListningAmenities)
             {
                 <li class="list-inline-item">
-                    <img src="@amenity.AmenityLogo" alt="@amenity.AmenityName">
+                    <img src="@listningAmenity.Amenity.AmenityLogo" alt="@listningAmenity.Amenity.AmenityName">
                 </li>
             }
         </ul>

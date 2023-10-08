@@ -14,10 +14,13 @@ namespace FastFlat.DAL
             _dbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return _context.Set<T>();
         }
+
+        /* IKKE I BRUK
+         
         // Method to retrieve a listing (in this case listning model) tied to a specific session
         public async Task<IEnumerable<T>> GetAllById(string Id)
         {
@@ -28,6 +31,9 @@ namespace FastFlat.DAL
                                              entity.GetType().GetProperty("UserId").GetValue(entity).ToString() == Id).ToList();
                                              // Above extracts the UserID property value from the Table that is called and sees if 
         }
+        */
+
+
         public async Task<T> GetById(int id)
         {
             return await _dbSet.FindAsync(id);

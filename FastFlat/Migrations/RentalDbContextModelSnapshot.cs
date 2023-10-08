@@ -23,7 +23,7 @@ namespace FastFlat.Migrations
 
             modelBuilder.Entity("FastFlat.Models.AmenityModel", b =>
                 {
-                    b.Property<int>("AmenitylId")
+                    b.Property<int>("AmenityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -36,14 +36,9 @@ namespace FastFlat.Migrations
                     b.Property<string>("AmenityName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ListningModelListningId")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("AmenityId");
 
-                    b.HasKey("AmenitylId");
-
-                    b.HasIndex("ListningModelListningId");
-
-                    b.ToTable("Amenities");
+                    b.ToTable("AmenityModel");
                 });
 
             modelBuilder.Entity("FastFlat.Models.BookingModel", b =>
@@ -118,6 +113,27 @@ namespace FastFlat.Migrations
                     b.ToTable("Landlord");
                 });
 
+            modelBuilder.Entity("FastFlat.Models.ListningAmenity", b =>
+                {
+                    b.Property<int>("ListningAmenityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AmenityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ListningId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ListningAmenityId");
+
+                    b.HasIndex("AmenityId");
+
+                    b.HasIndex("ListningId");
+
+                    b.ToTable("ListningAmenity");
+                });
+
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>
                 {
                     b.Property<int>("ListningId")
@@ -125,7 +141,6 @@ namespace FastFlat.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ListningAddress")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ListningDescription")
@@ -144,26 +159,25 @@ namespace FastFlat.Migrations
                     b.Property<int?>("LocationID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("NoOfBeds")
+                    b.Property<int?>("NoOfBeds")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Rating")
+                    b.Property<float?>("Rating")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("SquareMeter")
+                    b.Property<int?>("SquareMeter")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("UserModelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("fromDate")
+                    b.Property<DateOnly?>("fromDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("toDate")
+                    b.Property<DateOnly?>("toDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ListningId");
@@ -442,13 +456,6 @@ namespace FastFlat.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FastFlat.Models.AmenityModel", b =>
-                {
-                    b.HasOne("FastFlat.Models.ListningModel", null)
-                        .WithMany("Amenities")
-                        .HasForeignKey("ListningModelListningId");
-                });
-
             modelBuilder.Entity("FastFlat.Models.BookingModel", b =>
                 {
                     b.HasOne("FastFlat.Models.ListningModel", "Property")
@@ -480,6 +487,25 @@ namespace FastFlat.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FastFlat.Models.ListningAmenity", b =>
+                {
+                    b.HasOne("FastFlat.Models.AmenityModel", "Amenity")
+                        .WithMany("ListningAmenities")
+                        .HasForeignKey("AmenityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FastFlat.Models.ListningModel", "Listning")
+                        .WithMany("ListningAmenities")
+                        .HasForeignKey("ListningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenity");
+
+                    b.Navigation("Listning");
+                });
+
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>
                 {
                     b.HasOne("FastFlat.Models.LocationModel", "Location")
@@ -488,9 +514,7 @@ namespace FastFlat.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.HasOne("FastFlat.Models.UserModel", null)
                         .WithMany("Rentals")
@@ -559,6 +583,11 @@ namespace FastFlat.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FastFlat.Models.AmenityModel", b =>
+                {
+                    b.Navigation("ListningAmenities");
+                });
+
             modelBuilder.Entity("FastFlat.Models.LandlordModel", b =>
                 {
                     b.Navigation("users");
@@ -566,7 +595,7 @@ namespace FastFlat.Migrations
 
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>
                 {
-                    b.Navigation("Amenities");
+                    b.Navigation("ListningAmenities");
 
                     b.Navigation("bookings");
                 });
