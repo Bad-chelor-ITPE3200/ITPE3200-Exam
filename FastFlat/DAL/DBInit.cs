@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace FastFlat.DAL
 {
@@ -10,16 +11,15 @@ namespace FastFlat.DAL
     {
         private  static readonly UserManager<AspNetUsers> _userManager;
         private static readonly UserStore<AspNetUsers> _userStore;
-        private static readonly RoleManager<AspNetUsers> _roleManager;
+        private static readonly RoleManager<IdentityRole> _roleManager;
       //  private static readonly IUserEmailStore<>
         public static async Task Seed(IApplicationBuilder app)
         {
-          
-            var passwordhasher = new PasswordHasher<AspNetUsers>(null);
+            
             using var serviceScope = app.ApplicationServices.CreateScope();
-            RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            await context.Database.EnsureDeletedAsync();
-           await context.Database.EnsureCreatedAsync();
+            RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>(); 
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
             
             //Amenity
             if (!context.Amenities.Any())
@@ -106,8 +106,8 @@ namespace FastFlat.DAL
                         AmenityLogo = "/images/amenity/Wifi.svg"
                     },
                 };
-                context.AddRange(amenities);
-                context.SaveChanges();
+                context.AddRangeAsync(amenities);
+                context.SaveChangesAsync();
             }
 
 
@@ -172,8 +172,8 @@ namespace FastFlat.DAL
                     },
 
                 };
-                await context.AddRangeAsync(country);
-                await context.SaveChangesAsync();
+               context.AddRangeAsync(country);
+               context.SaveChangesAsync();
             }
 
             if (!context.Roles.Any())
@@ -196,8 +196,13 @@ namespace FastFlat.DAL
                         Id = "2", Name = "Renter" //BUY THING
                     }
                 }; 
-               await context.AddRangeAsync(roles);
-               await context.SaveChangesAsync(); 
+             
+               foreach (IdentityRole r in roles )
+               {
+                _roleManager.CreateAsync(r); 
+               }
+               context.AddRangeAsync(roles);
+               context.SaveChangesAsync(); 
             }
 
             if (!context.Users.Any())
@@ -213,7 +218,7 @@ namespace FastFlat.DAL
                         FirstName = "Oliver",
                         LastName = "Dragland",
                         Email = "oliver@gmail.com",
-                       // PassWord = "Password123!",
+                        //PassWord = "Password123!",
                      //   PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99999999",
                         ProfilePicture = "/images/profilepicture/oliver.jpg",
@@ -227,8 +232,7 @@ namespace FastFlat.DAL
                         FirstName = "Jon",
                         LastName = "Petter",
                         Email = "jp@gmail.com",
-                     //   NormalizedEmail = "JP@GMAIL.COM",
-                    //    PassWord = "Password123!",
+                        //PassWord = "Password123!",
                         //PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "9988888",
                         ProfilePicture = "/images/profilepicture/jp.jpg",
@@ -242,7 +246,7 @@ namespace FastFlat.DAL
                         FirstName = "Gisle",
                         LastName = "Na",
                         Email = "Gisle@gmail.com",
-                      //  PassWord = "Password123!",
+                        //PassWord = "Password123!",
                        // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99777777",
                         ProfilePicture = "/images/profilepicture/gisle.jpg",
@@ -256,7 +260,7 @@ namespace FastFlat.DAL
                         FirstName = "Ali",
                         LastName = "Anjum",
                         Email = "Ali@gmail.com",
-                       // PassWord = "Password123!",
+                        //PassWord = "Password123!",
                        // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99666666",
                         ProfilePicture = "/images/profilepicture/ali.jpg",
@@ -266,22 +270,22 @@ namespace FastFlat.DAL
                 };
                 //Activator.CreateInstance<AspNetUsers>();
                
-                await context.AddRangeAsync(users);
-                await context.SaveChangesAsync();
-                foreach (var u in users)
+   
+              
+                foreach (AspNetUsers u in users)
                 {
-                    u.PasswordHash = passwordhasher.HashPassword(u, u.PassWord);
-                    u.NormalizedEmail = u.Email.ToUpper();
-                    u.NormalizedUserName = u.Email.ToUpper();
-                    if (await _userManager.FindByEmailAsync(u.Email) == null)
-                    {
-                      
-                        await _userManager.CreateAsync(u, u.PassWord);
-                        
-                                
-                    }
+                
+                  //  u.NormalizedEmail = u.Email.ToUpper();
+                   // u.NormalizedUserName = u.Email.ToUpper();
+                     var ok=   await _userManager.CreateAsync(u, "Password123!");
+                     if (ok.Succeeded)
+                     { 
+                       Console.Write(u.NormalizedEmail + "is created at: " + DateTime.Now);
+                       _userManager.AddToRoleAsync(u, "admin");
+                     }
                 }
-               
+                context.AddRangeAsync(users);
+                context.SaveChangesAsync();
 
                
             }

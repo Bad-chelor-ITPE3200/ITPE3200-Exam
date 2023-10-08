@@ -17,14 +17,5 @@ public class UserController : Controller
     }
     
 
-    public async Task<IActionResult> landing(AspNetUsers aspNetUsers)
-    {
-        var account = await _UserRepository.GetById(aspNetUsers.UserModelId);
-        if (account != null)
-        {
-            return View(landing);
-        }
 
-        return null; 
-    }
 }

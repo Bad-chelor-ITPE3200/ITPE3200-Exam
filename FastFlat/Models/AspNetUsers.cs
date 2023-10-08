@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FastFlat.Models
 {
-    public class AspNetUsers : Microsoft.AspNetCore.Identity.IdentityUser
+    public class AspNetUsers : IdentityUser
     {
         public int UserModelId { get; set; }
 
         //    public string? UserName { get; set; } = string.Empty; //already a part of Areas
-
-        public string PassWord { get; set; } = string.Empty;
-
+        //public string PassWord { get; set; } = string.Empty;
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }

@@ -29,7 +29,7 @@ var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
 var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);
 
-builder.Services.AddIdentity<AspNetUsers, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>().AddDefaultUI(); 
+builder.Services.AddIdentity<AspNetUsers, IdentityRole>().AddEntityFrameworkStores<RentalDbContext>().AddDefaultTokenProviders().AddDefaultUI();
 
 builder.Services.AddScoped(typeof(IRentalRepository<>), typeof(RentalRepository<>));
 
@@ -39,9 +39,8 @@ builder.Services.AddSession();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
 { 
-    app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage(); 
     DBInit.Seed(app);
 }
 
