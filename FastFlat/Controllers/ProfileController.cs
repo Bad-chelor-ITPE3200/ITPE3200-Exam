@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -81,11 +82,26 @@ namespace FastFlat.Controllers
                 }
                 // Resten av koden din...
             }
-            
+            var userId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
             {
-                var userId = _userManager.GetUserId(User);
+                if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)
+                {
+                    var fileName = Path.GetFileName(viewModel.ListningImage.FileName);
+
+                    // Change this directory to the appropriate location where you want to save your images
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.ListningImage.CopyToAsync(fileStream);
+                    }
+
+                    // Save the path to your database
+                    viewModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
+                }
+
                 viewModel.Listning.UserId = userId;
 
                 await _listningRepository.Create(viewModel.Listning);
