@@ -2,6 +2,9 @@
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.Controllers
 {
@@ -10,11 +13,13 @@ namespace FastFlat.Controllers
 
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo)
+        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<IdentityUser> userManager)
         {
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Explore()
         {
@@ -22,6 +27,14 @@ namespace FastFlat.Controllers
             var rentalList = _rentalRepo.GetAll();
             var amenityList =  _amenityRepo.GetAll();
             var rentalListViewModel = new RentalListViewModel(rentalList, amenityList, "Card");
+            return View(rentalListViewModel);
+        }
+        public async Task<IActionResult> ViewListing(int listingId)
+        {
+            var listing = await _rentalRepo.GetById(listingId);
+            var userId = listing.UserId;
+            var user = await _userManager.FindByIdAsync(userId);
+            var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
             return View(rentalListViewModel);
         }
     }

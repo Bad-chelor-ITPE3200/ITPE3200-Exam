@@ -144,5 +144,8 @@
         height: 24px;
         max-width: 100%;
     }
-
+a {
+    text-decoration: none;
+    color: black;
+}
 
