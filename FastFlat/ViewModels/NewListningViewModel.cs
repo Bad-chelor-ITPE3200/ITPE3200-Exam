@@ -1,10 +1,11 @@
-﻿using FastFlat.Models;
+﻿using Microsoft.AspNetCore.Http;
+using FastFlat.Models;
 
 namespace FastFlat.ViewModels
 {
     public class NewListningViewModel
-    {        
-
+    {
+        public IFormFile ListningImage { get; set; }
         public ListningModel Listning { get; set; }
 
         public List<AmenityModel>? Amenities { get; set; }
