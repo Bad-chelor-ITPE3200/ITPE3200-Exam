@@ -30,7 +30,7 @@ loggerConfiguration.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceCont
 var logger = loggerConfiguration.CreateLogger();
 builder.Logging.AddSerilog(logger);
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Password Settings
     options.Password.RequireDigit = true;

@@ -10,6 +10,16 @@
         <h1>Registrer</h1>
         <form class="login-form" method="post">
             <div class="email">
+                <label for="Firstname">First Name</label>
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="email">
+                <label for="Lastname">Last Name</label>
+                <input asp-for="Input.LastName" class="form-control" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="email">
                 <label for="email">Email</label>
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>

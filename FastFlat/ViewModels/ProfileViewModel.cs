@@ -8,11 +8,11 @@ namespace FastFlat.ViewModels
     {
         public IEnumerable<ListningModel> Rentals;
         public IEnumerable<BookingModel> Bookings;
-        public IdentityUser User;
+        public ApplicationUser User;
 
         public string? CurrentViewName;
 
-        public ProfileViewModel(IEnumerable<ListningModel> rentals, IEnumerable<BookingModel> bookings, IdentityUser user, string? currentViewName)
+        public ProfileViewModel(IEnumerable<ListningModel> rentals, IEnumerable<BookingModel> bookings, ApplicationUser user, string? currentViewName)
         {
             Rentals = rentals;
             Bookings = bookings;

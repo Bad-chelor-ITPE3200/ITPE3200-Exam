@@ -13,9 +13,9 @@ namespace FastFlat.Controllers
 
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<IdentityUser> userManager)
+        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager)
         {
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;

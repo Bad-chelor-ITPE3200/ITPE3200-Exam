@@ -1,7 +1,6 @@
 ﻿@model ListingViewModel
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<ApplicationUser> UserManager
 
 @section Styles {
     <link rel="stylesheet" href="~/css/viewlisting.css" />
@@ -25,6 +24,7 @@
                         <div class="rental-host-contact">
                             <p>@Model.User.Email</p>
                             <p>@Model.User.PhoneNumber</p>
+                            <p>@Model.User.FirstName</p>
                         </div>
                     </div>
                     <hr>
