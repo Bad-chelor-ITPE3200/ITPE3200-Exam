@@ -11,10 +11,7 @@ namespace FastFlat.ViewModels
         public List<AmenityModel>? Amenities { get; set; }
         public List<int> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
 
-        /*
-        public DateOnly? fromDate { get; set; }
-        public DateOnly? toDate { get; set; }
-        */
+
         // Parameterløs konstruktør
         public NewListningViewModel()
         {

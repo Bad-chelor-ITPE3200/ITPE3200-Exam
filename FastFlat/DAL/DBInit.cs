@@ -6,10 +6,10 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RentalDbContext _context;
 
-        public DBInit(UserManager<IdentityUser> userManager, RentalDbContext context)
+        public DBInit(UserManager<ApplicationUser> userManager, RentalDbContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -27,24 +27,24 @@ namespace FastFlat.DAL
 
             if (!_userManager.Users.Any())
             {
-                var users = new List<IdentityUser>
+                var users = new List<ApplicationUser>
     {
-        new IdentityUser
+        new ApplicationUser
         {
             UserName = "oliver",
             Email = "oliver@gmail.com",
             PhoneNumber = "99666666",
-            PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "Password123!"),
+            PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null, "Password123!"),
             //SecurityStamp = "/images/profilepicture/oliver.jpg"
             // Remember: SecurityStamp is NOT for images. It's a security feature.
             //SecurityStamp = Guid.NewGuid().ToString()
         },
-        new IdentityUser
+        new ApplicationUser
         {
             UserName = "ali.jobb@live.com", // Must be unique
             Email = "ali.jobb@live.com",    // Must be unique
             PhoneNumber = "99666667",
-            PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "Password123!"),
+            PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null, "Password123!"),
             //SecurityStamp = "/images/profilepicture/ali.jpg"
             //SecurityStamp = Guid.NewGuid().ToString()
         }

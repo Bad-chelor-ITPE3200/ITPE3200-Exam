@@ -13,7 +13,7 @@ namespace FastFlat.Models
         [ForeignKey("User")]  // Dette indikerer at 'UserId' er fremmednøkkelen for 'User' navigeringsegenskapen
         public string? UserId { get; set; }  // Dette er selve fremmednøkkelen som peker til 'Id' feltet i 'AspNetUsers' tabellen
 
-        public virtual IdentityUser? User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
+        public virtual ApplicationUser? User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
 
         public string ListningName { get; set; } = string.Empty;
         public string? ListningDescription { get; set; }
