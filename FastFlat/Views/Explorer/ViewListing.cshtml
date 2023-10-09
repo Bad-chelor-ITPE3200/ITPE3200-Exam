@@ -1,9 +1,39 @@
 ﻿@model ListingViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @section Styles {
     <link rel="stylesheet" href="~/css/viewlisting.css" />
 }
+@{
+    var loggedInUser = await UserManager.GetUserAsync(User);
+}
+<div class="hero">
+    <div class="rental-wrapper">
+        @if (loggedInUser != null && Model.User.Id == loggedInUser.Id)
+        {
+            <img class="rental-banner" src="@Model.Listing.ListningImageURL" alt="Forside bilde."/>
+            <div class="rental-content">
+                <div class="rental-about">
+                    <h1 class="rental-title">@Model.Listing.ListningName</h1>
+                    <p class="rental-info">Antall senger @Model.Listing.NoOfBeds - Størrelse @Model.Listing.SquareMeter</p>
+                    <p class="rental-desc">@Model.Listing.ListningDescription</p>
+                </div>
+                <div class="rental-booking">
 
-<div>
-    <h1>dette er @Model.User.Email 's bruker</h1>
+                </div>
+                <div class="rental-host">
+                    <p>
+                        @Model.User.UserName
+                    </p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>Dette er ikke din eiendom</p>
+        }
+    </div>
 </div>
+
