@@ -7,38 +7,36 @@
 
     <form asp-action="NewListning" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label asp-for="Listning.ListningName"></label><span class="text-danger">*</span>
+            <label asp-for="Listning.ListningName">Property title</label><span class="text-danger">*</span>
             <input asp-for="Listning.ListningName" class="form-control" />
             <span asp-validation-for="Listning.ListningName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Listning.ListningPrice"></label><span class="text-danger">*</span>
+            <label asp-for="Listning.ListningPrice">Price per night</label><span class="text-danger">*</span>
             <input asp-for="Listning.ListningPrice" class="form-control" />
             <span asp-validation-for="Listning.ListningPrice" class="text-danger"></span>
         </div>
 
         <div class="form-group">
+            <label asp-for="Listning.ListningDescription">Describtion</label>
+            <input asp-for="Listning.ListningDescription" class="form-control" />
+            <span asp-validation-for="Listning.ListningDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Listning.SquareMeter">Plot size</label>
+            <input asp-for="Listning.SquareMeter" class="form-control" />
+            <span asp-validation-for="Listning.SquareMeter" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Listning.NoOfBeds">Amount of beds</label>
+            <input asp-for="Listning.NoOfBeds" class="form-control" />
+            <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label for="ListningImage">Listning Image:</label>
             <input type="file" id="ListningImage" multiple="true" name="ListningImage" class="form-control-file">
             <span asp-validation-for="Listning.ListningImageURL" class="text-danger"></span>
         </div>
-        <!--
-        <div class="form-group">
-            <label asp-for="ListningDescription"></label>
-            <input asp-for="ListningDescription" class="form-control" />
-            <span asp-validation-for="ListningDescription" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="SquareMeter"></label>
-            <input asp-for="SquareMeter" class="form-control" />
-            <span asp-validation-for="SquareMeter" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ListningImageURL"></label>
-            <input asp-for="ListningImageURL" class="form-control" />
-            <span asp-validation-for="ListningImageURL" class="text-danger"></span>
-        </div>
-        -->
 
         <h4>Select Amenities:</h4>
 

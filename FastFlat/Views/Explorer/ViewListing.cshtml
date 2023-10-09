@@ -18,16 +18,23 @@
                 <div class="rental-about">
                     <h1 class="rental-title">@Model.Listing.ListningName</h1>
                     <p class="rental-info">Antall senger @Model.Listing.NoOfBeds - Størrelse @Model.Listing.SquareMeter</p>
+                    <hr>
+                    <div class="rental-host">
+                        <p>About the host</p>
+                        <h3>@Model.User.UserName</h3>
+                        <div class="rental-host-contact">
+                            <p>@Model.User.Email</p>
+                            <p>@Model.User.PhoneNumber</p>
+                        </div>
+                    </div>
+                    <hr>
                     <p class="rental-desc">@Model.Listing.ListningDescription</p>
+                    
                 </div>
                 <div class="rental-booking">
 
                 </div>
-                <div class="rental-host">
-                    <p>
-                        @Model.User.UserName
-                    </p>
-                </div>
+                
             </div>
         }
         else

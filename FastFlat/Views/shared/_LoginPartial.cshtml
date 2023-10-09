@@ -2,7 +2,6 @@
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
 <ul class="--nav-tabs">
 @if (SignInManager.IsSignedIn(User))
 {

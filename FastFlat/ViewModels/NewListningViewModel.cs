@@ -11,6 +11,7 @@ namespace FastFlat.ViewModels
         public List<AmenityModel>? Amenities { get; set; }
         public List<int> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
 
+
         // Parameterløs konstruktør
         public NewListningViewModel()
         {
