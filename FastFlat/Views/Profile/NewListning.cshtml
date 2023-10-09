@@ -25,13 +25,13 @@
 
         <div class="form-group">
             <label asp-for="Listning.FromDate">Available From</label><span class="text-danger">*</span>
-            <input asp-for="Listning.FromDate" type="date" class="form-control" value="2023-09-30" />
+            <input asp-for="Listning.FromDate" id="fromDateInput" type="date" class="form-control" value="2023-09-30" />
             <span asp-validation-for="Listning.FromDate" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Listning.ToDate">Available To</label><span class="text-danger">*</span>
-            <input asp-for="Listning.ToDate" type="date" class="form-control" value="2023-10-30" />
+            <input asp-for="Listning.ToDate" id="toDateInput" type="date" class="form-control" value="2023-10-30" />
             <span asp-validation-for="Listning.ToDate" class="text-danger"></span>
         </div>
         
@@ -66,3 +66,10 @@
         <a asp-action="Profile" class="btn btn-secondary">Back to Profile</a>
     </form>
 </div>
+
+<script>
+    document.getElementById('fromDateInput').addEventListener('change', function() {
+        const selectedDate = this.value;
+        document.getElementById('toDateInput').setAttribute('min', selectedDate);
+    });
+</script>
