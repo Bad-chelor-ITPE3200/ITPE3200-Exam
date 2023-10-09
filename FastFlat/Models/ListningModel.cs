@@ -26,8 +26,8 @@ namespace FastFlat.Models
         //public virtual CityModel City { get; set; }//legger til city
         public virtual LocationModel? Location { get; set; } = default!;
 
-        public DateOnly? fromDate { get; set; }
-        public DateOnly? toDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string? ListningImageURL { get; set; }
 
         public virtual List<BookingModel>? bookings { get; set; }

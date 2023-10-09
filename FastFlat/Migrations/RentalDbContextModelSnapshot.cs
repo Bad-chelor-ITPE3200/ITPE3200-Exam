@@ -140,6 +140,9 @@ namespace FastFlat.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateOnly?>("FromDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ListningAddress")
                         .HasColumnType("TEXT");
 
@@ -168,17 +171,14 @@ namespace FastFlat.Migrations
                     b.Property<int?>("SquareMeter")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateOnly?>("ToDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("UserModelId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateOnly?>("fromDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateOnly?>("toDate")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("ListningId");
 

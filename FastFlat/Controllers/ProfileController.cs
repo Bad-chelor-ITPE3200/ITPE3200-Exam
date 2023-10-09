@@ -83,6 +83,7 @@ namespace FastFlat.Controllers
                 // Resten av koden din...
             }
             var userId = _userManager.GetUserId(User);
+            
 
             if (ModelState.IsValid)
             {
@@ -102,7 +103,12 @@ namespace FastFlat.Controllers
                     viewModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
                 }
 
+              
+
                 viewModel.Listning.UserId = userId;
+                //System.Diagnostics.Debug.WriteLine($"FromDate: {viewModel.fromDate}, ToDate: {viewModel.toDate}");
+               
+
 
                 await _listningRepository.Create(viewModel.Listning);
 
@@ -118,6 +124,8 @@ namespace FastFlat.Controllers
                         };
 
                         await _listningAmenityRepository.Create(listningAmenity);
+
+
                     }
 
                     return RedirectToAction(nameof(Profile));

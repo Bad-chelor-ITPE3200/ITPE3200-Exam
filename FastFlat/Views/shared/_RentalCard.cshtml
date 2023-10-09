@@ -4,7 +4,7 @@
         <img src="@Model.ListningImageURL" alt="Rental Image">
         <div class="card_info">
             <h5>@Model.ListningName</h5>
-            <p>@Model.fromDate - @Model.toDate</p>
+            <p>@Model.FromDate.ToString("dd.MM.yyyy") - @Model.ToDate.ToString("dd.MM.yyyy")</p>
             <p><span class="pricePerNight">kr @Model.ListningPrice</span> natt.</p>
         </div>
         <div class="card-footer">
