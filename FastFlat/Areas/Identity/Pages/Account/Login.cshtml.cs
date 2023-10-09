@@ -116,6 +116,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("PW " + Input.Password);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -130,6 +131,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    _logger.LogInformation("Invalid: " + Input.Password);
                     return Page();
                 }
             }

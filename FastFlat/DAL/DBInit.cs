@@ -1,4 +1,5 @@
-﻿using FastFlat.Models;
+﻿using System.Security.Claims;
+using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,18 +10,18 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
-        private  static readonly UserManager<AspNetUsers> _userManager;
-        private static readonly UserStore<AspNetUsers> _userStore;
-        private static readonly RoleManager<IdentityRole> _roleManager;
-      //  private static readonly IUserEmailStore<>
+
+
         public static async Task Seed(IApplicationBuilder app)
         {
-            
             using var serviceScope = app.ApplicationServices.CreateScope();
-            RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>(); 
+            RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
+            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<AspNetUsers>>();
+            var userStore = serviceScope.ServiceProvider.GetRequiredService<UserStore<AspNetUsers>>();
+            var loginman = serviceScope.ServiceProvider.GetRequiredService<SignInManager<AspNetUsers>>();
+            var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-            
             //Amenity
             if (!context.Amenities.Any())
             {
@@ -185,30 +186,31 @@ namespace FastFlat.DAL
                     new IdentityRole
                     {
                         Id = "0", Name = "Admin" //BIG BOSS, can do everything
-                        
-                    },
-                    new IdentityRole
-                    {
-                        Id = "1", Name = "Landlord" // can edit their OWN listings
+
                     },
                     new IdentityRole
                     {
                         Id = "2", Name = "Renter" //BUY THING
                     }
-                }; 
-             
-               foreach (IdentityRole r in roles )
-               {
-                _roleManager.CreateAsync(r); 
-               }
-               context.AddRangeAsync(roles);
-               context.SaveChangesAsync(); 
+                };
+
+                foreach (var r in roles)
+                {
+                    var ok = roleman.CreateAsync(r).Result;
+                    Console.Write(ok);
+                    if (ok.Succeeded)
+                    {
+                        Console.Write(r.Name + "is created at: " + DateTime.Now);
+                    }
+                    else
+                    {
+                        Console.Write("error in creating Role " + r);
+                    }
+                }
             }
 
             if (!context.Users.Any())
             {
-
-
                 var users = new List<AspNetUsers>
                 {
 
@@ -219,7 +221,7 @@ namespace FastFlat.DAL
                         LastName = "Dragland",
                         Email = "oliver@gmail.com",
                         //PassWord = "Password123!",
-                     //   PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        //   PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99999999",
                         ProfilePicture = "/images/profilepicture/oliver.jpg",
                         Rentals = new List<ListningModel> { },
@@ -228,7 +230,7 @@ namespace FastFlat.DAL
 
                     new AspNetUsers
                     {
-                        UserName = "JP",
+                        UserName = "jp@gmail.com",
                         FirstName = "Jon",
                         LastName = "Petter",
                         Email = "jp@gmail.com",
@@ -247,7 +249,7 @@ namespace FastFlat.DAL
                         LastName = "Na",
                         Email = "Gisle@gmail.com",
                         //PassWord = "Password123!",
-                       // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99777777",
                         ProfilePicture = "/images/profilepicture/gisle.jpg",
                         Rentals = new List<ListningModel> { },
@@ -260,156 +262,40 @@ namespace FastFlat.DAL
                         FirstName = "Ali",
                         LastName = "Anjum",
                         Email = "Ali@gmail.com",
+                        EmailConfirmed = true,
                         //PassWord = "Password123!",
-                       // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
+                        // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99666666",
                         ProfilePicture = "/images/profilepicture/ali.jpg",
                         Rentals = new List<ListningModel> { },
                         Bookings = new List<BookingModel> { },
                     }
                 };
-                //Activator.CreateInstance<AspNetUsers>();
-               
-   
-              
-                foreach (AspNetUsers u in users)
-                {
-                
-                  //  u.NormalizedEmail = u.Email.ToUpper();
-                   // u.NormalizedUserName = u.Email.ToUpper();
-                     var ok=   await _userManager.CreateAsync(u, "Password123!");
-                     if (ok.Succeeded)
-                     { 
-                       Console.Write(u.NormalizedEmail + "is created at: " + DateTime.Now);
-                       _userManager.AddToRoleAsync(u, "admin");
-                     }
+                    try
+                    {
+                        foreach (AspNetUsers u in users)
+                        {
+
+                            var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@").Result;
+                            Console.Write(ok);
+                            if (ok.Succeeded)
+                            {
+                                Console.Write(u.NormalizedEmail + "is created at: " + DateTime.Now);
+                                loginman.CreateUserPrincipalAsync(u); 
+                                userman.AddToRoleAsync(u, "Admin");
+                            }
+                            else
+                            {
+                                Console.Write("error in creating user " + u);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex); 
+                    }
+                    
                 }
-                context.AddRangeAsync(users);
-                context.SaveChangesAsync();
-
-               
-            }
-            //await Addusers(users);
-                
-
-        
-                
-
-            /*if (!context.Users.Any())
-            {
-                var users = new List<UserModel>
-                {
-                    new UserModel
-                    {
-                        Username = "Olidrav",
-                        FirstName="Oliver",
-                        LastName="Dragland",
-                 var users = new List<UserModel>
-                {
-                    new UserModel
-                    {
-                        Username = "Olidrav",
-                        FirstName="Oliver",
-                        LastName="Dragland",
-                        Email="oliver@gmail.com",
-                        Password="1234",
-                        Phone=99999999,
-                        ProfilePicture = "/images/profilepicture/oliver.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    },
-
-                    new UserModel
-                    {
-                        Username = "JP",
-                        FirstName="Jon",
-                        LastName="Petter",
-                        Email="jp@gmail.com",
-                        Password="1234",
-                        Phone=9988888,
-                        ProfilePicture = "/images/profilepicture/jp.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    },
-
-                    new UserModel
-                    {
-                        Username = "Gistrong",
-                        FirstName="Gisle",
-                        LastName="Na",
-                        Email="Gisle@gmail.com",
-                        Password="1234",
-                        Phone=99777777,
-                        ProfilePicture = "/images/profilepicture/gisle.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    },
-
-                    new UserModel
-                    {
-                        Username = "Alinam",
-                        FirstName="Ali",
-                        LastName="Anjum",
-                        Email="Ali@gmail.com",
-                        Password="1234",
-                        Phone=99666666,
-                        ProfilePicture = "/images/profilepicture/ali.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    }
-                };
-                context.AddRange(users);
-                context.SaveChanges();        Email="oliver@gmail.com",
-                        Password="1234",
-                        Phone=99999999,
-                        ProfilePicture = "/images/profilepicture/oliver.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    },
-
-                    new UserModel
-                    {
-                        Username = "JP",
-                        FirstName="Jon",
-                        LastName="Petter",
-                        Email="jp@gmail.com",
-                        Password="1234",
-                        Phone=9988888,
-                        ProfilePicture = "/images/profilepicture/jp.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    },
-
-                    new UserModel
-                    {
-                        Username = "Gistrong",
-                        FirstName="Gisle",
-                        LastName="Na",
-                        Email="Gisle@gmail.com",
-                        Password="1234",
-                        Phone=99777777,
-                        ProfilePicture = "/images/profilepicture/gisle.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    },
-
-                    new UserModel
-                    {
-                        Username = "Alinam",
-                        FirstName="Ali",
-                        LastName="Anjum",
-                        Email="Ali@gmail.com",
-                        Password="1234",
-                        Phone=99666666,
-                        ProfilePicture = "/images/profilepicture/ali.jpg",
-                        Rentals=new List<ListningModel>{},
-                        Bookings=new List<BookingModel>{},
-                    }
-                };
-                context.AddRange(users);
-                context.SaveChanges();
-            }*/
-
             if (!context.Rentals.Any())
             {
                 var tvAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
@@ -462,8 +348,8 @@ namespace FastFlat.DAL
                 context.AddRange(listnings);
                 context.SaveChanges();
             }
+            
         }
-
-       
     }
 }
+
