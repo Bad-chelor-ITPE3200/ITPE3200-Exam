@@ -2,3 +2,4 @@ RentalDatabase.db
 Migrations/
 RentalDatabase.db-shm
 RentalDatabase.db-wal
+Logs/
