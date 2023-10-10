@@ -29,6 +29,7 @@ namespace FastFlat.Controllers
             var rentalListViewModel = new RentalListViewModel(rentalList, amenityList, "Card");
             return View(rentalListViewModel);
         }
+        [HttpGet]
         public async Task<IActionResult> ViewListing(int listingId)
         {
             var listing = await _rentalRepo.GetById(listingId);
@@ -36,6 +37,14 @@ namespace FastFlat.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
             return View(rentalListViewModel);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ViewListing()
+        {
+           return View();
         }
     }
 }

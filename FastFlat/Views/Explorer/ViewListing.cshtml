@@ -39,7 +39,77 @@
         }
         else
         {
-            <p>Dette er ikke din eiendom</p>
+            <img class="rental-banner" src="@Model.Listing.ListningImageURL" alt="Forside bilde." />
+            <div class="rental-content">
+                <div class="rental-about">
+                    <h1 class="rental-title">@Model.Listing.ListningName</h1>
+                    <p class="rental-info">Antall senger @Model.Listing.NoOfBeds - Størrelse @Model.Listing.SquareMeter</p>
+                    <hr>
+                    <div class="rental-host">
+                        <p>About the host</p>
+                        <h3>@Model.User.UserName</h3>
+                        <div class="rental-host-contact">
+                            <p>@Model.User.Email</p>
+                            <p>@Model.User.PhoneNumber</p>
+                            <p>@Model.User.FirstName</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="rental-desc">@Model.Listing.ListningDescription</p>
+                    <!--
+                    <form asp-action="ViewListing" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Listning.ListningName"></label><span class="text-danger">*</span>
+            <input asp-for="Listning.ListningName" class="form-control" />
+            <span asp-validation-for="Listning.ListningName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Listning.ListningPrice"></label><span class="text-danger">*</span>
+            <input asp-for="Listning.ListningPrice" class="form-control" />
+            <span asp-validation-for="Listning.ListningPrice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="ListningImage">Listning Image:</label>
+            <input type="file" id="ListningImage" multiple="true" name="ListningImage" class="form-control-file">
+            <span asp-validation-for="Listning.ListningImageURL" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Listning.FromDate">Available From</label><span class="text-danger">*</span>
+            <input asp-for="Listning.FromDate" id="fromDateInput" type="date" class="form-control" value="2023-09-30" />
+            <span asp-validation-for="Listning.FromDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Listning.ToDate">Available To</label><span class="text-danger">*</span>
+            <input asp-for="Listning.ToDate" id="toDateInput" type="date" class="form-control" value="2023-10-30" />
+            <span asp-validation-for="Listning.ToDate" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Listning.ListningDescription"></label>
+            <input asp-for="Listning.ListningDescription" class="form-control" />
+            <span asp-validation-for="Listning.ListningDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Listning.SquareMeter"></label>
+            <input asp-for="Listning.SquareMeter" class="form-control" />
+            <span asp-validation-for="Listning.SquareMeter" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Listning.NoOfBeds"></label>
+            <input asp-for="Listning.NoOfBeds" class="form-control" />
+            <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
+        </div>
+                    -->
+
+                </div>
+                <div class="rental-booking">
+                </div>
+
+            </div>
         }
     </div>
 </div>

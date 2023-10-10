@@ -7,18 +7,17 @@ namespace FastFlat.Models
 {
     public class BookingModel
     {
-        [Key] 
+        [Key]
         public int BookingId { get; set; }
-        public string UserId { get; set; }  // Dette er selve fremmednøkkelen som peker til 'Id' feltet i 'AspNetUsers' tabellen
-        
-        public virtual ApplicationUser User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
+        public string UserId { get; set; }  // Fremmednøkkel for User
+        public virtual ApplicationUser? User { get; set; }  // Navigasjonsegenskap for User
 
-        public virtual UserModel Renter { get; set; }= default!; 
-        public virtual ListningModel Property { get; set; } = default!;
+        public int ListningId { get; set; } // Fremmednøkkel for Listning
+        public virtual ListningModel Listning { get; set; } // Navigasjonsegenskap for Listning
 
-        public DateOnly FromDate { get; set; }
-        public DateOnly ToDate { get; set; }
-        public decimal TotalPrice { get; set; } //endret fra price til TotalPrice
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public decimal? TotalPrice { get; set; }
         public string? SpecialRequests { get; set; } = string.Empty;
     }
 }
