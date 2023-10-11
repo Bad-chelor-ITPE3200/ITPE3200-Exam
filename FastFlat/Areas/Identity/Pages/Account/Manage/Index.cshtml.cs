@@ -141,6 +141,19 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            // In order to add profile picture to user
+            if (Request.Form.Files.Count > 0) // This checks if there are any files uploaded in the form data
+            {
+                IFormFile file = Request.Form.Files.FirstOrDefault(); // Retrieves the first uploaded file
+                using (var dataStream = new MemoryStream()) // Creates a memoryStream to store the file in binary temporarily
+                {
+                    await file.CopyToAsync(dataStream); // Copies the binary data from the uploaded file variable into the memory stream asynchronically
+                    user.ProfilePicture = dataStream.ToArray(); // After copying the file's data into memorystream, the dataStream is converted into
+                    // a byte array, which we add to our ProfilePicture byte array attribute in ApplicationUser
+                }
+                await _userManager.UpdateAsync(user);
+            }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
