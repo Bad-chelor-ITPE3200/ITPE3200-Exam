@@ -1,6 +1,5 @@
 ﻿using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.DAL
 {
@@ -158,8 +157,8 @@ namespace FastFlat.DAL
                         AmenityLogo="/images/amenity/Wifi.svg"
                     },
                 };
-                    _context.AddRange(amenities);
-                    _context.SaveChanges();
+                _context.AddRange(amenities);
+                _context.SaveChanges();
             }
 
 

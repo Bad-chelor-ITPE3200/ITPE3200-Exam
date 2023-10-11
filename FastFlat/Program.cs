@@ -1,9 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using FastFlat.DAL;
-using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
-using Serilog.Events;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 

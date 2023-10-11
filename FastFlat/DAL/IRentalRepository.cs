@@ -1,7 +1,4 @@
-﻿using FastFlat.Models;
-using System.Threading.Tasks;
-
-namespace FastFlat.DAL
+﻿namespace FastFlat.DAL
 {
     public interface IRentalRepository<T> where T : class
     {
@@ -16,5 +13,9 @@ namespace FastFlat.DAL
         Task Create(T entity);
         Task Update(T entity);
         Task<bool> Delete(int id);
+
+        Task<List<DateTime>> GetBookedDatesForListning(int listningId);
+
+        Task<(DateTime? StartDate, DateTime? EndDate)> GetAvailableDatesForListning(int listningId);
     }
 }

@@ -47,38 +47,36 @@ namespace FastFlat.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("FromDate")
+                    b.Property<DateTime>("FromDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PropertyListningId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RenterUserModelId")
+                    b.Property<int>("ListningId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SpecialRequests")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("ToDate")
+                    b.Property<DateTime>("ToDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal?>("TotalPrice")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("UserModelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("renterModelId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("BookingId");
 
-                    b.HasIndex("PropertyListningId");
+                    b.HasIndex("ListningId");
 
-                    b.HasIndex("RenterUserModelId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserModelId");
 
                     b.HasIndex("renterModelId");
 
@@ -140,7 +138,7 @@ namespace FastFlat.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly?>("FromDate")
+                    b.Property<DateTime?>("FromDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ListningAddress")
@@ -171,7 +169,7 @@ namespace FastFlat.Migrations
                     b.Property<int?>("SquareMeter")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly?>("ToDate")
+                    b.Property<DateTime?>("ToDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -488,33 +486,21 @@ namespace FastFlat.Migrations
 
             modelBuilder.Entity("FastFlat.Models.BookingModel", b =>
                 {
-                    b.HasOne("FastFlat.Models.ListningModel", "Property")
+                    b.HasOne("FastFlat.Models.ListningModel", "Listning")
                         .WithMany("bookings")
-                        .HasForeignKey("PropertyListningId")
+                        .HasForeignKey("ListningId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FastFlat.Models.UserModel", "Renter")
+                    b.HasOne("FastFlat.Models.UserModel", null)
                         .WithMany("Bookings")
-                        .HasForeignKey("RenterUserModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserModelId");
 
                     b.HasOne("FastFlat.Models.RenterModel", null)
                         .WithMany("bookings")
                         .HasForeignKey("renterModelId");
 
-                    b.Navigation("Property");
-
-                    b.Navigation("Renter");
-
-                    b.Navigation("User");
+                    b.Navigation("Listning");
                 });
 
             modelBuilder.Entity("FastFlat.Models.ListningAmenity", b =>

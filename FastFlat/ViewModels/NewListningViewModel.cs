@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using FastFlat.Models;
+﻿using FastFlat.Models;
 
 namespace FastFlat.ViewModels
 {
@@ -18,7 +17,7 @@ namespace FastFlat.ViewModels
         }
 
         // Konstruktør for NewListningViewModel.
-        public NewListningViewModel (List<AmenityModel> amenities)
+        public NewListningViewModel(List<AmenityModel> amenities)
         {
             // Setter Amenities-property med den mottatte listen eller en ny tom liste hvis den mottatte listen er null.
             Amenities = amenities ?? new List<AmenityModel>();
