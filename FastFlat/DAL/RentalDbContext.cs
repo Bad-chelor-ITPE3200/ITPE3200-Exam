@@ -21,7 +21,7 @@ public class RentalDbContext : IdentityDbContext
     public DbSet<IdentityRole> Roles { get; set; } // roles for the database
 
     //public DbSet<CityModel> Cities { get; set; }
-    public DbSet<AspNetUsers> Users { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
     public DbSet<ContryModel> Countries { get; set; }
 
     public DbSet<LandlordModel> Landlord { get; set; }

@@ -10,7 +10,7 @@ public class LandlordModel
     
    public float rating { get; set; }
    
-   public virtual List<AspNetUsers>? users { get; set; }
+   public virtual List<ApplicationUser>? users { get; set; }
 
 
 

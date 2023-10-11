@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FastFlat.Models
 {
-    public class AspNetUsers : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         
         public int UserModelId { get; set; }

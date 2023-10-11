@@ -24,17 +24,17 @@ namespace FastFlat.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<AspNetUsers> _signInManager;
-        private readonly UserManager<AspNetUsers> _userManager;
-        private readonly IUserStore<AspNetUsers> _userStore;
-        private readonly IUserEmailStore<AspNetUsers> _emailStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<AspNetUsers> signInManager,
-            UserManager<AspNetUsers> userManager,
-            IUserStore<AspNetUsers> userStore,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
@@ -198,11 +198,11 @@ namespace FastFlat.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private AspNetUsers CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<AspNetUsers>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
@@ -212,13 +212,13 @@ namespace FastFlat.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<AspNetUsers> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<AspNetUsers>)_userStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace FastFlat.Models
     {
         [Key] 
         public int BookingId { get; set; }
-        public virtual AspNetUsers Renter { get; set; }= default!; 
+        public virtual ApplicationUser Renter { get; set; }= default!; 
         public virtual ListningModel Property { get; set; } = default!;
 
         public DateOnly FromDate { get; set; }

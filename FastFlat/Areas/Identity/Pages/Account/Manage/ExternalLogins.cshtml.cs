@@ -17,14 +17,14 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<AspNetUsers> _userManager;
-        private readonly SignInManager<AspNetUsers> _signInManager;
-        private readonly IUserStore<AspNetUsers> _userStore;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
 
         public ExternalLoginsModel(
-            UserManager<AspNetUsers> userManager,
-            SignInManager<AspNetUsers> signInManager,
-            IUserStore<AspNetUsers> userStore)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IUserStore<ApplicationUser> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -70,7 +70,7 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (_userStore is IUserPasswordStore<AspNetUsers> userPasswordStore)
+            if (_userStore is IUserPasswordStore<ApplicationUser> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }

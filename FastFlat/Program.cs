@@ -30,7 +30,7 @@ var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);
 //builder.Services.AddScoped<SignInManager<IdentityUser>>();
 
-builder.Services.AddIdentity<AspNetUsers, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         // Password Settings
         options.Password.RequireDigit = true;

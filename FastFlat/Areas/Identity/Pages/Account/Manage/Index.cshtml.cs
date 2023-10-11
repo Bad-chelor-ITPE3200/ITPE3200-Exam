@@ -15,12 +15,12 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<AspNetUsers> _userManager;
-        private readonly SignInManager<AspNetUsers> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<AspNetUsers> userManager,
-            SignInManager<AspNetUsers> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -61,10 +61,10 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
         }
 
-        private async Task LoadAsync(AspNetUsers aspNetUsers)
+        private async Task LoadAsync(ApplicationUser applicationUser)
         {
-            var userName = await _userManager.GetUserNameAsync(aspNetUsers);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(aspNetUsers);
+            var userName = await _userManager.GetUserNameAsync(applicationUser);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(applicationUser);
 
             Username = userName;
 

@@ -16,11 +16,11 @@ namespace FastFlat.DAL
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<AspNetUsers>>();
-            var userStore = serviceScope.ServiceProvider.GetRequiredService<UserStore<AspNetUsers>>();
-            var loginman = serviceScope.ServiceProvider.GetRequiredService<SignInManager<AspNetUsers>>();
+            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var userStore = serviceScope.ServiceProvider.GetRequiredService<UserStore<ApplicationUser>>();
+            var loginman = serviceScope.ServiceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
             var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            context.Database.EnsureDeleted();
+           // context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             //Amenity
             if (!context.Amenities.Any())
@@ -211,10 +211,10 @@ namespace FastFlat.DAL
 
             if (!context.Users.Any())
             {
-                var users = new List<AspNetUsers>
+                var users = new List<ApplicationUser>
                 {
 
-                    new AspNetUsers
+                    new ApplicationUser
                     {
                         UserName = "Olidrav",
                         FirstName = "Oliver",
@@ -228,7 +228,7 @@ namespace FastFlat.DAL
                         Bookings = new List<BookingModel> { },
                     },
 
-                    new AspNetUsers
+                    new ApplicationUser
                     {
                         UserName = "jp@gmail.com",
                         FirstName = "Jon",
@@ -242,7 +242,7 @@ namespace FastFlat.DAL
                         Bookings = new List<BookingModel> { },
                     },
 
-                    new AspNetUsers
+                    new ApplicationUser
                     {
                         UserName = "Gistrong",
                         FirstName = "Gisle",
@@ -256,7 +256,7 @@ namespace FastFlat.DAL
                         Bookings = new List<BookingModel> { },
                     },
 
-                    new AspNetUsers
+                    new ApplicationUser
                     {
                         UserName = "Alinam",
                         FirstName = "Ali",
@@ -273,7 +273,7 @@ namespace FastFlat.DAL
                 };
                     try
                     {
-                        foreach (AspNetUsers u in users)
+                        foreach (ApplicationUser u in users)
                         {
 
                             var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@").Result;
