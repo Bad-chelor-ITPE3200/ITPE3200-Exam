@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using FastFlat.Models;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace FastFlat.DAL;
@@ -13,7 +12,13 @@ public class RentalDbContext : IdentityDbContext
         //Database.EnsureCreated();
     }
 
+    //public DbSet<ApplicationUser> AspNetUsers { get; set; }
+
     public DbSet<ListningModel> Rentals { get; set; }
+
+    public DbSet<AmenityModel> ListningAmenities { get; set; }
+
+    //public DbSet<AspNetUsers> Users { get; set; }
 
     //public DbSet<UserModel> Users { get; set; }
     public DbSet<BookingModel> Bookings { get; set; }

@@ -14,10 +14,12 @@ namespace FastFlat.DAL
             _dbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return _context.Set<T>();
         }
+
+
 
         public async Task<T> GetById(int id)
         {

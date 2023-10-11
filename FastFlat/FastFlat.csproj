@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="Models\NewFile.txt" />
+    <None Remove="ViewModels\NewFile.txt" />
+    <None Remove="ViewModels\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,8 +28,17 @@
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="Logs\" />
     <Folder Include="Migrations\" />
+=======
+    <Folder Include="wwwroot\images\listnings\" />
+>>>>>>> origin/fullstack-dev
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\listnings\" />
   </ItemGroup>
 
 </Project>

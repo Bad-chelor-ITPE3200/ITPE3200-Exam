@@ -74,9 +74,9 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(ApplicationUser applicationUser)
+        private async Task LoadAsync(ApplicationUser user)
         {
-            var email = await _userManager.GetEmailAsync(applicationUser);
+            var email = await _userManager.GetEmailAsync(user);
             Email = email;
 
             Input = new InputModel
@@ -84,7 +84,7 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
                 NewEmail = email,
             };
 
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(applicationUser);
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<IActionResult> OnGetAsync()

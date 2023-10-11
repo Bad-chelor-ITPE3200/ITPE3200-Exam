@@ -1,5 +1,4 @@
-﻿@using Newtonsoft.Json
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,22 +22,37 @@
                 <li>
                     <a href="#">Help</a>
                 </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Account" asp-action="Account">Accounts</a>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
+                </li>
+                
             </ul>
+
+            <partial name="_LoginPartial" />
+
+            <!--
             <div id="--nav-profile">
                 <div class="icon">
                     <img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >
-                   @** <a asp-area="" asp-controller="Session" asp-action="Login">Login</a>*@
-                 <partial name="_LoginPartial"/>
                     <div class="out">
-                       
+                        <div>
+                          
+                        </div>
                     </div>
                 </div>
+
             </div>
+            -->
         </nav>
     </header>
     @RenderBody()
-@RenderSection("Scripts", false)
-<footer>
+    @RenderSection("scripts", required: false)
+    <footer>
         <div class="container">
             <p class="lead">Copyright</p>
         </div>

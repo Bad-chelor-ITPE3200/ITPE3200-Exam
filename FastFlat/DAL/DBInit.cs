@@ -1,10 +1,5 @@
-﻿using System.Security.Claims;
 using FastFlat.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace FastFlat.DAL
 {
@@ -153,7 +148,7 @@ namespace FastFlat.DAL
             }*/
 
             //Country
-            if (!context.Countries.Any())
+            if (!_context.Countries.Any())
             {
                 var country = new List<ContryModel>
                 {
@@ -298,22 +293,27 @@ namespace FastFlat.DAL
                 }
             if (!context.Rentals.Any())
             {
-                var tvAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
-                var poolAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
-                var wifiAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
-                var kitchenAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
-                var beachAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
-                var gymAmenity = context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
-                var listnings = new List<ListningModel>
+                var tvAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
+                var poolAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
+                var wifiAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
+                var kitchenAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
+                var beachAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
+                var gymAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
+                var userEmail1 = "ali.jobb@live.com"; // replace with a real email78 from your DB
+                var userEmail2 = "imran.jobb@gmail.com";
+                var user1 = _userManager.FindByEmailAsync(userEmail1).Result;
+                var user2 = _userManager.FindByEmailAsync(userEmail2).Result;
 
+                
+                var listnings = new List<ListningModel>
+                
                 {
+
                     new ListningModel
                     {
-                        user = context.Users.FirstOrDefault(u =>
-                            u.UserName == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
-                        ListningName = "Sentrum Leilighet",
+                        User = user1,
+                        ListningName = "Kylling Hotellet ",
                         ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
-
                         NoOfBeds = 2,
                         SquareMeter = 75,
                         Rating = 4.5f,
@@ -322,34 +322,36 @@ namespace FastFlat.DAL
                         fromDate = DateOnly.FromDateTime(DateTime.Today),
                         toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
                         ListningImageURL = "/images/rentals/rental2.png",
-                        Amenities = new List<AmenityModel>
-                            { tvAmenity, poolAmenity, wifiAmenity } // Add the amenities to the listing
+                        Amenities = new List<AmenityModel> { tvAmenity, poolAmenity, wifiAmenity } // Add the amenities to the listing
                     },
+                    
                     new ListningModel
                     {
-                        user = context.Users.FirstOrDefault(u =>
-                            u.UserName == "Alinam"), // Linker denne eiendommen til brukeren 'Alinam'
-                        ListningName = "Fjellhytte",
-                        ListningDescription = "Koselig hytte i fjellet, perfekt for vinterferier.",
-                        
-                        NoOfBeds = 5,
-                        SquareMeter = 100,
-                        Rating = 4.8f,
-                        ListningAddress = "Fjellveien 567, 1234 Fjellby",
-                        ListningPrice = 3000,
+                        User = user2,
+                        ListningName = "GateKjøkken Leilighet",
+                        ListningDescription = "Rett ved stranda.",
+                        NoOfBeds = 2,
+                        SquareMeter = 75,
+                        Rating = 4.5f,
+                        ListningAddress = "Osloveien 123, 0456 Oslo",
+                        ListningPrice = 2000,
                         fromDate = DateOnly.FromDateTime(DateTime.Today),
                         toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
                         ListningImageURL = "/images/rentals/rental1.png",
-                        Amenities = new List<AmenityModel>
-                            { gymAmenity, beachAmenity, kitchenAmenity } // Add the amenities to the listing
+                        Amenities = new List<AmenityModel> { kitchenAmenity, gymAmenity, wifiAmenity } // Add the amenities to the listing
                     }
+                    
                 };
+                _context.AddRange(listnings);
+                _context.SaveChanges();
+
                 
-                context.AddRange(listnings);
-                context.SaveChanges();
-            }
             
+            }
+            */
+
         }
     }
 }
+
 

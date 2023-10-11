@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using FastFlat.ViewModels
+
+@model ProfileViewModel;
+
+<!-- VI kan hente inn bruker var userManager
+    var bruker = UserManager
+-->
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" />
+    <link rel="stylesheet" href="~/css/explore.css" />
+}
+
+<link rel="stylesheet" href="profile.css">
+<div class="hero">
+    <div class="profile-settings">
+        <img class="profile-image" src="@Model.User.SecurityStamp"></img>
+        <hr>
+        <div class="user-info">
+            <div class="form-control">
+                <label for="userName">Brukernavn: </label>
+                <input type="text" name="userName" id="userName" value="@Model.User.UserName">
+            </div>
+            <div class="form-control">
+                <label for="email">Epost: </label>
+                <input type="text" name="email" id="email" value="@Model.User.Email">
+            </div>
+            <div class="form-control">
+                <label for="phoneNumber">Mobilnummer: </label>
+                <input type="text" name="phoneNumber" id="phoneNumber" value="@Model.User.PhoneNumber">
+            </div>
+        </div>
+    </div>
+    <div class="user-content">
+        <h1>Velkommen tilbake, @Model.User.UserName</h1>
+        <div class="user-contents">
+            <div class="user-contents-title">
+                <h4>Dine eindommer:</h4>
+                <p>X</p>
+                
+               
+                <div id="results">
+                    @foreach (var rental in Model.Rentals)
+                    {
+                        <partial name="_RentalCard" model="rental" />
+
+                        
+                        
+                    }
+                </div>
+                
+            <p>
+                    <a class="btn btn-primary"
+                       asp-controller="Profile"
+                       asp-action="NewListning">
+                        Registrer nytt rom
+                    </a>
+                </p>
+            </div>
+
+        </div>
+        <div class="user-contents">
+            <div class="user-contents-title">
+                <h4>Din bookinghistorikk</h4>
+                <p>X</p>
+            </div>
+        </div>
+    </div>
+</div>
+

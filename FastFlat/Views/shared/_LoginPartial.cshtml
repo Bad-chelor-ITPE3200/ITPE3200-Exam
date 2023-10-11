@@ -1,16 +1,20 @@
 @using Microsoft.AspNetCore.Identity
-@using FastFlat.Models
-@using IdentityUser = FastFlat.Models.ApplicationUser
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<ul class="--nav-tabs">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
+    <li class="nav-item" style="align-self: center;">
+        @if (UserManager.GetUserAsync(User).Result.ProfilePicture != null)
+        {
+            <img style="width:40px;height:40px; object-fit:cover; border-radius:25px" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))">
+        }
+    </li>
+    <li>
         <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
     </li>
-    <li class="nav-item">
+    <li>
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
@@ -18,10 +22,10 @@
 }
 else
 {
-    <li class="nav-item">
+    <li>
         <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
-    <li class="nav-item">
+    <li>
         <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
