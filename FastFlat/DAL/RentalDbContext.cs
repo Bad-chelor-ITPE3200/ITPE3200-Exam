@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using FastFlat.Models;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace FastFlat.DAL;

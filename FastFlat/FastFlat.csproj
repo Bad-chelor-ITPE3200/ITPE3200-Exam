@@ -28,12 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
+
     <Folder Include="Logs\" />
     <Folder Include="Migrations\" />
-=======
     <Folder Include="wwwroot\images\listnings\" />
->>>>>>> origin/fullstack-dev
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
   </ItemGroup>
 

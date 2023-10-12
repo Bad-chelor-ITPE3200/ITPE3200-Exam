@@ -31,7 +31,7 @@ var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
 var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);
 //builder.Services.AddScoped<SignInManager<IdentityUser>>();
-
+/*
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
     .WriteTo.File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
@@ -42,7 +42,7 @@ loggerConfiguration.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceCont
 
 var logger = loggerConfiguration.CreateLogger();
 builder.Logging.AddSerilog(logger);
-
+*/
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Password Settings
@@ -84,12 +84,10 @@ builder.Services.AddTransient<DBInit>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-
+if (app.Environment.IsDevelopment()){
     // Create an instance of DBInit and call Seed
     using var scope = app.Services.CreateScope();
-    var dbInit = scope.ServiceProvider.GetRequiredService<DBInit>();
-    dbInit.Seed(); // This line calls the Seed method on the DBInit instance.
+    DBInit.Seed(app); // This line calls the Seed method on the DBInit instance.
 }
 
 app.UseStaticFiles();

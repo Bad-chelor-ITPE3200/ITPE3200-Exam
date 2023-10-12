@@ -1,23 +1,29 @@
 using FastFlat.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.DAL
 {
     public class DBInit
     {
-
+        
 
         public static async Task Seed(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var userStore = serviceScope.ServiceProvider.GetRequiredService<UserStore<ApplicationUser>>();
-            var loginman = serviceScope.ServiceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
-            var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();//usermanager
+            var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();//rolemanager
+         //   var hostingprovider = serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
            // context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+          //Paths for pb:
+          
+        //  var filestreamOli = new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "oliver"),FileMode.Open, FileAccess.Read); 
+         // var oliarrReader = new BinaryReader(filestreamOli); 
+          //byte[] oliarr = oliarrReader.ReadBytes((int)filestreamOli.Length);
             //Amenity
+            context.Database.EnsureCreated();
             if (!context.Amenities.Any())
             {
                 var amenities = new List<AmenityModel>
@@ -148,7 +154,7 @@ namespace FastFlat.DAL
             }*/
 
             //Country
-            if (!_context.Countries.Any())
+            if (!context.Countries.Any())
             {
                 var country = new List<ContryModel>
                 {
@@ -218,9 +224,10 @@ namespace FastFlat.DAL
                         //PassWord = "Password123!",
                         //   PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99999999",
-                        ProfilePicture = "/images/profilepicture/oliver.jpg",
-                        Rentals = new List<ListningModel> { },
-                        Bookings = new List<BookingModel> { },
+                        
+                       // ProfilePicture = oliarr
+                       // Rentals = new List<ListningModel> { },
+                     //   Bookings = new List<BookingModel> { },
                     },
 
                     new ApplicationUser
@@ -232,9 +239,9 @@ namespace FastFlat.DAL
                         //PassWord = "Password123!",
                         //PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "9988888",
-                        ProfilePicture = "/images/profilepicture/jp.jpg",
-                        Rentals = new List<ListningModel> { },
-                        Bookings = new List<BookingModel> { },
+                        //ProfilePicture = "/images/profilepicture/jp.jpg",
+                        //Rentals = new List<ListningModel> { },
+                        //Bookings = new List<BookingModel> { },
                     },
 
                     new ApplicationUser
@@ -246,9 +253,9 @@ namespace FastFlat.DAL
                         //PassWord = "Password123!",
                         // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99777777",
-                        ProfilePicture = "/images/profilepicture/gisle.jpg",
-                        Rentals = new List<ListningModel> { },
-                        Bookings = new List<BookingModel> { },
+                      //  ProfilePicture = "/images/profilepicture/gisle.jpg",
+                        //Rentals = new List<ListningModel> { },
+                        //Bookings = new List<BookingModel> { },
                     },
 
                     new ApplicationUser
@@ -261,9 +268,9 @@ namespace FastFlat.DAL
                         //PassWord = "Password123!",
                         // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99666666",
-                        ProfilePicture = "/images/profilepicture/ali.jpg",
-                        Rentals = new List<ListningModel> { },
-                        Bookings = new List<BookingModel> { },
+                        //ProfilePicture = "/images/profilepicture/ali.jpg",
+                        //Rentals = new List<ListningModel> { },
+                        //Bookings = new List<BookingModel> { },
                     }
                 };
                     try
@@ -276,8 +283,7 @@ namespace FastFlat.DAL
                             if (ok.Succeeded)
                             {
                                 Console.Write(u.NormalizedEmail + "is created at: " + DateTime.Now);
-                                loginman.CreateUserPrincipalAsync(u); 
-                                userman.AddToRoleAsync(u, "Admin");
+                               await userman.AddToRoleAsync(u, "Admin");
                             }
                             else
                             {
@@ -290,7 +296,8 @@ namespace FastFlat.DAL
                         Console.WriteLine(ex); 
                     }
                     
-                }
+            }
+            /*
             if (!context.Rentals.Any())
             {
                 var tvAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
@@ -303,7 +310,6 @@ namespace FastFlat.DAL
                 var userEmail2 = "imran.jobb@gmail.com";
                 var user1 = _userManager.FindByEmailAsync(userEmail1).Result;
                 var user2 = _userManager.FindByEmailAsync(userEmail2).Result;
-
                 
                 var listnings = new List<ListningModel>
                 
