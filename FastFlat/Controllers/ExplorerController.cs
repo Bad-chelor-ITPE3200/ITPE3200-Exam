@@ -33,21 +33,7 @@ namespace FastFlat.Controllers
             return View(rentalListViewModel);
         }
 
-        //henter booked dato
-        [HttpGet]
-        public async Task<IActionResult> GetBookedDates(int listningId)
-        {
-            // Hent alle booking datoer for denne listningen fra databasen
-            var bookedDates = await _bookingRepo.GetBookedDatesForListning(listningId);
-            return Json(bookedDates);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableDatesForListning(int listningId)
-        {
-            var dates = await _rentalRepo.GetAvailableDatesForListning(listningId);
-            return Ok(new { fromDate = dates.StartDate, toDate = dates.EndDate });
-        }
+        
 
 
         [HttpGet]
@@ -63,7 +49,7 @@ namespace FastFlat.Controllers
         }
 
         
-
+        //legger til booking 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ViewListing(ListingViewModel input)
@@ -76,6 +62,7 @@ namespace FastFlat.Controllers
             {
                 foreach (var modelStateKey in ModelState.Keys)
                 {
+                  
                     var modelStateVal = ModelState[modelStateKey];
                     foreach (var error in modelStateVal.Errors)
                     {
@@ -83,18 +70,26 @@ namespace FastFlat.Controllers
                         System.Diagnostics.Debug.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
                     }
                 }
-                // Resten av koden din...
+                
             }
             
-            if (ModelState.IsValid)
-            {
+                if (ModelState.IsValid)
+                {
+                    DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
+                    DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
+                    var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
+                    var totalPrice = input.Listing.ListningPrice * numberOfDays;
 
-                input.Booking.ListningId = input.Listing.ListningId;
+                    input.Booking.TotalPrice = totalPrice;
+
+                    //var totalDays = (input.Listing.ToDate - input.Listing.FromDate).Days;
+
+                    input.Booking.ListningId = input.Listing.ListningId;
                 
-                await _bookingRepo.Create(input.Booking);
-                return RedirectToAction(nameof(Explore));
-            }
-            else
+                    await _bookingRepo.Create(input.Booking);
+                    return RedirectToAction(nameof(Explore));
+                }
+                else
             {
                 // Hvis ModelState er ugyldig, bygg ListingViewModel på nytt
                 var listing = await _rentalRepo.GetById(input.Listing.ListningId); // Anta at ListingId er tilgjengelig fra input
@@ -106,6 +101,22 @@ namespace FastFlat.Controllers
 
                 return View(rentalListViewModel);
             }
+        }
+
+        //henter booked dato
+        [HttpGet]
+        public async Task<IActionResult> GetBookedDates(int listningId)
+        {
+            // Hent alle booking datoer for denne listningen fra databasen
+            var bookedDates = await _bookingRepo.GetBookedDatesForListning(listningId);
+            return Json(bookedDates);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableDatesForListning(int listningId)
+        {
+            var dates = await _rentalRepo.GetAvailableDatesForListning(listningId);
+            return Ok(new { fromDate = dates.StartDate, toDate = dates.EndDate });
         }
 
     }

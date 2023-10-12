@@ -154,8 +154,8 @@ namespace FastFlat.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("ListningPrice")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("ListningPrice")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("LocationID")
                         .HasColumnType("INTEGER");

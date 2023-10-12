@@ -59,6 +59,7 @@
 
                     <form asp-action="ViewListing" method="post" enctype="form-data">
                         <input type="hidden" asp-for="@Model.Listing.ListningId" />
+                        <input type="hidden" asp-for="@Model.Listing.ListningPrice" />
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.FromDate">Available From</label><span class="text-danger">*</span>
