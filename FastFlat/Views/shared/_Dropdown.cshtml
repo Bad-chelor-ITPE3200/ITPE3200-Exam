@@ -1,0 +1,10 @@
+﻿<div class="out">
+    <div>
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Edit Profile">Edit Profile</a>
+    </div>
+    <div>
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button id="logout" type="submit" style="background: none; border: none; color: black; cursor: pointer;">Logout</button>
+        </form>
+    </div>
+</div>

@@ -15,24 +15,15 @@
                 <img style="width:40px;height:40px; object-fit:cover; border-radius:25px; cursor: pointer;" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))">
             }
            
-            <div class="out">
-                <div>
-                    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Edit Profile">Edit Profile</a>
-                </div>
-                <div>
-                    <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button id="logout" type="submit" style="background: none; border: none; color: black; cursor: pointer;">Logout</button>
-                    </form>
-                </div>
-            </div>
+            <partial name="_Dropdown" />
         </li>
     }
     else
     {
-        <li>
+        <li class="nav-registerLogin">
             <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
-        <li>
+        <li class="nav-registerLogin">
             <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }

@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
-    <link rel="stylesheet" href="~/css/global.css"/>
+    <link rel="stylesheet" href="~/css/global.css" />
+    <link rel="stylesheet" href="~/css/dropdown.css" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -19,24 +20,24 @@
         <nav>
             <h1 id="--nav-logo">Fast&Flat</h1>
             <ul class="--nav-tabs">
-                <li>
+                <li class="nav-list">
                     <a asp-area="" asp-controller="Home" asp-action="Index" class="active">Home</a>
                 </li>
-                <li>
+                <li class="nav-list">
                     <a asp-area="" asp-controller="Explorer" asp-action="Explore">Rentals</a>
                 </li>
-                <li>
+                <li class="nav-list">
                     <a href="#">Help</a>
                 </li>
 
-                <li>
+                <li class="nav-list">
                     <a asp-area="" asp-controller="Account" asp-action="Account">Accounts</a>
                 </li>
 
-                <li>
+                <li class="nav-list">
                     <a asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
                 </li>
-                
+
             </ul>
 
             <partial name="_LoginPartial" />
@@ -47,7 +48,7 @@
                     <img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >
                     <div class="out">
                         <div>
-                          
+
                         </div>
                     </div>
                 </div>
