@@ -7,24 +7,64 @@ namespace FastFlat.DAL
 {
     public class DBInit
     {
-        
-
         public static async Task Seed(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             RentalDbContext context = serviceScope.ServiceProvider.GetRequiredService<RentalDbContext>();
-            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();//usermanager
-            var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();//rolemanager
-         //   var hostingprovider = serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
-           // context.Database.EnsureDeleted();
-          //Paths for pb:
-          
-        //  var filestreamOli = new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "oliver"),FileMode.Open, FileAccess.Read); 
-         // var oliarrReader = new BinaryReader(filestreamOli); 
-          //byte[] oliarr = oliarrReader.ReadBytes((int)filestreamOli.Length);
+            var userman = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>(); //usermanager
+            var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>(); //rolemanager
+            var hostingprovider =
+                serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>(); //Hostingprovider
+
+            //Paths for pbs
+
+            //Oli PB
+            byte[] oliarr; //declears the array
+            using (var filestreamOli =
+                   new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "oliver.jpg"),
+                       FileMode.Open, FileAccess.Read)) //filestream to "load" in the profile pictures
+            {
+                using var
+                    oliarrReader =
+                        new BinaryReader(filestreamOli); //converting the filestream of the opend file to binary
+                oliarr = oliarrReader.ReadBytes((int)filestreamOli
+                    .Length); //reading the bytes and turning them to a arrays byte array
+            }
+
+
+            //ali PB
+            byte[] aliarr;
+            using (var filestreamAli =
+                   new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "ali.jpg"),
+                       FileMode.Open, FileAccess.Read))
+            {
+                using var aliarrReader = new BinaryReader(filestreamAli);
+                aliarr = aliarrReader.ReadBytes((int)filestreamAli.Length);
+            }
+
+            //JP 
+            byte[] jparr;
+            using (var filestreamJp =
+                   new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "jp.jpg"),
+                       FileMode.Open, FileAccess.Read))
+            {
+                using var jparrReader = new BinaryReader(filestreamJp);
+                jparr = jparrReader.ReadBytes((int)filestreamJp.Length);
+            }
+
+            //Gistrong PB
+            byte[] gislearr;
+            using (var filestreamGisle =
+                   new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "gisle.jpg"),
+                       FileMode.Open, FileAccess.Read))
+            {
+                var gilsearrReader = new BinaryReader(filestreamGisle);
+                gislearr = gilsearrReader.ReadBytes((int)filestreamGisle.Length);
+            }
+
             //Amenity
             context.Database.EnsureCreated();
-            if (!context.Amenities.Any())
+            if (!context.Amenities.Any()) //if the context is empty
             {
                 var amenities = new List<AmenityModel>
                 {
@@ -108,8 +148,8 @@ namespace FastFlat.DAL
                         AmenityLogo = "/images/amenity/Wifi.svg"
                     },
                 };
-                context.AddRangeAsync(amenities);
-                context.SaveChangesAsync();
+                await context.AddRangeAsync(amenities);
+                await context.SaveChangesAsync();
             }
 
 
@@ -160,22 +200,21 @@ namespace FastFlat.DAL
                 {
                     new ContryModel
                     {
-                        Contryname="Norway"
+                        Contryname = "Norway"
                     },
 
                     new ContryModel
                     {
-                        Contryname="Sweden"
+                        Contryname = "Sweden"
                     },
 
                     new ContryModel
                     {
-                        Contryname="Denmark"
+                        Contryname = "Denmark"
                     },
-
                 };
-               context.AddRangeAsync(country);
-               context.SaveChangesAsync();
+                await context.AddRangeAsync(country);
+                await context.SaveChangesAsync();
             }
 
             if (!context.Roles.Any())
@@ -187,7 +226,6 @@ namespace FastFlat.DAL
                     new IdentityRole
                     {
                         Id = "0", Name = "Admin" //BIG BOSS, can do everything
-
                     },
                     new IdentityRole
                     {
@@ -214,20 +252,14 @@ namespace FastFlat.DAL
             {
                 var users = new List<ApplicationUser>
                 {
-
                     new ApplicationUser
                     {
                         UserName = "Olidrav",
                         FirstName = "Oliver",
                         LastName = "Dragland",
                         Email = "oliver@gmail.com",
-                        //PassWord = "Password123!",
-                        //   PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99999999",
-                        
-                       // ProfilePicture = oliarr
-                       // Rentals = new List<ListningModel> { },
-                     //   Bookings = new List<BookingModel> { },
+                        ProfilePicture = oliarr //the array for earlier
                     },
 
                     new ApplicationUser
@@ -236,12 +268,8 @@ namespace FastFlat.DAL
                         FirstName = "Jon",
                         LastName = "Petter",
                         Email = "jp@gmail.com",
-                        //PassWord = "Password123!",
-                        //PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "9988888",
-                        //ProfilePicture = "/images/profilepicture/jp.jpg",
-                        //Rentals = new List<ListningModel> { },
-                        //Bookings = new List<BookingModel> { },
+                        ProfilePicture = jparr
                     },
 
                     new ApplicationUser
@@ -250,12 +278,8 @@ namespace FastFlat.DAL
                         FirstName = "Gisle",
                         LastName = "Na",
                         Email = "Gisle@gmail.com",
-                        //PassWord = "Password123!",
-                        // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99777777",
-                      //  ProfilePicture = "/images/profilepicture/gisle.jpg",
-                        //Rentals = new List<ListningModel> { },
-                        //Bookings = new List<BookingModel> { },
+                        ProfilePicture = gislearr
                     },
 
                     new ApplicationUser
@@ -264,100 +288,38 @@ namespace FastFlat.DAL
                         FirstName = "Ali",
                         LastName = "Anjum",
                         Email = "Ali@gmail.com",
-                        EmailConfirmed = true,
                         //PassWord = "Password123!",
                         // PasswordHash = passwordhasher.HashPassword(null, "Password123!"),
                         PhoneNumber = "99666666",
-                        //ProfilePicture = "/images/profilepicture/ali.jpg",
+                        ProfilePicture = aliarr
                         //Rentals = new List<ListningModel> { },
                         //Bookings = new List<BookingModel> { },
                     }
                 };
-                    try
+                try
+                {
+                    foreach (ApplicationUser u in users) //for loop for all the users
                     {
-                        foreach (ApplicationUser u in users)
+                        var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@")
+                            .Result; //a check if the account is created or not
+                        Console.Write(ok);
+                        if (ok.Succeeded) //if it is allright
                         {
-
-                            var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@").Result;
-                            Console.Write(ok);
-                            if (ok.Succeeded)
-                            {
-                                Console.Write(u.NormalizedEmail + "is created at: " + DateTime.Now);
-                               await userman.AddToRoleAsync(u, "Admin");
-                            }
-                            else
-                            {
-                                Console.Write("error in creating user " + u);
-                            }
+                            Console.Write(u.NormalizedEmail + "is created at: " +
+                                          DateTime.Now); //writes where is was created
+                            await userman.AddToRoleAsync(u, "Admin"); //adds to the admin role
+                        }
+                        else
+                        {
+                            Console.Write("error in creating user " + u); //if there is a error 
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex); 
-                    }
-                    
-            }
-            /*
-            if (!context.Rentals.Any())
-            {
-                var tvAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/TV.svg");
-                var poolAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Pool.svg");
-                var wifiAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Wifi.svg");
-                var kitchenAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Kitchen.svg");
-                var beachAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Beach.svg");
-                var gymAmenity = _context.Amenities.FirstOrDefault(a => a.AmenityLogo == "/images/amenity/Gym.svg");
-                var userEmail1 = "ali.jobb@live.com"; // replace with a real email78 from your DB
-                var userEmail2 = "imran.jobb@gmail.com";
-                var user1 = _userManager.FindByEmailAsync(userEmail1).Result;
-                var user2 = _userManager.FindByEmailAsync(userEmail2).Result;
-                
-                var listnings = new List<ListningModel>
-                
+                }
+                catch (Exception ex) // throws exeption if there is a problem 
                 {
-
-                    new ListningModel
-                    {
-                        User = user1,
-                        ListningName = "Kylling Hotellet ",
-                        ListningDescription = "Moderne leilighet i Oslo sentrum med flott utsikt over byen.",
-                        NoOfBeds = 2,
-                        SquareMeter = 75,
-                        Rating = 4.5f,
-                        ListningAddress = "Osloveien 123, 0456 Oslo",
-                        ListningPrice = 2000,
-                        fromDate = DateOnly.FromDateTime(DateTime.Today),
-                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-                        ListningImageURL = "/images/rentals/rental2.png",
-                        Amenities = new List<AmenityModel> { tvAmenity, poolAmenity, wifiAmenity } // Add the amenities to the listing
-                    },
-                    
-                    new ListningModel
-                    {
-                        User = user2,
-                        ListningName = "GateKjøkken Leilighet",
-                        ListningDescription = "Rett ved stranda.",
-                        NoOfBeds = 2,
-                        SquareMeter = 75,
-                        Rating = 4.5f,
-                        ListningAddress = "Osloveien 123, 0456 Oslo",
-                        ListningPrice = 2000,
-                        fromDate = DateOnly.FromDateTime(DateTime.Today),
-                        toDate = DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-                        ListningImageURL = "/images/rentals/rental1.png",
-                        Amenities = new List<AmenityModel> { kitchenAmenity, gymAmenity, wifiAmenity } // Add the amenities to the listing
-                    }
-                    
-                };
-                _context.AddRange(listnings);
-                _context.SaveChanges();
-
-                
-            
+                    Console.WriteLine(ex);
+                }
             }
-            */
-
         }
     }
 }
-
-
