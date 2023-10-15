@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using FastFlat.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace FastFlat.DAL;
@@ -12,12 +13,21 @@ public class RentalDbContext : IdentityDbContext
         //Database.EnsureCreated();
     }
 
+    //public DbSet<ApplicationUser> AspNetUsers { get; set; }
+
     public DbSet<ListningModel> Rentals { get; set; }
-    public DbSet<UserModel> Users { get; set; }
+
+    public DbSet<AmenityModel> ListningAmenities { get; set; }
+
+    //public DbSet<AspNetUsers> Users { get; set; }
+
+    //public DbSet<UserModel> Users { get; set; }
     public DbSet<BookingModel> Bookings { get; set; }
 
-    //public DbSet<CityModel> Cities { get; set; }
+    public DbSet<IdentityRole> Roles { get; set; } // roles for the database
 
+    //public DbSet<CityModel> Cities { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
     public DbSet<ContryModel> Countries { get; set; }
 
     public DbSet<LandlordModel> Landlord { get; set; }
@@ -31,6 +41,4 @@ public class RentalDbContext : IdentityDbContext
     {
         optionsBuilder.UseLazyLoadingProxies();
     }
-
-
 }

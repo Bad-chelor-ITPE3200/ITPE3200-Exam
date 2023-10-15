@@ -1,17 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 namespace FastFlat.Models
 
 {
     public class BookingModel
     {
-        [Key] 
+        [Key]
         public int BookingId { get; set; }
-        public virtual UserModel Renter { get; set; }= default!; 
-        public virtual ListningModel Property { get; set; } = default!;
+        public string UserId { get; set; }  // Fremmednøkkel for User
+        //public virtual ApplicationUser? User { get; set; }  // Navigasjonsegenskap for User
 
-        public DateOnly FromDate { get; set; }
-        public DateOnly ToDate { get; set; }
-        public decimal TotalPrice { get; set; } //endret fra price til TotalPrice
+        public int ListningId { get; set; } // Fremmednøkkel for Listning
+        public virtual ListningModel? Listning { get; set; } // Navigasjonsegenskap for Listning
+
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public decimal? TotalPrice { get; set; }
         public string? SpecialRequests { get; set; } = string.Empty;
     }
 }

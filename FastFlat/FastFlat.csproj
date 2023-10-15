@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="Models\NewFile.txt" />
+    <None Remove="ViewModels\NewFile.txt" />
+    <None Remove="ViewModels\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +24,19 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <Folder Include="Logs\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\images\listnings\" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\listnings\" />
   </ItemGroup>
 
 </Project>

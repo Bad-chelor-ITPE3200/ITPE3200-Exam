@@ -10,10 +10,12 @@ namespace FastFlat.ViewModels
         public IEnumerable<AmenityModel> Amenities;
         public string? CurrentViewName;
 
-        public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, string? currentViewName) {
+        public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, string? currentViewName)
+        {
             Rentals = rentals;
             Amenities = amenities;
             CurrentViewName = currentViewName;
+
         }
     }
 }

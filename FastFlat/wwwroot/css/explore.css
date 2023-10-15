@@ -27,23 +27,21 @@
     gap: 2.5rem;
     overflow-x: scroll;
     overflow-y: hidden;
-    
+
 }
 
 .filter-icon {
     width: 45px;
     aspect-ratio: 1/1;
     display: flex;
-    justify-content: center;
+    flex-direction:column;
+    justify-content: start;
     align-items: center;
     padding: 5px;
 }
 
-.filter-icon {
+.filter-icon:hover {
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
 }
 
     .filter-icon > img {
@@ -146,5 +144,8 @@
         height: 24px;
         max-width: 100%;
     }
-
+a {
+    text-decoration: none;
+    color: black;
+}
 

@@ -1,20 +1,21 @@
 ﻿
-<div class="rental_card">
-    <img src="@Model.ListningImageURL" alt="Rental Image">
-    <div class="card_info">
-        <h5>@Model.ListningName</h5>
-        <p>@Model.fromDate - @Model.toDate</p>
-        <p><span class="pricePerNight">kr @Model.ListningPrice</span> natt.</p>
-        <ul class="list-inline">
-            @foreach (var amenity in Model.Amenities)
-            {
-                <li class="list-inline-item">
-                    <img src="@amenity.AmenityLogo" alt="@amenity.AmenityName">
-                </li>
-            }
-        </ul>
+<a asp-area="" asp-controller="Explorer" asp-action="ViewListing" asp-route-listingId="@Model.ListningId">
+    <div class="rental_card">
+        <img src="@Model.ListningImageURL" alt="Rental Image">
+        <div class="card_info">
+            <h5>@Model.ListningName</h5>
+            <p>@Model.FromDate.ToString("dd.MM.yyyy") - @Model.ToDate.ToString("dd.MM.yyyy")</p>
+            <p><span class="pricePerNight">kr @Model.ListningPrice</span> natt.</p>
+        </div>
+        <div class="card-footer">
+            <ul class="list-inline">
+                @foreach (var listningAmenity in Model.ListningAmenities)
+                {
+                    <li class="list-inline-item">
+                        <img src="@listningAmenity.Amenity.AmenityLogo" alt="@listningAmenity.Amenity.AmenityName">
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
-    <div class="card-footer">
-        
-    </div>
-</div>
+</a>

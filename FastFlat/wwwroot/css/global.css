@@ -38,13 +38,26 @@ nav {
     width: fit-content;
 }
 
+.nav-item {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.nav-registerLogin {
+    margin: 20px;
+}
+
+.nav-list {
+    margin: 0 50px 0 50px;
+}
+
 #--nav-logo {
     font-size: 2rem;
 }
 
 .--nav-tabs > li {
     list-style: none;
-    margin: 0px 50px 0 50px;
 }
 
     .--nav-tabs > li > a {
@@ -143,10 +156,13 @@ nav {
 
 
 .icon {
+    position: relative;
     cursor: pointer;
+    gap: 1rem;
 }
 
 .out {
+    top: 40px;
     height: 210px;
     width: 130px;
     display: none;
@@ -154,7 +170,7 @@ nav {
     box-shadow: 0 1px 1px 1px rgba(194, 190, 188, 0.476);
     z-index: 1;
     position: absolute;
-    right: 0;
+    right: -45px;
     transition: opacity 0.3s;
     opacity: 0;
     pointer-events: none;
@@ -199,5 +215,3 @@ footer {
     font-size: 1.1rem;
     color: white;
 }
-
-

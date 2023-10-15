@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# log files created by logger
+*.log 
+/FastFlat/Logs/*
+
+# database, as long as we have ensurecreated()
+*.db
+
+/FastFlat/RentalDatabase.db-shm
+/FastFlat/RentalDatabase.db-wal
+/FastFlat/Migrations
