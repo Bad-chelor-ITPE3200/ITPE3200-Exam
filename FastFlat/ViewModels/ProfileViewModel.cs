@@ -1,6 +1,4 @@
 ﻿using FastFlat.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace FastFlat.ViewModels
 {

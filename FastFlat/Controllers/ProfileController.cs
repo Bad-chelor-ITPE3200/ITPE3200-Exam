@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FastFlat.Controllers
 {
@@ -68,7 +64,7 @@ namespace FastFlat.Controllers
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> NewListning(NewListningViewModel viewModel)
-        { 
+        {
             if (!ModelState.IsValid)
             {
                 foreach (var modelStateKey in ModelState.Keys)
@@ -83,7 +79,7 @@ namespace FastFlat.Controllers
                 // Resten av koden din...
             }
             var userId = _userManager.GetUserId(User);
-            
+
 
             if (ModelState.IsValid)
             {
@@ -103,11 +99,11 @@ namespace FastFlat.Controllers
                     viewModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
                 }
 
-              
+
 
                 viewModel.Listning.UserId = userId;
                 //System.Diagnostics.Debug.WriteLine($"FromDate: {viewModel.fromDate}, ToDate: {viewModel.toDate}");
-               
+
 
 
                 await _listningRepository.Create(viewModel.Listning);

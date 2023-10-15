@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FastFlat.Models
 
@@ -10,10 +8,10 @@ namespace FastFlat.Models
         [Key]
         public int BookingId { get; set; }
         public string UserId { get; set; }  // Fremmednøkkel for User
-        public virtual ApplicationUser? User { get; set; }  // Navigasjonsegenskap for User
+        //public virtual ApplicationUser? User { get; set; }  // Navigasjonsegenskap for User
 
         public int ListningId { get; set; } // Fremmednøkkel for Listning
-        public virtual ListningModel Listning { get; set; } // Navigasjonsegenskap for Listning
+        public virtual ListningModel? Listning { get; set; } // Navigasjonsegenskap for Listning
 
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }

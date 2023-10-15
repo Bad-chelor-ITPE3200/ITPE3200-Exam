@@ -21,7 +21,7 @@ namespace FastFlat.Models
         public int? SquareMeter { get; set; }
         public float? Rating { get; set; }
         public string? ListningAddress { get; set; } = string.Empty;
-        public double ListningPrice { get; set; }
+        public decimal ListningPrice { get; set; }
 
         //public virtual CityModel City { get; set; }//legger til city
         public virtual LocationModel? Location { get; set; } = default!;

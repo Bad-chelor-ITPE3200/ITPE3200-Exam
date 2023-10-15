@@ -61,6 +61,8 @@ namespace FastFlat.DAL
                 var gilsearrReader = new BinaryReader(filestreamGisle);
                 gislearr = gilsearrReader.ReadBytes((int)filestreamGisle.Length);
             }
+            
+
 
             //Amenity
             context.Database.EnsureCreated();
@@ -320,6 +322,10 @@ namespace FastFlat.DAL
                     Console.WriteLine(ex);
                 }
             }
+            
+
         }
     }
 }
+
+

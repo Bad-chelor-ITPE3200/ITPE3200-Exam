@@ -4,13 +4,9 @@ using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
 using Serilog.Events;
 using Serilog;
-using Serilog;
-using Serilog.Core;
-
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("RentalDbContextConnection") ?? throw new
-    InvalidOperationException("Connection string 'RentalDbContextConnection' not found.");
 
 builder.Services.AddControllersWithViews();
 
