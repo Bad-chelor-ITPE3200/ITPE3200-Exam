@@ -63,10 +63,11 @@ namespace FastFlat.DAL
                 gislearr = gilsearrReader.ReadBytes((int)filestreamGisle.Length);
             }
             
-
-
-            //Amenity
+            //Creation/deletion of the database: 
             context.Database.EnsureCreated();
+            //context.Database.EnsureDeleted();  // ready if we want to use it
+            //Amenity
+           
             if (!context.Amenities.Any()) //if the context is empty
             {
                 var amenities = new List<AmenityModel>

@@ -142,5 +142,7 @@ namespace FastFlat.Controllers
 
             return View(viewModel);
         }
+       // [Authorize]
+        
     }
 }
