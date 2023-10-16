@@ -328,5 +328,5 @@ namespace FastFlat.DAL
         }
     }
 }
-
+//TODO: Vi bør vurdere om vi skal ha bookings i initdb, tror det kan bli mye krøll (spess mye kræsj hvis vi shipper med database, så kan være lurt å ha det i INITDB isteden, er samme funksjon, men vi slipper en del struggle)
 
