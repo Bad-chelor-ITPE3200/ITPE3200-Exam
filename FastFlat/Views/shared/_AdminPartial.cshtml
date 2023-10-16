@@ -1,11 +1,4 @@
-@model System.Linq.IQueryable<FastFlat.Models.BookingModel>
 
-@{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
-}
-
-<h2>title</h2>
 <table>
     <tr><th>Listing id</th><th>user id</th><th>booked from</th> <th>booked to</th> <th>Total price</th></tr>
     @foreach (var Li in Model)
@@ -18,7 +11,8 @@
             <td>@Li.FromDate</td>
             <td>@Li.ToDate</td>
             <td>@Li.TotalPrice</td>
-            <td> <a asp-controller="User" asp-action="deletebooking"></a></td>
+            <td> <a asp-controller="Account" asp-action="DeleteAdmin" asp-route-id = "@Li.BookingId"> Delete</a></td>
             </tr>
     }
+    
 </table>

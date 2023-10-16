@@ -1,4 +1,5 @@
-﻿using FastFlat.DAL;
+﻿
+using FastFlat.DAL;
 using FastFlat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,11 +30,20 @@ namespace FastFlat.Controllers
         
         //todo:  figure out how to use the rolemanager, as admin to have an "uniqe" page
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ManageAllListings()
+        public async Task<IActionResult> ManageAllBookings()
         {
             //return View(AdminPage); 
-            var listings = _bookingrepository.GetAll();
-            return View(listings);
+            var bookings = _bookingrepository.GetAll();
+            return View(bookings);
         }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteAdmin(int id)
+        {
+          await _bookingrepository.Delete(id);
+          return RedirectToAction(nameof(ManageAllBookings)); 
+            
+        }
+        
     }
 }

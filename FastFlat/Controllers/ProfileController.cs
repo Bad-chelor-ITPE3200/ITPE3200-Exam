@@ -1,11 +1,13 @@
-﻿using FastFlat.DAL;
+﻿
+using Azure.Core;
+using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 namespace FastFlat.Controllers
 {
     public class ProfileController : Controller
@@ -17,7 +19,10 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<ListningAmenity> _listningAmenityRepository;
         private readonly ILogger<ProfileController> _logger;
 
-        public ProfileController(IRentalRepository<ListningModel> listningRepository, IRentalRepository<BookingModel> bookingRepository, UserManager<ApplicationUser> userManager, IRentalRepository<AmenityModel> amenityRepository, IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ProfileController> logger)
+        public ProfileController(IRentalRepository<ListningModel> listningRepository,
+            IRentalRepository<BookingModel> bookingRepository, UserManager<ApplicationUser> userManager,
+            IRentalRepository<AmenityModel> amenityRepository,
+            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ProfileController> logger)
         {
             _listningRepository = listningRepository;
             _bookingRepository = bookingRepository;
@@ -26,15 +31,16 @@ namespace FastFlat.Controllers
             _listningAmenityRepository = listningAmenityRepository;
             _logger = logger;
         }
+
         [Authorize]
         public async Task<IActionResult> Profile()
         {
             var user = await _userManager.GetUserAsync(User);
             var userRentalsWithAmenities = _listningRepository.GetAll()
-                             .Include(l => l.ListningAmenities)
-                             .ThenInclude(la => la.Amenity)
-                             .Where(r => r.UserId == user.Id)
-                             .ToList();
+                .Include(l => l.ListningAmenities)
+                .ThenInclude(la => la.Amenity)
+                .Where(r => r.UserId == user.Id)
+                .ToList();
 
             var userBookings = (_bookingRepository.GetAll()).Where(b => b.UserId == user.Id).ToList();
 
@@ -78,6 +84,7 @@ namespace FastFlat.Controllers
                 }
                 // Resten av koden din...
             }
+
             var userId = _userManager.GetUserId(User);
 
 
@@ -133,7 +140,8 @@ namespace FastFlat.Controllers
             }
             else
             {
-                _logger.LogWarning("ModelState is invalid. Errors: {ModelStateErrors}", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                _logger.LogWarning("ModelState is invalid. Errors: {ModelStateErrors}",
+                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             }
 
             // Hvis ModelState er ugyldig eller en annen feil oppstår, hent fasilitetene på nytt.
@@ -142,7 +150,7 @@ namespace FastFlat.Controllers
 
             return View(viewModel);
         }
-       // [Authorize]
         
     }
 }
+
