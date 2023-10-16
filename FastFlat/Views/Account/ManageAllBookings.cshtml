@@ -1,5 +1,5 @@
 
-@model IEnumerable<BookingModel>
+
 
 
 @{
@@ -8,12 +8,13 @@
 }
 
 <h2>admin</h2>
-<details>
-    <summary>Account control</summary>
-    @**TODO: figure out multipe veiws *@
-    @**<partial name="_AdminAccounts"/>**@
-</details>
+
 <details>
     <summary>Booking table</summary>
-    <partial name="_AdminPartial" model="Model"/>
+    <partial name="_AdminPartial" />
+</details>
+<details>
+    <summary>Account control</summary>
+    @**TODO: figure out multipe veiws*@ 
+   @** <partial name="_AdminAccounts"/>*@
 </details>
