@@ -1,0 +1,100 @@
+﻿.dropdown-menu {
+    max-height:0px;
+    position: absolute;
+    top:120%;
+    right: -10px;
+    width: 250px;
+    z-index: 100;
+    overflow:hidden;
+    transition: max-height 0.5s;
+}
+
+.submenu {
+    background: #f6f6f6;
+    padding-bottom:8px;
+    border-radius: 10px;
+}
+
+.dropdown-menu.transform-menu {
+    max-height:600px;
+}
+
+.user-info {
+    display:flex;
+    align-items:center;
+    /*justify-content: center; */
+}
+
+.user-info h2 {
+    font-weight: 500;
+}
+.user-info img {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.submenu hr {
+    color: lightslategray;
+    width: 90%;
+    margin-top: -5px;
+    margin-bottom: 10px; 
+}
+
+.submenu-link {
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    color: dimgray;
+}
+
+
+.submenu-link p,
+#logout {
+    margin-left: 10px;
+    font-size: inherit; /* Inherit font size from the parent (.submenu-link) */
+    font-family: inherit; /* Inherit font family from the parent (.submenu-link) */
+    color: dimgray; /* Set the color */
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    cursor: pointer; /* Set cursor style */
+    padding-left: 0;
+    transition: transform 0.5s;
+}
+
+.submenu-link span {
+    margin-left: auto; /* Align the ">" to the right */
+    margin-right: 15px;
+    font-size: 23px;
+    transition: transform 0.5s;
+}
+
+.submenu-link:hover span {
+    transform: translateX(5px);
+    font-weight: 500;
+}
+
+.submenu-link:hover p {
+    transform: translateX(5px);
+    font-weight: 500;
+}
+
+#logout {
+color: dimgray;
+text-align: left;
+display: inline-block;
+}
+
+#logout:hover {
+transform: translateX(5px);
+font-weight: 500;
+}
+/*
+.submenu-link p {
+width: 100%;
+}
+
+#logout {
+    width: 100%;
+} */
