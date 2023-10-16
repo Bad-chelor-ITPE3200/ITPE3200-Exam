@@ -1,0 +1,7 @@
+@model IEnumerable<ApplicationUser>
+<table>
+    @foreach(var u in Model)
+    {
+        <tr> <td>@u.FirstName</td> <td>@u.LastName</td><td>@u.ProfilePicture</td></tr>
+    }
+</table>
