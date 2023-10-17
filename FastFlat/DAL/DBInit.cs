@@ -63,10 +63,11 @@ namespace FastFlat.DAL
                 gislearr = gilsearrReader.ReadBytes((int)filestreamGisle.Length);
             }
             
-
-
-            //Amenity
+            //Creation/deletion of the database: 
             context.Database.EnsureCreated();
+            //context.Database.EnsureDeleted();  // ready if we want to use it
+            //Amenity
+           
             if (!context.Amenities.Any()) //if the context is empty
             {
                 var amenities = new List<AmenityModel>
@@ -328,5 +329,5 @@ namespace FastFlat.DAL
         }
     }
 }
-
+//TODO: Vi bør vurdere om vi skal ha bookings i initdb, tror det kan bli mye krøll (spess mye kræsj hvis vi shipper med database, så kan være lurt å ha det i INITDB isteden, er samme funksjon, men vi slipper en del struggle)
 

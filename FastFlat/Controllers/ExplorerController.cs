@@ -1,4 +1,6 @@
-﻿using FastFlat.DAL;
+﻿using System.Composition;
+using System.Reflection.Metadata.Ecma335;
+using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -15,14 +17,15 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<BookingModel> _bookingRepo;
+        private readonly ILogger<ExplorerController> _logger;
 
-        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo)
+        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController>logger)
         {
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;
             _userManager = userManager;
             _bookingRepo = bookingRepo;
-
+            _logger = logger; 
         }
         public async Task<IActionResult> Explore()
         {
@@ -68,6 +71,8 @@ namespace FastFlat.Controllers
                     {
                         // Du kan logge feilen, skrive den ut i konsollen eller bare se den i debug-modus.
                         System.Diagnostics.Debug.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                        
+                        
                     }
                 }
                 
@@ -85,7 +90,7 @@ namespace FastFlat.Controllers
                     //var totalDays = (input.Listing.ToDate - input.Listing.FromDate).Days;
 
                     input.Booking.ListningId = input.Listing.ListningId;
-                
+                    _logger.LogInformation("Account is created");
                     await _bookingRepo.Create(input.Booking);
                     return RedirectToAction(nameof(Explore));
                 }

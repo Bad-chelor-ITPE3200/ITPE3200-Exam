@@ -11,9 +11,11 @@
         <li class="nav-item icon">
             @if (UserManager.GetUserAsync(User).Result.ProfilePicture != null)
             {
-                <img style="width:40px;height:40px; object-fit:cover; border-radius:25px; cursor: pointer;" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))">
+                <img style="width:40px;height:40px; object-fit:cover; border-radius:25px; cursor: pointer;"
+                src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))"
+                onclick="openMenu()">
             }
-            
+
             <partial name="_Dropdown"/>
         </li>
     }
@@ -27,3 +29,13 @@
         </li>
     }
 </ul>
+
+<script>
+    function openMenu() {
+        // Your JavaScript code for opening the menu goes here
+        // For example, you can toggle a CSS class to show/hide the menu
+        let dropdownMenu = document.getElementById('hideAndOpen');
+        dropdownMenu.classList.toggle('transform-menu');
+    }
+</script>
+

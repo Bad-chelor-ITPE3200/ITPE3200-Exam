@@ -71,7 +71,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".WeAreInSession.session";
-    options.IdleTimeout = TimeSpan.FromMinutes(600);
+    options.IdleTimeout = TimeSpan.FromMinutes(6);
     options.Cookie.IsEssential = true;
 });
 
