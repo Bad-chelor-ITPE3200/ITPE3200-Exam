@@ -1,20 +1,15 @@
-
-
-
-
 @{
     ViewBag.Title = "Admin Page";
     Layout = "_Layout";
 }
 
 <h2>admin</h2>
-
-<details>
-    <summary>Booking table</summary>
-    <partial name="_AdminPartial" />
-</details>
-<details>
-    <summary>Account control</summary>
-    @**TODO: figure out multipe veiws
-    <partial name="_AdminAccounts"/>*@ 
-</details>
+<div>
+    <details>
+        <summary>Booking table</summary>
+        <partial name="_AdminPartial"/>
+    </details>
+</div>
+<div>
+    <a asp-controller="Account" asp-action="_AdminAccounts"> account overveiw</a>
+</div>

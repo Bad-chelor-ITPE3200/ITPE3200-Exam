@@ -1,7 +1,12 @@
-@model IEnumerable<ApplicationUser> 
+@using System.Collections
+@model IEnumerable<ApplicationUser>
+<a asp-controller="Account" asp-action="ManageAllBookings"> Back to admin controll</a>
 <table>
-    @foreach(var u in Model)
-    {
-        <tr> <td>@u.FirstName</td> <td>@u.LastName</td><td>@u.ProfilePicture</td></tr>
-    }
-</table>
+        @foreach(var u in Model)
+        {
+          
+          
+            <tr> <td> @u.Id</td><td>@u.FirstName</td> <td>@u.LastName</td><td> <a> update </a> <a asp-controller="Account" asp-action="DeleteAdminAccount" asp-route-userId="@u.Id"> delete</a></td></tr>
+          
+        }
+    </table>
