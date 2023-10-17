@@ -36,6 +36,12 @@ namespace FastFlat.Controllers
             var bookings = _bookingrepository.GetAll();
             return View(bookings);
         }
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> _AdminAccounts()
+        {
+            var users = _userManager.Users.ToListAsync();
+            return View();
+        }
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAdmin(int id)
