@@ -1,0 +1,126 @@
+﻿.settings-wrapper{
+    padding: 2rem;
+}
+.settings-wrapper h1, h3{
+    margin: 0;
+}
+.settings-content {
+    width: fit-content;
+    height: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    padding: 2.5rem;
+    border: 0.5px solid lightgray;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    box-shadow: 1px 1px 39px -7px rgba(0,0,0,0.3);
+}
+.account-menu {
+    width: calc(300px);
+    padding: 0;
+    display: flex;
+    flex-direction:column;
+    align-items: start;
+    border: 0.5px solid lightgray;
+    background-color: white;
+}
+.menu-item {
+    width: calc(100% - 2rem + 10px);
+    padding: 1rem;
+    padding-left: 10px;
+    list-style-type: none;
+    border-bottom: 1px solid lightgray;
+    text-decoration: none;
+    color: black;
+}
+.menu-item:hover{
+    background-color: #abbfff;
+}
+.active {
+    background-color: #abb3ff;
+    transform: scale(1.1);
+}
+.settings-container{
+    display: flex;
+    gap:3rem;
+}
+.index-settings{
+    height: fit-content;
+    width: 100%;
+}
+.index-form {
+    display: flex;
+    justify-content: start;
+    gap: 6rem;
+    align-items: center;
+}
+.index-inputs{
+    display: flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+    gap: 2rem;
+}
+.index-inputs input{
+    border: 0;
+    font-size: 1.5rem;
+    background-color: transparent;
+    border-bottom: 1px solid #c4c4c4;
+    width: fit-content;
+}
+    .index-inputs input:focus{
+        outline: none;
+    }
+.update-profile-button {
+    background-color: #d6daff;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem 1rem;
+    border: 0;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    transition: ease-in 0.3s;
+    color: black;
+}
+.update-profile-button:hover {
+    background-color: #abb3ff;
+    transform: scale(1.1);
+    cursor: pointer;
+    transition: ease-in 0.1s;
+}
+#Username:hover{
+    cursor: not-allowed;
+}
+.index-cluster {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.pfp-wrapper{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.pfp-wrapper img{
+    border-radius: 10000px;
+}
+#Input_ProfilePicture{
+    background-color: blue;
+    width: fit-content;
+}
+input[type="file"]{
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+#email-verification{
+    margin-bottom: 2rem;
+    transform:scale(0.8);
+}

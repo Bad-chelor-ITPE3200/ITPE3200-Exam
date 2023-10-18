@@ -1,13 +1,10 @@
 ﻿
-using Azure.Core;
 using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 namespace FastFlat.Controllers
 {
     public class ProfileController : Controller
@@ -32,24 +29,11 @@ namespace FastFlat.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        public async Task<IActionResult> Profile()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var userRentalsWithAmenities = _listningRepository.GetAll()
-                .Include(l => l.ListningAmenities)
-                .ThenInclude(la => la.Amenity)
-                .Where(r => r.UserId == user.Id)
-                .ToList();
-
-            var userBookings = (_bookingRepository.GetAll()).Where(b => b.UserId == user.Id).ToList();
-
-            var profileViewModel = new ProfileViewModel(userRentalsWithAmenities, userBookings, user, "Profile");
-            return View(profileViewModel);
-        }
+     
+        
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
 
         //henter alle Amenities fra DB og sender det til NewListningViewModel 
         public async Task<IActionResult> NewListning()
@@ -64,7 +48,6 @@ namespace FastFlat.Controllers
             // Sender viewModel til View for å bli rendret til brukeren.
             return View(viewModel);
         }
-
 
 
         [HttpPost]
@@ -131,7 +114,7 @@ namespace FastFlat.Controllers
 
                     }
 
-                    return RedirectToAction(nameof(Profile));
+                    return Redirect("/Identity/Account/Manage/Rentals");
                 }
                 else
                 {
@@ -150,6 +133,7 @@ namespace FastFlat.Controllers
 
             return View(viewModel);
         }
+        
         
     }
 }

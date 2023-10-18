@@ -1,0 +1,19 @@
+﻿@page
+@model FastFlat.Areas.Identity.Pages.Account.Manage.RentalsModel
+@{
+    ViewData["Title"] = "Rentals";
+    ViewData["ActivePage"] = ManageNavPages.Rentals;
+}
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    @foreach (var rental in Model.Rentals)
+    {
+        <partial name="_RentalCard" model="rental" />
+    }
+    <a class="btn btn-primary"
+       asp-controller="Profile"
+       asp-action="NewListning">
+        Registrer nytt rom
+    </a>
+</div>
