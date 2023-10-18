@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FastFlat.Controllers
 {
@@ -71,16 +72,16 @@ namespace FastFlat.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAdminAccount(ApplicationUser user)
+        public async Task<IActionResult> UpdateAdminAccount(string id)
         {
+            ApplicationUser newuser = await _userManager.FindByIdAsync(id);
             try
             {
-                var ok = await _userManager.UpdateAsync(user);
+                var ok = await _userManager.UpdateAsync(await _userManager.FindByIdAsync(id));
                 if (ok.Succeeded)
                 {
                     _logger.LogInformation("change OK");
                     return RedirectToAction(nameof(_AdminAccounts));
-
                 }
                 else
                 {
@@ -114,9 +115,10 @@ namespace FastFlat.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminUpdateAuser(string Email)
+        public async Task<IActionResult> AdminUpdateAuser(string id)
         {
-            ApplicationUser user = await _userManager.FindByEmailAsync(Email);
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+
             if (user == null)
             {
                 _logger.LogError("user not found" + user);

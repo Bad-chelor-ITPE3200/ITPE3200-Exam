@@ -6,7 +6,7 @@
         {
           
           
-            <tr> <td> @u.Id</td><td>@u.FirstName</td> <td>@u.LastName</td><td> <a asp-controller="Account" asp-action="AdminUpdateAuser" asp-route-email="@u.Email" > update </a> <a asp-controller="Account" asp-action="DeleteAdminAccount" asp-route-userId="@u.Id"> delete</a></td></tr>
+            <tr> <td> @u.Id</td><td>@u.FirstName</td> <td>@u.LastName</td><td> <a asp-controller="Account" asp-action="AdminUpdateAuser" asp-route-Id="@u.Id" > update </a> <a asp-controller="Account" asp-action="DeleteAdminAccount" asp-route-userId="@u.Id"> delete</a></td></tr>
           
         }
     </table>
