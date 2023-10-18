@@ -12,7 +12,7 @@ namespace FastFlat.DAL
         Task<T> GetById(int id);
         Task Create(T entity);
         Task Update(T entity);
-        Task<bool> Delete(int id);
+        Task<bool> Delete( int id);
 
         Task<List<DateTime>> GetBookedDatesForListning(int listningId);
 
