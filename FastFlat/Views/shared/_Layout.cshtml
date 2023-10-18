@@ -30,10 +30,10 @@
                     <a href="#">Help</a>
                 </li>
 
-                <li class="nav-list">
+            @if(User.IsInRole("Admin"))  {    <li class="nav-list">
                     <a asp-area="" asp-controller="Account" asp-action="Account">Accounts</a>
                 </li>
-
+              <li class = "nav-list"> <a asp-area=""  asp-controller="Account" asp-action="ManageAllBookings">all bookings</a> </li>}
                 <li class="nav-list">
                     <a asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
                 </li>

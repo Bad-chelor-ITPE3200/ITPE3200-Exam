@@ -1,3 +1,4 @@
+using System.Collections;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FastFlat.Models
 {
-    public class ListningModel
+    public class ListningModel 
     {
         [Key]
         public int ListningId { get; set; }
@@ -36,5 +37,9 @@ namespace FastFlat.Models
 
 
         //public virtual ICollection<AmenityModel> Amenities { get; set; }
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
