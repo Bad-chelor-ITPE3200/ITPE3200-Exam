@@ -1,0 +1,42 @@
+﻿
+<div class="booking-card">
+    <div class="booking-title">
+        <h2 class="booking-card-title">Din booking</h2>
+        <h4 class="booking-card-id">Booking ID: @Model.Booking.BookingId</h4>
+    </div>
+    <div class="booking-card-content">
+        <div class="booking-text">
+            <p class="booking-card-desc">
+                Velkommen til din bolig. Vær snill å respekter husets
+                og eiers regler. Brudd på retningslinjer vil medføre en  bot.
+            </p>
+            <div class="plot-name-wrapper">
+                <p class="booking-card-sub">Entire Plot</p>
+                <p class="plot-name">@Model.Listing.ListningName</p>
+            </div>
+            <div class="plot-add-wrapper">
+                <p class="booking-card-sub">Address</p>
+                <p class="plot-add">COMING SOON</p>
+            </div>
+            <div class="plot-owner-wrapper">
+                <p class="booking-card-sub">Contact</p>
+                <p class="plot-owner">@Model.Listing.User.Email</p>
+            </div>
+        </div>
+        <img class="booking-img" src="@Model.Listing.ListningImageURL">
+    </div>
+    <div class="card-end">
+        <div class="checkin">
+            <h5 class="sub-header">Check-In</h5>
+            <h3>@Model.Booking.FromDate</h3>
+        </div>
+        <div class="checkout">
+            <h5 class="sub-header">Check-Out</h5>
+            <h3>@Model.Booking.ToDate</h3>
+        </div>
+        <div class="booking-price">
+            <h5 class="sub-header">Total Price</h5>
+            <h3>@Model.Booking.TotalPrice</h3>
+        </div>
+    </div>
+</div>

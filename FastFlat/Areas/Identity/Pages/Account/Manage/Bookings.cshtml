@@ -1,0 +1,10 @@
+﻿@page
+@model FastFlat.Areas.Identity.Pages.Account.Manage.BookingsModel
+@{
+    ViewData["Title"] = "Bookings";
+    ViewData["ActivePage"] = ManageNavPages.Bookings;
+}
+@foreach (var bookingModel in Model.Bookings)
+{
+    <partial name="_BookingCard" model="bookingModel" />
+}

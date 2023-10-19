@@ -36,6 +36,10 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public static string DownloadPersonalData => "DownloadPersonalData";
 
+        public static string Rentals => "Rentals";
+
+        public static string Bookings => "Bookings";
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -83,6 +87,10 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public static string DownloadPersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, DownloadPersonalData);
+
+        public static string RentalsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Rentals);
+
+        public static string BookingsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Bookings);
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

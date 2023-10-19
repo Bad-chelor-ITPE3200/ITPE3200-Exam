@@ -1,0 +1,72 @@
+﻿.booking-card {
+    width: 600px;
+    background-color: white;
+    height: fit-content;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid #b5b5b5;
+}
+.booking-title{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.booking-card-title{
+    color: gray;
+    margin: 0;
+}
+.booking-card-id{
+    color: gray;
+    margin: 0;
+}
+.booking-card-content{
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+
+}
+.booking-text{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: space-evenly;
+}
+.booking-img{
+    width: 40%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.booking-card-desc{
+    color: gray;
+    margin: 0;
+    font-size: 0.8rem;
+}
+.booking-card-sub{
+    color: gray;
+    margin: 0;
+    font-weight: bolder;
+}
+.plot-add{
+    margin: 0;
+}
+.plot-name{
+    margin: 0;
+}
+.plot-owner{
+    margin: 0;
+}
+.card-end{
+    padding: 0rem 1rem;
+    display: flex;
+    width: calc(100% - 2rem);
+    margin-top: 1rem;
+    justify-content: space-between;
+}
+.card-end h5, h3{
+    margin: 0;
+}
+.sub-header{
+    color: gray;
+}
