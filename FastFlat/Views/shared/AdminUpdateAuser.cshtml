@@ -21,9 +21,10 @@ New password -not shown, can only change the password
     <label for="updateMail" asp-for="Email"/>
     <input type="text" asp-for="Email" />
     <input type="text" asp-for="UserName"/>
+    <input type="text" asp-for="PhoneNumber"/>
     <input type="hidden" asp-for="PasswordHash"/>
     <input type="hidden" asp-for="ProfilePicture"/>
-    <button type="submit"> change </button>
+    <button type="submit"> change account details</button>
     <a asp-controller="Account" asp-action="_AdminAccounts"> cancel</a>
 </form>
 </body>

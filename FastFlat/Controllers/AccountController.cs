@@ -1,12 +1,14 @@
 ﻿using Castle.Components.DictionaryAdapter.Xml;
 using FastFlat.DAL;
 using FastFlat.Models;
+using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 namespace FastFlat.Controllers
 {
@@ -72,12 +74,18 @@ namespace FastFlat.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAdminAccount(string id)
+        public async Task<IActionResult> UpdateAdminAccount(ApplicationUser user)
         {
-            ApplicationUser newuser = await _userManager.FindByIdAsync(id);
+            var newuser = _userManager.FindByEmailAsync(user.Email).Result;
+            var applicationUserVeiwModel = new ApplicationUserVeiwModel(user.UserName, user.FirstName, user.LastName, user.Email,user.PhoneNumber,user.ProfilePicture, "UpdateAdminAccount");
             try
             {
-                var ok = await _userManager.UpdateAsync(await _userManager.FindByIdAsync(id));
+                newuser.FirstName = applicationUserVeiwModel.FirstName;
+                newuser.LastName = applicationUserVeiwModel.LastName;
+                newuser.PhoneNumber = applicationUserVeiwModel.PhoneNumber;
+                newuser.Email = applicationUserVeiwModel.Email;
+                newuser.ProfilePicture = applicationUserVeiwModel.ProfilePicture; 
+                var ok = await _userManager.UpdateAsync(newuser);
                 if (ok.Succeeded)
                 {
                     _logger.LogInformation("change OK");
