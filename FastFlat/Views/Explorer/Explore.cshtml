@@ -12,7 +12,13 @@
     <div id="filters">
         @foreach (var amenity in Model.Amenities)
         {
-            <partial name="_AmenityCard" model="amenity" />
+            var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
+            <form asp-action="Explore" method="post">
+                <button type="submit" name="SelectedAmenities" value="@amenity.AmenityName" class="amenity-button @isActive">
+                    @amenity.AmenityName
+                    <img class="amenity-icon" src="@amenity.AmenityLogo" />
+                </button>
+            </form>
         }
     </div>
     <div class="result-wrapper">
