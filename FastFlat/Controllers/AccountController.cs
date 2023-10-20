@@ -78,32 +78,42 @@ namespace FastFlat.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAdminAccount(ApplicationUser user)
         {
-            var newuser = _userManager.FindByEmailAsync(user.Email).Result;
-            var applicationUserVeiwModel = new ApplicationUserVeiwModel(user.UserName, user.FirstName, user.LastName, user.Email,user.PhoneNumber,user.ProfilePicture, "UpdateAdminAccount");
-            try
+
+            if (!ModelState.IsValid)
             {
-                newuser.FirstName = applicationUserVeiwModel.FirstName;
-                newuser.LastName = applicationUserVeiwModel.LastName;
-                newuser.PhoneNumber = applicationUserVeiwModel.PhoneNumber;
-                newuser.Email = applicationUserVeiwModel.Email;
-                newuser.ProfilePicture = applicationUserVeiwModel.ProfilePicture; 
-                var ok = await _userManager.UpdateAsync(newuser);
-                if (ok.Succeeded)
-                {
-                    _logger.LogInformation("change OK");
-                    return RedirectToAction(nameof(_AdminAccounts));
-                }
-                else
-                {
-                    _logger.LogWarning("CHANGE BAD");
-                    _logger.LogCritical(ok.ToString());
-                    return NotFound();
-                }
-            }
-            catch (Exception e)
+                return RedirectToAction("AdminUpdateAuser"); 
+            }else
             {
-                _logger.LogCritical(e.ToString());
-                return RedirectToAction("_AdminAccounts");
+
+
+                var newuser = _userManager.FindByEmailAsync(user.Email).Result;
+                var applicationUserVeiwModel = new ApplicationUserVeiwModel(user.UserName, user.FirstName,
+                    user.LastName, user.Email, user.PhoneNumber, user.ProfilePicture, "UpdateAdminAccount");
+                try
+                {
+                    newuser.FirstName = applicationUserVeiwModel.FirstName;
+                    newuser.LastName = applicationUserVeiwModel.LastName;
+                    newuser.PhoneNumber = applicationUserVeiwModel.PhoneNumber;
+                    newuser.Email = applicationUserVeiwModel.Email;
+                    newuser.ProfilePicture = applicationUserVeiwModel.ProfilePicture;
+                    var ok = await _userManager.UpdateAsync(newuser);
+                    if (ok.Succeeded)
+                    {
+                        _logger.LogInformation("change OK");
+                        return RedirectToAction(nameof(_AdminAccounts));
+                    }
+                    else
+                    {
+                        _logger.LogWarning("CHANGE BAD");
+                        _logger.LogCritical(ok.ToString());
+                        return NotFound();
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogCritical(e.ToString());
+                    return RedirectToAction("_AdminAccounts");
+                }
             }
         }
 

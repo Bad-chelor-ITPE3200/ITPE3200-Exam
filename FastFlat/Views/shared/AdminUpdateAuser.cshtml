@@ -14,16 +14,16 @@ role - SHOWN
 New password -not shown, can only change the password
 *@
 <form asp-controller="Account" asp-action="UpdateAdminAccount">
-<div asp-validation-summary="All"></div>
+    <div asp-validation-summary="All"></div>
 
-    <label for="UpdateFName" asp-for="FirstName"/>
-    <input type="text" asp-for="FirstName" />
+    <label asp-for="FirstName"/>
+    <input type="text" asp-for="FirstName"/>
     <span asp-validation-for="FirstName"></span>
     <label for="LastName" asp-for="LastName"/>
-    <input type="text" asp-for="LastName" />
+    <input type="text" asp-for="LastName"/>
     <span asp-validation-for="LastName"></span>
     <label for="updateMail" asp-for="Email"/>
-    <input type="text" asp-for="Email" />
+    <input type="text" asp-for="Email"/>
     <input type="text" asp-for="UserName"/>
     <input type="text" asp-for="PhoneNumber"/>
     <input type="hidden" asp-for="PasswordHash"/>
