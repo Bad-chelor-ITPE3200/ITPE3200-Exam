@@ -27,6 +27,7 @@ namespace FastFlat.Controllers
             _bookingRepo = bookingRepo;
             _logger = logger; 
         }
+        [HttpGet]
         public async Task<IActionResult> Explore()
         {
 
@@ -36,7 +37,25 @@ namespace FastFlat.Controllers
             return View(rentalListViewModel);
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Explore(RentalListViewModel input)
+        {
+
+            var allRentals = _rentalRepo.GetAll();
+
+            if (input != null)
+            {
+                allRentals = allRentals.Where(rental => rental.ListningAmenities.Any(am => input.SelectedAmenities.Contains(am.Amenity.AmenityName)));
+            }
+
+            var amenityList = _amenityRepo.GetAll();
+            var rentalListViewModel = new RentalListViewModel(allRentals, amenityList, "Card");
+
+            ViewBag.SelectedAmenity = input.SelectedAmenities.FirstOrDefault(); // Lagre den valgte amenity i ViewBag for å bruke den i visningen
+            return View(rentalListViewModel);
+        }
+
+
 
 
         [HttpGet]

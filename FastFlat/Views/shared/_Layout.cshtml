@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Home"]</title>
     <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- jQuery UI library -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-
+    
     <link rel="stylesheet" href="~/css/global.css" />
     <link rel="stylesheet" href="~/css/dropdown.css" />
     @RenderSection("Styles", required: false)
@@ -34,11 +34,9 @@
                     <a asp-area="" asp-controller="Account" asp-action="Account">Accounts</a>
                 </li>
               <li class = "nav-list"> <a asp-area=""  asp-controller="Account" asp-action="ManageAllBookings">admin</a> </li>}
-                <li class="nav-list">
+            @**    <li class="nav-list"> TODO: trenger vi dette?
                     <a asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
-                </li>
-            }
-           
+                </li>*@
 
             </ul>
 

@@ -8,7 +8,13 @@ namespace FastFlat.ViewModels
     {
         public IEnumerable<ListningModel> Rentals;
         public IEnumerable<AmenityModel> Amenities;
+        public List<String> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
         public string? CurrentViewName;
+
+        public RentalListViewModel()
+        {
+            // Parameterless constructor for model binding
+        }
 
         public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, string? currentViewName)
         {

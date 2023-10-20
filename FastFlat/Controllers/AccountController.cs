@@ -19,15 +19,17 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<BookingModel> _bookingrepository;
         private readonly IRentalRepository<ApplicationUser> _ApplicationUserRepostiory;
         private readonly ILogger<AccountController> _logger;
+        private IRentalRepository<ListningModel> _listingRepository; 
 
         public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
             IRentalRepository<BookingModel> bookingrepository,
-            IRentalRepository<ApplicationUser> applicationUserRepostiory, ILogger<AccountController> logger)
+            IRentalRepository<ApplicationUser> applicationUserRepostiory, IRentalRepository<ListningModel>listingRepository,ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _bookingrepository = bookingrepository;
             _ApplicationUserRepostiory = applicationUserRepostiory;
+            _listingRepository = listingRepository; 
             _logger = logger;
         }
 
@@ -136,6 +138,21 @@ namespace FastFlat.Controllers
             {
                 return View(user);
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> _ManageListings()
+        {
+            return View(_listingRepository.GetAll().ToList());
+        }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteAlisting(int id)
+        {
+           var booked = _listingRepository.GetById(id).Result;
+           await _bookingrepository.Delete(id);
+           _logger.LogInformation("Account deleted!");
+           return RedirectToAction(nameof(ManageAllBookings));
         }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<ListningModel>
+<head>
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+
+<table>
+    @foreach (var listings in Model)
+    {
+        <tr> <td>@listings.ListningName</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a>update</a></td> <td><a  asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td></tr>
+    }
+</table>
+
+</body>
