@@ -14,7 +14,10 @@
             <div class="searchbar">
                 <div class="location">
                     <label for="location" class="searchbar-title">Hvor</label>
-                    <input type="text" placeholder="Søk etter lokasjon" id="location">
+                    <input type="text" placeholder="Søk etter lokasjon" id="location" hidden>
+                    <select id="countryDropdown">
+                        <!-- Options will be displayed here dynamically -->
+                    </select>
                 </div>
                 <div class="fromDate">
                     <label for="fromDate" class="searchbar-title">Innsjekking</label>
@@ -47,3 +50,25 @@
         </div>
     </div>
 </section>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/available-countries',
+            type: 'GET',
+            success: function (data) {
+                console.log(data);
+                let countries = data.result; // Access the result property directly
+                let dropdown = $("#countryDropdown");
+                countries.forEach(function (country) {
+                    dropdown.append(new Option(country, country));
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error fetching countries:", textStatus, errorThrown);
+            }
+        });
+    });
+
+</script>

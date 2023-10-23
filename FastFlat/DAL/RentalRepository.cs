@@ -1,3 +1,4 @@
+using FastFlat.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,18 +71,23 @@ namespace FastFlat.DAL
 
             return bookedDates;
         }
-
+        [HttpGet("api/available-countries")]
+        public async Task<List<string?>> GetAvailableCountries()
+        {
+            return await _context.Countries.Select(c => c.Contryname).ToListAsync(); 
+        }
 
         [HttpGet]
         public async Task<(DateTime? StartDate, DateTime? EndDate)> GetAvailableDatesForListning(int listningId)
-{
-    var listning = await _context.Rentals.FindAsync(listningId);
+        {
+            var listning = await _context.Rentals.FindAsync(listningId);
 
-    if (listning == null)
-        return (null, null); // eller håndter på passende måte
+            if (listning == null)
+                return (null, null); // eller håndter på passende måte
 
-    return (listning.FromDate, listning.ToDate);
-}
+            return (listning.FromDate, listning.ToDate);
+        }
+
     }
 
 

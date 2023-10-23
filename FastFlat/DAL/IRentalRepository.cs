@@ -1,3 +1,5 @@
+using FastFlat.Models;
+
 namespace FastFlat.DAL
 {
     public interface IRentalRepository<T> where T : class
@@ -17,5 +19,7 @@ namespace FastFlat.DAL
         Task<List<DateTime>> GetBookedDatesForListning(int listningId);
 
         Task<(DateTime? StartDate, DateTime? EndDate)> GetAvailableDatesForListning(int listningId);
+
+        Task<List<string?>> GetAvailableCountries();
     }
 }
