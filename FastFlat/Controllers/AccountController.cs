@@ -76,12 +76,13 @@ namespace FastFlat.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAdminAccount(ApplicationUser user)
+        public async Task<IActionResult> AdminUpdateAuser(ApplicationUser user)
         {
 
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("AdminUpdateAuser"); 
+                _logger.LogWarning("regexp invalid");
+                return View(user);
             }else
             {
 
