@@ -72,6 +72,7 @@ namespace FastFlat.Controllers
                 }
                 // Resten av koden din...
             }
+            //ModelState.Remove("ListningAmenities");
 
             var userId = _userManager.GetUserId(User);
 
@@ -134,6 +135,8 @@ namespace FastFlat.Controllers
 
             // Hvis ModelState er ugyldig eller en annen feil oppstår, hent fasilitetene på nytt.
             var amenities = _amenityRepository.GetAll().ToList();
+            var countries = _contryRepository.GetAll().ToList();
+            viewModel.AvailableCountries = countries.ToList();
             viewModel.Amenities = amenities.ToList();
 
             return View(viewModel);
