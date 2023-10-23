@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Serilog.Data;
+using Index = System.Index;
 
 
 namespace FastFlat.Controllers
@@ -33,45 +35,89 @@ namespace FastFlat.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Account()
         {
             var users = await _userManager.Users.ToListAsync();
+            _logger.LogInformation("Users are found");
             return View(users);
         }
 
 
-        //todo:  figure out how to use the rolemanager, as admin to have an "uniqe" page
+        //uses the admin role to make sure that there are only admin that have acess to the veiws
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageAllBookings()
         {
-            //return View(AdminPage); 
-            var bookings = _bookingrepository.GetAll().ToList();
-            return View(bookings);
+            try
+            {
+                var bookings = _bookingrepository.GetAll().ToList(); //finds all boooking
+                _logger.LogInformation("Bookings were found");
+                return View(bookings);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning("error found in finding users");
+                return NotFound();
+            }
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> _AdminAccounts()
         {
-            var users = _userManager.Users;
-            return View(users);
+            try
+            {
+                var users = _userManager.Users;
+                _logger.LogInformation("users were found");
+                return View(users);
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("users were not found, error: " + e);
+                return NotFound();
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAdmin(int id)
         {
-            await _bookingrepository.Delete(id);
-            return RedirectToAction(nameof(ManageAllBookings));
+            try
+            {
+                if (id > 0) throw new Exception("invalid id, lower than 0"); 
+              var  okDelete = await _bookingrepository.Delete(id);
+              if (!okDelete)
+              {
+                  throw new Exception("invalid deletion");
+              }
+              else
+              {
+                  return RedirectToAction(nameof(ManageAllBookings));
+              }
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning("account could not be deleted due to errror: " + e);
+                return NotFound(); 
+            }
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAdminAccount(string userId)
         {
-            var user = _userManager.FindByIdAsync(userId).Result;
-            await _userManager.DeleteAsync(user);
-            return RedirectToAction(nameof(_AdminAccounts));
+            try
+            {
+                
+                var user = _userManager.FindByIdAsync(userId).Result;
+                 await _userManager.DeleteAsync(user);
+                 return RedirectToAction(nameof(_AdminAccounts));
+                 
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning("Error in deleting user: " + e);
+                return NotFound(e);
+            }
         }
 
         [HttpPost]
@@ -160,10 +206,32 @@ namespace FastFlat.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAlisting(int id)
         {
-           var booked = _listingRepository.GetById(id).Result;
-           await _bookingrepository.Delete(id);
-           _logger.LogInformation("Account deleted!");
-           return RedirectToAction(nameof(ManageAllBookings));
+            try
+            {
+                var booked = _listingRepository.GetById(id).Result;
+                await _listingRepository.Delete(id);
+                _logger.LogInformation("listing deleted!");
+                return RedirectToAction(nameof(ManageAllBookings));
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+        [Authorize]
+        public async Task<IActionResult> DeleteAlistingNormalUser(int id)
+        {
+            try
+            {
+                var booked = _listingRepository.GetById(id).Result;
+                await _listingRepository.Delete(id);
+                _logger.LogInformation("listing deleted!");
+                return LocalRedirect("~/Identity/Account/Manage/Rentals");
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
         }
     }
 }

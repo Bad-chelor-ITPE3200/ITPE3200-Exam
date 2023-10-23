@@ -9,7 +9,6 @@ namespace FastFlat.Models
         public int BookingId { get; set; }
         public string UserId { get; set; }  // Fremmednøkkel for User
         //public virtual ApplicationUser? User { get; set; }  // Navigasjonsegenskap for User
-
         public int ListningId { get; set; } // Fremmednøkkel for Listning
         public virtual ListningModel? Listning { get; set; } // Navigasjonsegenskap for Listning
 

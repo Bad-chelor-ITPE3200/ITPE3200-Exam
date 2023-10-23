@@ -83,7 +83,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment()){
     // Create an instance of DBInit and call Seed
     using var scope = app.Services.CreateScope();
-    DBInit.Seed(app); // This line calls the Seed method on the DBInit instance.
+    await DBInit.Seed(app); // This line calls the Seed method on the DBInit instance.
 }
 
 app.UseStaticFiles();

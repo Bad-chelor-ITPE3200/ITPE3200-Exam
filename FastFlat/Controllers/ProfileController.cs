@@ -38,15 +38,22 @@ namespace FastFlat.Controllers
         //henter alle Amenities fra DB og sender det til NewListningViewModel 
         public async Task<IActionResult> NewListning()
         {
-            // Henter alle fasiliteter fra databasen ved å bruke _amenityRepository.
-            var amenities = _amenityRepository.GetAll().ToList();
-
-            // Oppretter en ny instans av NewListningViewModel med fasilitetene vi nettopp hentet.
-            // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
-            var viewModel = new NewListningViewModel(amenities.ToList());
-
-            // Sender viewModel til View for å bli rendret til brukeren.
-            return View(viewModel);
+            try
+            {
+                // Henter alle fasiliteter fra databasen ved å bruke _amenityRepository.
+                var amenities = _amenityRepository.GetAll().ToList();
+                // Oppretter en ny instans av NewListningViewModel med fasilitetene vi nettopp hentet.
+                
+                // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
+                var viewModel = new NewListningViewModel(amenities.ToList());
+                // Sender viewModel til View for å bli rendret til brukeren.
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning("Amedities have problems " + e);
+                return NotFound(e); 
+            }
         }
 
 

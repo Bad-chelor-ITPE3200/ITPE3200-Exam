@@ -82,6 +82,7 @@ namespace FastFlat.Controllers
             input.Booking.UserId = userId;
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Modelstate is not valid in VeiwListing");
                 foreach (var modelStateKey in ModelState.Keys)
                 {
                   
@@ -89,9 +90,8 @@ namespace FastFlat.Controllers
                     foreach (var error in modelStateVal.Errors)
                     {
                         // Du kan logge feilen, skrive den ut i konsollen eller bare se den i debug-modus.
-                        System.Diagnostics.Debug.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                        
-                        
+                        System.Diagnostics.Debug.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}"); // hva i alle dager er dette???
+                      
                     }
                 }
                 
@@ -109,8 +109,9 @@ namespace FastFlat.Controllers
                     //var totalDays = (input.Listing.ToDate - input.Listing.FromDate).Days;
 
                     input.Booking.ListningId = input.Listing.ListningId;
-                    _logger.LogInformation("Account is created");
+                  //  _logger.LogInformation("Account is created");
                     await _bookingRepo.Create(input.Booking);
+                    _logger.LogInformation("creation of new booking is 200" +input.Booking);
                     return RedirectToAction(nameof(Explore));
                 }
                 else
@@ -139,7 +140,9 @@ namespace FastFlat.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableDatesForListning(int listningId)
         {
+            //Gets all the dates that are available for booking
             var dates = await _rentalRepo.GetAvailableDatesForListning(listningId);
+            _logger.LogInformation("available dates have been gained" + dates);
             return Ok(new { fromDate = dates.StartDate, toDate = dates.EndDate });
         }
 
