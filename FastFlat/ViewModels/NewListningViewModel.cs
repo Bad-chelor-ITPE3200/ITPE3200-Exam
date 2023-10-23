@@ -1,4 +1,5 @@
-﻿using FastFlat.Models;
+﻿using FastFlat.Attributes;
+using FastFlat.Models;
 
 namespace FastFlat.ViewModels
 {
@@ -8,7 +9,11 @@ namespace FastFlat.ViewModels
         public ListningModel Listning { get; set; }
 
         public List<AmenityModel>? Amenities { get; set; }
-        public List<int> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
+
+        public IEnumerable<ContryModel>? AvailableCountries { get; set; }
+
+        [MinItems(1, ErrorMessage = "Vennligst velg minst en amenity.")]
+        public List<int>? SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
 
 
         // Parameterløs konstruktør
@@ -17,10 +22,11 @@ namespace FastFlat.ViewModels
         }
 
         // Konstruktør for NewListningViewModel.
-        public NewListningViewModel(List<AmenityModel> amenities)
+        public NewListningViewModel(List<AmenityModel> amenities, List<ContryModel> contries)
         {
             // Setter Amenities-property med den mottatte listen eller en ny tom liste hvis den mottatte listen er null.
             Amenities = amenities ?? new List<AmenityModel>();
+            AvailableCountries = contries ?? new List<ContryModel>();
 
 
             // Initialiserer SelectedAmenities som en tom liste.

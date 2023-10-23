@@ -146,5 +146,12 @@ namespace FastFlat.Controllers
             return Ok(new { fromDate = dates.StartDate, toDate = dates.EndDate });
         }
 
+        [HttpGet("api/available-countries")]
+        public IActionResult GetAvailableCountries()
+        {
+            var countries = _rentalRepo.GetAvailableCountries(); // Assuming _rentalRepository is an instance of RentalRepository
+            return Ok(countries);
+        }
+
     }
 }

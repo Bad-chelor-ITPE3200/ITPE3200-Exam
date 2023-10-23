@@ -14,6 +14,7 @@ namespace FastFlat.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<AmenityModel> _amenityRepository;
         private readonly IRentalRepository<ListningAmenity> _listningAmenityRepository;
+        private readonly IRentalRepository<ContryModel> _contryRepository;
         private readonly ILogger<ProfileController> _logger;
 
         public ProfileController(IRentalRepository<ListningModel> listningRepository,
@@ -74,6 +75,7 @@ namespace FastFlat.Controllers
                 }
                 // Resten av koden din...
             }
+            //ModelState.Remove("ListningAmenities");
 
             var userId = _userManager.GetUserId(User);
 
