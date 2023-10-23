@@ -1,4 +1,5 @@
-﻿using FastFlat.Models;
+﻿using FastFlat.Attributes;
+using FastFlat.Models;
 
 namespace FastFlat.ViewModels
 {
@@ -11,6 +12,7 @@ namespace FastFlat.ViewModels
 
         public IEnumerable<ContryModel>? AvailableCountries { get; set; }
 
+        [MinItems(1, ErrorMessage = "Vennligst velg minst en amenity.")]
         public List<int>? SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
 
 

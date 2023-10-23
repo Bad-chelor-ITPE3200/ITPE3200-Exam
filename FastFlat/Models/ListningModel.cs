@@ -2,6 +2,7 @@ using System.Collections;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FastFlat.Attributes;
 
 //Jeg har gjort alle atributer null for å teste CRUD
 
@@ -33,6 +34,7 @@ namespace FastFlat.Models
 
         public virtual List<BookingModel>? bookings { get; set; }
 
+        
         public virtual List<ListningAmenity>? ListningAmenities { get; set; } = default!;
 
 
