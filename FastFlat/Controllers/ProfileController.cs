@@ -20,12 +20,13 @@ namespace FastFlat.Controllers
         public ProfileController(IRentalRepository<ListningModel> listningRepository,
             IRentalRepository<BookingModel> bookingRepository, UserManager<ApplicationUser> userManager,
             IRentalRepository<AmenityModel> amenityRepository,
-            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ProfileController> logger)
+            IRentalRepository<ListningAmenity> listningAmenityRepository,IRentalRepository<ContryModel>contryRepository,ILogger<ProfileController> logger)
         {
             _listningRepository = listningRepository;
             _bookingRepository = bookingRepository;
             _userManager = userManager;
             _amenityRepository = amenityRepository;
+            _contryRepository = contryRepository; 
             _listningAmenityRepository = listningAmenityRepository;
             _logger = logger;
         }
@@ -44,9 +45,9 @@ namespace FastFlat.Controllers
                 // Henter alle fasiliteter fra databasen ved å bruke _amenityRepository.
                 var amenities = _amenityRepository.GetAll().ToList();
                 // Oppretter en ny instans av NewListningViewModel med fasilitetene vi nettopp hentet.
-                
+                var availableCountries = _contryRepository.GetAll().ToList();
                 // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
-                var viewModel = new NewListningViewModel(amenities.ToList());
+                var viewModel = new NewListningViewModel(amenities.ToList(), availableCountries.ToList());
                 // Sender viewModel til View for å bli rendret til brukeren.
                 return View(viewModel);
             }

@@ -1,8 +1,9 @@
-using FastFlat.Models;
+
 using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace FastFlat.DAL
 {
@@ -62,12 +63,12 @@ namespace FastFlat.DAL
                 var gilsearrReader = new BinaryReader(filestreamGisle);
                 gislearr = gilsearrReader.ReadBytes((int)filestreamGisle.Length);
             }
-            
+
             //Creation/deletion of the database: 
             context.Database.EnsureCreated();
             //context.Database.EnsureDeleted();  // ready if we want to use it
             //Amenity
-           
+
             if (!context.Amenities.Any()) //if the context is empty
             {
                 var amenities = new List<AmenityModel>
@@ -256,7 +257,7 @@ namespace FastFlat.DAL
             {
                 var users = new List<ApplicationUser>
                 {
-                    new ApplicationUser
+                    new ApplicationUser()
                     {
                         UserName = "Olidrav",
                         FirstName = "Oliver",
@@ -324,7 +325,7 @@ namespace FastFlat.DAL
                     Console.WriteLine(ex);
                 }
             }
-            
+
 
         }
     }

@@ -145,6 +145,7 @@ namespace FastFlat.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ListningDescription")
+                        .HasMaxLength(350)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ListningImageURL")
