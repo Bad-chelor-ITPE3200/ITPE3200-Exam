@@ -153,7 +153,7 @@ namespace FastFlat.DAL
                         AmenityLogo = "/images/amenity/Wifi.svg"
                     },
                 };
-                await context.AddRangeAsync(amenities);
+                await context.AddRangeAsync(amenities); 
                 await context.SaveChangesAsync();
             }
 
@@ -225,30 +225,31 @@ namespace FastFlat.DAL
             if (!context.Roles.Any())
                 //roles for the acess controll
                 //we let the controller control everything about what they can edit or not
+                //adds role 0 as Admin
             {
-                var roles = new List<IdentityRole>
+                var roles = new List<IdentityRole> //identityrole as list, this makes it easier to expand with new roles
                 {
                     new IdentityRole
                     {
-                        Id = "0", Name = "Admin" //BIG BOSS, can do everything
+                        Id = "0", Name = "Admin" //can do everything
                     },
                     new IdentityRole
                     {
-                        Id = "2", Name = "Renter" //BUY THING
+                        Id = "2", Name = "Renter" //Standard role for new users
                     }
                 };
 
                 foreach (var r in roles)
                 {
-                    var ok = roleman.CreateAsync(r).Result;
+                    var ok = roleman.CreateAsync(r).Result; //checks the result of the adding
                     Console.Write(ok);
                     if (ok.Succeeded)
                     {
-                        Console.Write(r.Name + "is created at: " + DateTime.Now);
+                        Console.Write(r.Name + "is created at: " + DateTime.Now); //prints out the roles with name
                     }
                     else
                     {
-                        Console.Write("error in creating Role " + r);
+                        Console.Write("error in creating Role " + r); //prints out a basic error
                     }
                 }
             }

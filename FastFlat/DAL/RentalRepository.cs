@@ -8,20 +8,32 @@ namespace FastFlat.DAL
     {
         private readonly RentalDbContext _context;
         private readonly DbSet<T> _dbSet;
+        private ILogger<RentalRepository<T>> _logger; 
 
-        public RentalRepository(RentalDbContext context)
+        public RentalRepository(RentalDbContext context, ILogger<RentalRepository<T>>logger)
         {
             _context = context;
             _dbSet = context.Set<T>();
+            _logger = logger; 
         }
 
         public IQueryable<T> GetAll()
         {
-            return _context.Set<T>();
+            try
+            {
+                _logger.LogInformation("Data is OK");
+                return _context.Set<T>();
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("error in getall in generic repository, error " +e);
+                return null; 
+            }
         }
 
         public async Task<T> GetById(int id)
         {
+            
             return await _dbSet.FindAsync(id);
         }
 
@@ -53,12 +65,12 @@ namespace FastFlat.DAL
 
         public async Task<List<DateTime>> GetBookedDatesForListning(int listningId)
         {
-            // Trinn 1: Hent alle bookings fra databasen
+            // Step 1 get all the bookings from the database
             var bookings = await _context.Bookings
                                          .Where(b => b.ListningId == listningId)
                                          .ToListAsync();
-
-            // Trinn 2: Generer alle bookede datoer fra bookings
+            
+            // Step 2: Genereate all booked dates
             var bookedDates = new List<DateTime>();
 
             foreach (var booking in bookings)
@@ -83,7 +95,7 @@ namespace FastFlat.DAL
             var listning = await _context.Rentals.FindAsync(listningId);
 
             if (listning == null)
-                return (null, null); // eller håndter på passende måte
+                return (null, null); // handels exeptions
 
             return (listning.FromDate, listning.ToDate);
         }

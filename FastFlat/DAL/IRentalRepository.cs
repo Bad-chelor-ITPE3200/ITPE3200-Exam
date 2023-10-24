@@ -7,7 +7,7 @@ namespace FastFlat.DAL
         //må gjøre sånn for å få flere SQL spørringer. Får å få .include()
         IQueryable<T> GetAll();
 
-        /* Brukes ikke
+        /* Not in use
         Task<IEnumerable<T>> GetAllById(string Id);
         */
 
