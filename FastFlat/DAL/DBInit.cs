@@ -306,8 +306,7 @@ namespace FastFlat.DAL
                 {
                     foreach (ApplicationUser u in users) //for loop for all the users
                     {
-                        var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@")
-                            .Result; //a check if the account is created or not
+                        var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@").Result; //a check if the account is created or not
                         Console.Write(ok);
                         if (ok.Succeeded) //if it is allright
                         {

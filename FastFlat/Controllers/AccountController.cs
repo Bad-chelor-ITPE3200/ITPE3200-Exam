@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Serilog.Data;
 using Index = System.Index;
 
@@ -17,21 +18,21 @@ namespace FastFlat.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IRentalRepository<BookingModel> _bookingrepository;
-        private readonly IRentalRepository<ApplicationUser> _ApplicationUserRepostiory;
         private readonly ILogger<AccountController> _logger;
-        private IRentalRepository<ListningModel> _listingRepository; 
+        private IRentalRepository<ListningModel> _listingRepository;
+        private readonly IRentalRepository<ContryModel> _countryReposity;
+        private readonly IRentalRepository<AmenityModel> _amenityModelRepository; 
 
-        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
-            IRentalRepository<BookingModel> bookingrepository,
-            IRentalRepository<ApplicationUser> applicationUserRepostiory, IRentalRepository<ListningModel>listingRepository,ILogger<AccountController> logger)
+        public AccountController(UserManager<ApplicationUser> userManager,
+            IRentalRepository<BookingModel> bookingrepository, 
+            IRentalRepository<ListningModel> listingRepository, IRentalRepository<ContryModel>countryReposity, IRentalRepository<AmenityModel>amenityModelRepository,ILogger<AccountController> logger)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _bookingrepository = bookingrepository;
-            _ApplicationUserRepostiory = applicationUserRepostiory;
-            _listingRepository = listingRepository; 
+            _listingRepository = listingRepository;
+            _countryReposity = countryReposity;
+            _amenityModelRepository = amenityModelRepository; 
             _logger = logger;
         }
 
@@ -83,21 +84,21 @@ namespace FastFlat.Controllers
         {
             try
             {
-                if (id > 0) throw new Exception("invalid id, lower than 0"); 
-              var  okDelete = await _bookingrepository.Delete(id);
-              if (!okDelete)
-              {
-                  throw new Exception("invalid deletion");
-              }
-              else
-              {
-                  return RedirectToAction(nameof(ManageAllBookings));
-              }
+                if (id > 0) throw new Exception("invalid id, lower than 0");
+                var okDelete = await _bookingrepository.Delete(id);
+                if (!okDelete)
+                {
+                    throw new Exception("invalid deletion");
+                }
+                else
+                {
+                    return RedirectToAction(nameof(ManageAllBookings));
+                }
             }
             catch (Exception e)
             {
                 _logger.LogWarning("account could not be deleted due to errror: " + e);
-                return NotFound(); 
+                return NotFound();
             }
         }
 
@@ -107,11 +108,11 @@ namespace FastFlat.Controllers
         {
             try
             {
-                
+
                 var user = _userManager.FindByIdAsync(userId).Result;
-                 await _userManager.DeleteAsync(user);
-                 return RedirectToAction(nameof(_AdminAccounts));
-                 
+                await _userManager.DeleteAsync(user);
+                return RedirectToAction(nameof(_AdminAccounts));
+
             }
             catch (Exception e)
             {
@@ -129,7 +130,8 @@ namespace FastFlat.Controllers
             {
                 _logger.LogWarning("regexp invalid");
                 return View(user);
-            }else
+            }
+            else
             {
 
 
@@ -202,6 +204,7 @@ namespace FastFlat.Controllers
         {
             return View(_listingRepository.GetAll().ToList());
         }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAlisting(int id)
@@ -218,18 +221,60 @@ namespace FastFlat.Controllers
                 return NotFound(e);
             }
         }
+
         [Authorize]
         public async Task<IActionResult> DeleteAlistingNormalUser(int id)
         {
             try
             {
                 var booked = _listingRepository.GetById(id).Result;
+                _logger.LogInformation(booked.ToString());
                 await _listingRepository.Delete(id);
                 _logger.LogInformation("listing deleted!");
                 return LocalRedirect("~/Identity/Account/Manage/Rentals");
             }
             catch (Exception e)
             {
+                return NotFound(e);
+            }
+     
+        }
+        [Authorize]
+        public async Task<IActionResult> _UpdateListing(int id)
+        { 
+            var findListing = _listingRepository.GetById(id).Result;
+
+            NewListningViewModel listings = new NewListningViewModel();
+            listings.Listning = findListing;
+            listings.AvailableCountries = _countryReposity.GetAll().ToList();
+            listings.Amenities =_amenityModelRepository.GetAll().ToList();
+            return View(listings);
+        }
+        [Authorize]
+        [HttpPost]
+       public async Task<IActionResult> UpdateListing(int Id){ //id 0, should be 1, right id after routing 
+            //todo: update the listing, we use standard account
+            try
+            {
+                //todo: the veiw model to update the user
+                var upDatedUser = _listingRepository.GetById(Id).Result; //becomes null
+                NewListningViewModel listingVeiwModel = new NewListningViewModel(_amenityModelRepository.GetAll().ToList(), _countryReposity.GetAll().ToList(), "_UpdateListing");
+                upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
+                upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
+                upDatedUser.FromDate = listingVeiwModel.Listning.FromDate; 
+                upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
+                upDatedUser.Location = listingVeiwModel.Listning.Location;
+                _logger.LogInformation("LOGGGING OK"); 
+                var result = _listingRepository.Update(upDatedUser);
+              //  _logger.LogInformation(restult.ToString());
+  
+              
+                  return LocalRedirect("~/Identity/Account/Manage/Rentals");
+              
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("error in updating user:  \n  " + e);
                 return NotFound(e);
             }
         }

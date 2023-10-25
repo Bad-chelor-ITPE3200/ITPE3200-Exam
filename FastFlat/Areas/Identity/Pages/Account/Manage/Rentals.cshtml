@@ -11,6 +11,7 @@
     {
         <partial name="_RentalCard" model="rental" />
         <a asp-controller="Account" asp-action="DeleteAlistingNormalUser" asp-route-id="@rental.ListningId">Delete Listing</a>
+        <a asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@rental.ListningId"> update Listing</a>
     }
     <a class="btn btn-primary"
        asp-controller="Profile"
