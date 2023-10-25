@@ -26,7 +26,9 @@ namespace FastFlat.Models
         public decimal ListningPrice { get; set; }
 
         //public virtual CityModel City { get; set; }//legger til city
-        public virtual LocationModel? Location { get; set; } = default!;
+        // public virtual LocationModel? Location { get; set; } = default!;
+
+        public virtual ContryModel? Contry { get; set; }
 
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }

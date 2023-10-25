@@ -4,6 +4,8 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
 }
+@model ListningModel
+
 <section class="hero">
     <div class="hero-wrapper">
         <div class="hero-left">
@@ -11,30 +13,32 @@
                 <h1>Finding your rental has never been easier.</h1>
                 <p>Lorem ipsum dolor si ames ah detru luer afn ela dilasti hestem lak.</p>
             </div>
-            <div class="searchbar">
-                <div class="location">
-                    <label for="location" class="searchbar-title">Hvor</label>
-                    <input type="text" placeholder="Søk etter lokasjon" id="location" hidden>
-                    <select id="countryDropdown">
-                        <!-- Options will be displayed here dynamically -->
-                    </select>
+            <form asp-controller="Explorer"  asp-action="Explore" method="post">
+                <div class="searchbar">
+                    <div class="location">
+                        <label asp-for="Contry" class="searchbar-title">Hvor</label>
+                        <select asp-for="Contry" id="countryDropdown">
+                            <!-- Options will be displayed here dynamically -->
+                        </select>
+                    </div>
+                    <div class="fromDate">
+                        <label asp-for="FromDate" class="searchbar-title">Innsjekking</label>
+                        <input asp-for="FromDate" type="date" placeholder="Legg til dato" id="fromDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="toDate">
+                        <label asp-for="ToDate" class="searchbar-title">Utsjekking</label>
+                        <input asp-for="ToDate" type="date" placeholder="Legg til dato" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" id="toDate" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="guests">
+                        <label asp-for="NoOfBeds" class="searchbar-title">Bed(s)</label>
+                        <input asp-for="NoOfBeds" placeholder="Legg til antall senger" id="guests">
+                    </div>
+                    <button id="submit-btn">
+                        <img src="@Url.Content("~/images/icons/search.svg")">
+                    </button>
                 </div>
-                <div class="fromDate">
-                    <label for="fromDate" class="searchbar-title">Innsjekking</label>
-                    <input type="text" placeholder="Legg til dato" id="fromDate">
-                </div>
-                <div class="toDate">
-                    <label for="toDate" class="searchbar-title">Utsjekking</label>
-                    <input type="text" placeholder="Legg til dato" id="toDate">
-                </div>
-                <div class="guests">
-                    <label for="guests" class="searchbar-title">Gjester</label>
-                    <input type="number" placeholder="Legg til gjester" id="guests">
-                </div>
-                <div id="submit-btn">
-                    <img src="@Url.Content("~/images/icons/search.svg")">
-                </div>
-            </div>
+            </form>
+
         </div>
         <div class="hero-right">
             <div class="thumbnail">
@@ -67,6 +71,21 @@
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error("Error fetching countries:", textStatus, errorThrown);
+            }
+        });
+
+        $("#countryDropdown").on("change", function () {
+            let value = $("#countryDropdown").val();
+            console.log(value);
+        });
+
+        $("#fromDate").on("change", function () {
+            let fromDateValue = $(this).val();
+            $("#toDate").attr("min", fromDateValue);
+
+            // If the current ToDate value is less than the new FromDate value, reset the ToDate value
+            if ($("#toDate").val() < fromDateValue) {
+                $("#toDate").val(fromDateValue);
             }
         });
     });
