@@ -21,24 +21,20 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 });
 //configure logger
 var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
-    .File($"Logs/appLog.txt");
+    .File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log"); // gjord endring på formatet
+
+//filtrerer loggen
+loggerConf.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceContext", out var value) &&
+e.Level == LogEventLevel.Information && e.MessageTemplate.Text.Contains("Ececuted DbCommand"));
 
 //creating logger
 var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);
+
+
+
 //builder.Services.AddScoped<SignInManager<IdentityUser>>();
-/*
-var loggerConfiguration = new LoggerConfiguration()
-    .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
-    .WriteTo.File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
 
-loggerConfiguration.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceContext", out var value) &&
-                            e.Level == LogEventLevel.Information &&
-                            e.MessageTemplate.Text.Contains("Executed DbCommand"));
-
-var logger = loggerConfiguration.CreateLogger();
-builder.Logging.AddSerilog(logger);
-*/
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Password Settings

@@ -1,3 +1,4 @@
+using Castle.Core.Logging;
 using FastFlat.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,47 +10,99 @@ namespace FastFlat.DAL
         private readonly RentalDbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public RentalRepository(RentalDbContext context)
+        private readonly ILogger<RentalRepository<T>> _logger;
+
+        public RentalRepository(RentalDbContext context, ILogger<RentalRepository<T>> logger)
         {
             _context = context;
             _dbSet = context.Set<T>();
+            _logger = logger;
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAll() //hvorfor har vi ikke async her?
         {
-            return _context.Set<T>();
+            try
+            {
+                return _context.Set<T>();
+            }
+
+            catch(Exception e)
+            {
+                _logger.LogError("[RentalRepository] Set<T> failed when GetAll(), error message: {e}", e.Message);
+                return null;       
+            }
         }
 
         public async Task<T> GetById(int id)
         {
-            return await _dbSet.FindAsync(id);
+            try
+            {
+                return await _dbSet.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[RentalRepository] <T> FindAsync(id) failed when GetById for id {id:0000}, error message: {e}", id, e.Message);
+                return null;
+            }  
         }
 
-        public async Task Create(T entity)
+        public async Task<bool> Create(T entity)
         {
-            _dbSet.Add(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _dbSet.Add(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[RentalRepository] entity creation failed for entinty {@entity}, error message: {e}", entity, e.Message);
+                return false;
+            }
+            
         }
 
-        public async Task Update(T entity)
+        public async Task<bool> Update(T entity)
         {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[RentalRepositry] entity Update(entity) failed when updating the entityID {EntityId:0000}, error message: {e}", entity, e.Message);
+                return false;
+            }
+            
         }
 
         public async Task<bool> Delete(int id)
         {
-            var entity = await _dbSet.FindAsync(id);
-            if (entity == null)
+            try
             {
+                var entity = await _dbSet.FindAsync(id);
+                if (entity == null)
+                {
+                    _logger.LogError("[RentalRepository] entity not found for the entityId {EntityId:0000}", id);
+                    return false;
+                }
+                _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
+                return true;
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[RentalRepository] entity deletion failed for entityId {ItemId:0000}, error message: {e}", id, e.Message);
                 return false;
             }
-
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
-            return true;
+          
+            
         }
 
+        /*
 
         public async Task<List<DateTime>> GetBookedDatesForListning(int listningId)
         {
@@ -70,12 +123,10 @@ namespace FastFlat.DAL
             }
 
             return bookedDates;
+
         }
-        [HttpGet("api/available-countries")]
-        public async Task<List<string?>> GetAvailableCountries()
-        {
-            return await _context.Countries.Select(c => c.Contryname).ToListAsync(); 
-        }
+        
+     
 
         [HttpGet]
         public async Task<(DateTime? StartDate, DateTime? EndDate)> GetAvailableDatesForListning(int listningId)
@@ -87,6 +138,14 @@ namespace FastFlat.DAL
 
             return (listning.FromDate, listning.ToDate);
         }
+        */
+
+        [HttpGet("api/available-countries")]
+        public async Task<List<string?>> GetAvailableCountries()
+        {
+            return await _context.Countries.Select(c => c.Contryname).ToListAsync();
+        }
+
 
     }
 

@@ -2,9 +2,12 @@
 using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+
 namespace FastFlat.Controllers
 {
     public class ProfileController : Controller
@@ -36,7 +39,6 @@ namespace FastFlat.Controllers
 
         [HttpGet]
         [Authorize]
-
         //henter alle Amenities fra DB og sender det til NewListningViewModel 
         public async Task<IActionResult> NewListning()
         {
@@ -48,12 +50,13 @@ namespace FastFlat.Controllers
                 var availableCountries = _contryRepository.GetAll().ToList();
                 // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
                 var viewModel = new NewListningViewModel(amenities.ToList(), availableCountries.ToList());
+                _logger.LogInformation("[NewListningController NewListning() GET] Successfully retrieved amenities and available countries.");
                 // Sender viewModel til View for å bli rendret til brukeren.
                 return View(viewModel);
             }
             catch (Exception e)
             {
-                _logger.LogWarning("Amedities have problems " + e);
+                _logger.LogWarning("[NewListningController NewListning() GET] Error retrieving amenities and available countries: {e.Message}");
                 return NotFound(e); 
             }
         }
@@ -63,21 +66,7 @@ namespace FastFlat.Controllers
         [Authorize]
         public async Task<IActionResult> NewListning(NewListningViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                foreach (var modelStateKey in ModelState.Keys)
-                {
-                    var modelStateVal = ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        // Du kan logge feilen, skrive den ut i konsollen eller bare se den i debug-modus.
-                        System.Diagnostics.Debug.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                    }
-                }
-                // Resten av koden din...
-            }
-            //ModelState.Remove("ListningAmenities");
-
+         
             var userId = _userManager.GetUserId(User);
 
 
@@ -86,10 +75,7 @@ namespace FastFlat.Controllers
                 if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)
                 {
                     var fileName = Path.GetFileName(viewModel.ListningImage.FileName);
-
-                    // Change this directory to the appropriate location where you want to save your images
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
-
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await viewModel.ListningImage.CopyToAsync(fileStream);
@@ -98,14 +84,7 @@ namespace FastFlat.Controllers
                     // Save the path to your database
                     viewModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
                 }
-
-
-
                 viewModel.Listning.UserId = userId;
-                //System.Diagnostics.Debug.WriteLine($"FromDate: {viewModel.fromDate}, ToDate: {viewModel.toDate}");
-
-
-
                 await _listningRepository.Create(viewModel.Listning);
 
                 // Sjekk at viewModel.Listning.ListningId nå har en gyldig verdi.
@@ -123,17 +102,17 @@ namespace FastFlat.Controllers
 
 
                     }
-
+                    _logger.LogInformation($"[NewListningController NewListning() POST] Successfully created new listing with ID {viewModel.Listning.ListningId} by user ID {userId}.");
                     return Redirect("/Identity/Account/Manage/Rentals");
                 }
                 else
                 {
-                    _logger.LogError("Failed to create a new Listning in the database. User ID: {UserId}", userId);
+                    _logger.LogError("[NewListningController NewListning() POST] Failed to create a new Listning in the database.User ID: { userId}.");
                 }
             }
             else
             {
-                _logger.LogWarning("ModelState is invalid. Errors: {ModelStateErrors}",
+                _logger.LogWarning("[NewListningController NewListning() POST] ModelState is invalid.\"",
                     ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             }
 
