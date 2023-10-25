@@ -108,6 +108,11 @@ nav {
                 outline: none;
             }
 
+
+#countryDropdown {
+    width: 70%; 
+}
+
 .location {
     width: 30%;
 }
