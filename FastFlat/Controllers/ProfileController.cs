@@ -88,10 +88,12 @@ namespace FastFlat.Controllers
                     var fileName = Path.GetFileName(viewModel.ListningImage.FileName);
 
                     // Change this directory to the appropriate location where you want to save your images
+                    //img is uploaded
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
+                        //todo problems with updating it, other filemode, other methold? does get overrited
                         await viewModel.ListningImage.CopyToAsync(fileStream);
                     }
 
