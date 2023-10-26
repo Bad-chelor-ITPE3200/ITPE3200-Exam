@@ -14,8 +14,10 @@ using Index = System.Index;
 
 namespace FastFlat.Controllers
 {
+    // Controller for managing accounts.
     public class AccountController : Controller
     {
+        // ... (variables and constructor) ...
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IRentalRepository<BookingModel> _bookingrepository;
@@ -35,6 +37,7 @@ namespace FastFlat.Controllers
             _logger = logger;
         }
 
+        // Displays a view with all users for admins.
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Account()
         {
@@ -51,8 +54,7 @@ namespace FastFlat.Controllers
             };
         }
 
-
-        //uses the admin role to make sure that there are only admin that have acess to the veiws
+        // Allows admins to manage all bookings.
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageAllBookings()
         {
@@ -69,6 +71,7 @@ namespace FastFlat.Controllers
             }
         }
 
+        // Displays a view with all admin accounts for admins
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> _AdminAccounts()
         {
@@ -85,6 +88,7 @@ namespace FastFlat.Controllers
             }
         }
 
+        // Allows admins to delete a booking using its ID.
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAdmin(int id)
@@ -111,6 +115,7 @@ namespace FastFlat.Controllers
             }
         }
 
+        // Allows admins to delete an admin account using its user ID.
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAdminAccount(string userId)
@@ -131,6 +136,8 @@ namespace FastFlat.Controllers
             }
         }
 
+
+        // Allows admins to update a user's account details.
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminUpdateAuser(ApplicationUser user)
@@ -175,6 +182,8 @@ namespace FastFlat.Controllers
             }
         }
 
+
+        // Allows admins to update a user's roles.
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> updateRoles(ApplicationUser user, string newrole)
@@ -192,6 +201,7 @@ namespace FastFlat.Controllers
             }
         }
 
+        // Allows admins to update a user's account using its ID.
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminUpdateAuser(string id)
         {
@@ -212,11 +222,14 @@ namespace FastFlat.Controllers
             }
         }
 
+        // Displays a view for admins to manage listings.
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> _ManageListings()
         {
             return View(_listingRepository.GetAll().ToList());
         }
+
+        // Allows admins to delete a listing using its ID.
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAlisting(int id)
@@ -234,6 +247,8 @@ namespace FastFlat.Controllers
                 return NotFound(e);
             }
         }
+
+        // Allows regular users to delete a listing using its ID.
         [Authorize]
         public async Task<IActionResult> DeleteAlistingNormalUser(int id)
         {

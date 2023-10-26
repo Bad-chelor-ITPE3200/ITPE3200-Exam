@@ -11,8 +11,10 @@ using NuGet.Protocol.Core.Types;
 
 namespace FastFlat.Controllers
 {
+    // This controller handles operations related to exploring listings on the platform.
     public class ExplorerController : Controller
     {
+        // ... (variables and constructor) ...
 
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
@@ -30,6 +32,8 @@ namespace FastFlat.Controllers
             _contryRepo = contryRepo;
             _logger = logger; 
         }
+
+        // Displays a view with all available rentals and amenities.
         [HttpGet]
         public async Task<IActionResult> Explore()
         {
@@ -49,10 +53,16 @@ namespace FastFlat.Controllers
             return View(rentalListViewModel);
         }
 
+        // Filters and displays rentals based on user-selected amenities.
         [HttpPost]
         public async Task<IActionResult> Explore(RentalListViewModel input)
         {
 
+            // Filter the 'allRentals' list based on the amenities selected by the user.
+            // For each 'rental' in 'allRentals', we check its 'ListningAmenities'.
+            // We then see if any of these amenities exist in the user's 'SelectedAmenities' list.
+            // If there's a match (i.e., the rental has at least one amenity that the user selected), 
+            // the rental remains in the 'allRentals' list. If not, it's excluded.
             var allRentals = _rentalRepo.GetAll();
             if(allRentals == null)
             {
@@ -81,7 +91,7 @@ namespace FastFlat.Controllers
 
 
 
-
+        // Displays detailed view of a single listing.
         [HttpGet]
         public async Task<IActionResult> ViewListing(int listingId)
         {
@@ -112,7 +122,7 @@ namespace FastFlat.Controllers
         }
 
 
-        //legger til booking 
+        // Allows users to book a listing by providing booking details.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ViewListing(ListingViewModel input)
@@ -128,10 +138,15 @@ namespace FastFlat.Controllers
             
                 if (ModelState.IsValid)
                 {
+
+                    // Calculate the total number of days between the 'FromDate' and 'ToDate'.
                     DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
                     DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
                     var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
-                    var totalPrice = input.Listing.ListningPrice * numberOfDays;
+
+
+                // Calculate the total price for the booking based on the daily rate and the total number of days.
+                var totalPrice = input.Listing.ListningPrice * numberOfDays;
                     input.Booking.TotalPrice = totalPrice;
                     input.Booking.ListningId = input.Listing.ListningId;
 
@@ -159,50 +174,25 @@ namespace FastFlat.Controllers
             }
         }
 
-        /*
-
-        //henter booked dato
-        [HttpGet]
-        public async Task<IActionResult> GetBookedDates(int listningId)
-        {
-            // Hent alle booking datoer for denne listningen fra databasen
-            var bookedDates = await _bookingRepo.GetBookedDatesForListning(listningId);
-            return Json(bookedDates);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableDatesForListning(int listningId)
-        {
-            //Gets all the dates that are available for booking
-            var dates = await _rentalRepo.GetAvailableDatesForListning(listningId);
-            _logger.LogInformation("available dates have been gained" + dates);
-            return Ok(new { fromDate = dates.StartDate, toDate = dates.EndDate });
-        }
-
-        [HttpGet("api/available-countries")]
-        public IActionResult GetAvailableCountries()
-        {
-            var countries = _rentalRepo.GetAvailableCountries(); // Assuming _rentalRepository is an instance of RentalRepository
-            return Ok(countries);
-        }
-        */
-
+        // AJAX endpoint: Retrieves a list of dates when a specific listing is already booked.
+        // This method is designed to work in conjunction with frontend AJAX calls to fetch booked dates and update the datepickers.
         public async Task<ActionResult> GetBookedDates(int listningId)
         {
             try
             {
+                // Fetch all bookings for the specified listing
                 var bookings = _rentalRepo.GetAll().OfType<BookingModel>()
                                               .Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
-                {
+
+                {   // Populate the 'bookedDates' list with every individual date from each booking's 'FromDate' to 'ToDate'.
                     for (var date = booking.FromDate; date <= booking.ToDate; date = date.AddDays(1))
                     {
                         bookedDates.Add(date);
                     }
                 }
-
                 return View(bookedDates);
             }
             catch (Exception e)
@@ -212,16 +202,20 @@ namespace FastFlat.Controllers
             }
         }
 
+        // AJAX endpoint: Retrieves the start and end dates when a specific listing is available for booking.
+        // This method is designed to work in conjunction with frontend AJAX calls to fetch available date ranges and update the datepickers.
         public async Task<ActionResult> GetAvailableDates(int listningId)
         {
             try
             {
+                // Fetch the specified listing
                 var listning = await _rentalRepo.GetById(listningId);
                 if (listning == null)
                 {
                     _logger.LogWarning("[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
                 }
 
+                // Get the date range when the listing is available
                 var availableDates = (listning?.FromDate, listning?.ToDate);
 
                 return View(availableDates);
@@ -233,6 +227,8 @@ namespace FastFlat.Controllers
             }
         }
 
+
+        // Fetches and returns a list of available countries from the repository.
         [HttpGet("api/available-countries")]
         public async Task<IActionResult> GetAvailableCountries()
         {

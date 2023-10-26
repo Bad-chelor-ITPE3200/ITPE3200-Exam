@@ -69,7 +69,6 @@ namespace FastFlat.Controllers
          
             var userId = _userManager.GetUserId(User);
 
-
             if (ModelState.IsValid)
             {
                 if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)
@@ -100,7 +99,6 @@ namespace FastFlat.Controllers
 
                         await _listningAmenityRepository.Create(listningAmenity);
 
-
                     }
                     _logger.LogInformation($"[NewListningController NewListning() POST] Successfully created new listing with ID {viewModel.Listning.ListningId} by user ID {userId}.");
                     return Redirect("/Identity/Account/Manage/Rentals");
@@ -122,8 +120,6 @@ namespace FastFlat.Controllers
 
             return View(viewModel);
         }
-        
-        
     }
 }
 
