@@ -32,7 +32,7 @@ var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);
 
 
-
+builder.Services.AddHttpClient();
 //builder.Services.AddScoped<SignInManager<IdentityUser>>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

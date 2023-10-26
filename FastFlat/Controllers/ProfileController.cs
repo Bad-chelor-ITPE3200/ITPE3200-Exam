@@ -45,9 +45,9 @@ namespace FastFlat.Controllers
                 // Henter alle fasiliteter fra databasen ved å bruke _amenityRepository.
                 var amenities = _amenityRepository.GetAll().ToList();
                 // Oppretter en ny instans av NewListningViewModel med fasilitetene vi nettopp hentet.
-                var availableCountries = _contryRepository.GetAll().ToList();
+ 
                 // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
-                var viewModel = new NewListningViewModel(amenities.ToList(), availableCountries.ToList());
+                var viewModel = new NewListningViewModel(amenities.ToList());
                 _logger.LogInformation("[NewListningController NewListning() GET] Successfully retrieved amenities and available countries.");
                 // Sender viewModel til View for å bli rendret til brukeren.
                 return View(viewModel);
