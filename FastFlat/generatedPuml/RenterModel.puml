@@ -1,6 +1,0 @@
-@startuml
-class RenterModel {
-    + renterModelId : int <<get>> <<set>>
-    + <<virtual>> bookings : List<BookingModel>? <<get>> <<set>>
-}
-@enduml

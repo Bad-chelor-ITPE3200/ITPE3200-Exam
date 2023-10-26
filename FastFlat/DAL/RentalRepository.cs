@@ -71,11 +71,6 @@ namespace FastFlat.DAL
 
             return bookedDates;
         }
-        [HttpGet("api/available-countries")]
-        public async Task<List<string?>> GetAvailableCountries()
-        {
-            return await _context.Countries.Select(c => c.Contryname).ToListAsync(); 
-        }
 
         [HttpGet]
         public async Task<(DateTime? StartDate, DateTime? EndDate)> GetAvailableDatesForListning(int listningId)
