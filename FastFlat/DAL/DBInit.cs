@@ -1,8 +1,6 @@
 
 using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace FastFlat.DAL
@@ -199,8 +197,8 @@ namespace FastFlat.DAL
             }*/
 
             if (!context.Roles.Any())
-                //roles for the acess controll
-                //we let the controller control everything about what they can edit or not
+            //roles for the acess controll
+            //we let the controller control everything about what they can edit or not
             {
                 var roles = new List<IdentityRole>
                 {

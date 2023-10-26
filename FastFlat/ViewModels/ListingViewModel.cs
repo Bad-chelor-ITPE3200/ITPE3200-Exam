@@ -9,7 +9,7 @@ namespace FastFlat.ViewModels
 
         public BookingModel Booking { get; set; }
 
-       
+
         public string? _currentViewName;
 
         public ListingViewModel()

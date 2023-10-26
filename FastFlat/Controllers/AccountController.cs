@@ -1,5 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
-using FastFlat.DAL;
+﻿using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -7,9 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Serilog.Data;
-using Index = System.Index;
 
 
 namespace FastFlat.Controllers
@@ -23,17 +19,17 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<BookingModel> _bookingrepository;
         private readonly IRentalRepository<ApplicationUser> _ApplicationUserRepostiory;
         private readonly ILogger<AccountController> _logger;
-        private IRentalRepository<ListningModel> _listingRepository; 
+        private IRentalRepository<ListningModel> _listingRepository;
 
         public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
             IRentalRepository<BookingModel> bookingrepository,
-            IRentalRepository<ApplicationUser> applicationUserRepostiory, IRentalRepository<ListningModel>listingRepository,ILogger<AccountController> logger)
+            IRentalRepository<ApplicationUser> applicationUserRepostiory, IRentalRepository<ListningModel> listingRepository, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _bookingrepository = bookingrepository;
             _ApplicationUserRepostiory = applicationUserRepostiory;
-            _listingRepository = listingRepository; 
+            _listingRepository = listingRepository;
             _logger = logger;
         }
 
@@ -122,12 +118,12 @@ namespace FastFlat.Controllers
         {
             try
             {
-                
+
                 var user = _userManager.FindByIdAsync(userId).Result;
-                 await _userManager.DeleteAsync(user);
+                await _userManager.DeleteAsync(user);
                 _logger.LogInformation($"[AccountController DeleteAdminAccount()] User with ID {userId} deleted successfully.");
                 return RedirectToAction(nameof(_AdminAccounts));
-                 
+
             }
             catch (Exception e)
             {

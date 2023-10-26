@@ -1,43 +1,35 @@
-﻿using System.Composition;
-using System.Reflection.Metadata.Ecma335;
-using FastFlat.DAL;
+﻿using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
-using System.Net.Http;
-using System.Text.Json.Serialization;
-using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 
 namespace FastFlat.Controllers
 {
     // This controller handles operations related to exploring listings on the platform.
     public class ExplorerController : Controller
     {
-      
+
         private readonly HttpClient _httpClient;
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<BookingModel> _bookingRepo;
-        private readonly IRentalRepository<ContryModel> _contryRepo;
+
         private readonly ILogger<ExplorerController> _logger;
 
-        public ExplorerController(IHttpClientFactory httpClientFactory, IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController>logger)
+        public ExplorerController(IHttpClientFactory httpClientFactory, IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController> logger)
         {
             _httpClient = httpClientFactory.CreateClient();
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;
             _userManager = userManager;
             _bookingRepo = bookingRepo;
-            _logger = logger; 
+            _logger = logger;
         }
 
         private async Task<string> GetAmadeusAccessTokenAsync()
@@ -165,20 +157,20 @@ namespace FastFlat.Controllers
             {
                 _logger.LogError("[ExplorerController ViewListing() POST] Modelstate is not valid in VeiwListing");
             }
-            
-                if (ModelState.IsValid)
-                {
 
-                    // Calculate the total number of days between the 'FromDate' and 'ToDate'.
-                    DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
-                    DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
-                    var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
+            if (ModelState.IsValid)
+            {
+
+                // Calculate the total number of days between the 'FromDate' and 'ToDate'.
+                DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
+                DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
+                var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
 
 
                 // Calculate the total price for the booking based on the daily rate and the total number of days.
                 var totalPrice = input.Listing.ListningPrice * numberOfDays;
-                    input.Booking.TotalPrice = totalPrice;
-                    input.Booking.ListningId = input.Listing.ListningId;
+                input.Booking.TotalPrice = totalPrice;
+                input.Booking.ListningId = input.Listing.ListningId;
 
                 try
                 {
@@ -190,16 +182,16 @@ namespace FastFlat.Controllers
                     _logger.LogError("[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
                 }
                 return RedirectToAction(nameof(Explore));
-                }
+            }
 
-                else
-                {
+            else
+            {
                 // Hvis ModelState er ugyldig, bygg ListingViewModel på nytt
                 var listing = await _rentalRepo.GetById(input.Listing.ListningId);
                 var ownerUserId = listing.UserId;
                 var user = await _userManager.FindByIdAsync(ownerUserId);
                 var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
-                rentalListViewModel.Booking = input.Booking; 
+                rentalListViewModel.Booking = input.Booking;
                 return View(rentalListViewModel);
             }
         }

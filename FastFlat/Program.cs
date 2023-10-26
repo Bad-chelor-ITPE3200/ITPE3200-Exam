@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using FastFlat.DAL;
-using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
-using Serilog.Events;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
@@ -76,7 +74,8 @@ builder.Services.AddTransient<DBInit>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()){
+if (app.Environment.IsDevelopment())
+{
     // Create an instance of DBInit and call Seed
     using var scope = app.Services.CreateScope();
     await DBInit.Seed(app); // This line calls the Seed method on the DBInit instance.

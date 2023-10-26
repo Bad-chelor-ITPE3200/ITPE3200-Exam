@@ -6,7 +6,7 @@ namespace FastFlat.ViewModels
     {
         public ListningModel Listing { get; set; } = default!;
         public ApplicationUser User { get; set; }
-        
+
 
         public DateTime FromDate { get; set; }
 
