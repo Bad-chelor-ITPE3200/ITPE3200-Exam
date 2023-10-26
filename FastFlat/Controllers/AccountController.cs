@@ -267,7 +267,7 @@ namespace FastFlat.Controllers
                 upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
                 upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
                 upDatedUser.NoOfBeds = listingVeiwModel.Listning.NoOfBeds;
-                //upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
+                upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
                 
                  // if it is updated
                 
@@ -283,17 +283,18 @@ namespace FastFlat.Controllers
                         
                    
                    
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
                         {
+                            _logger.LogInformation(fileStream.ToString());
                             _logger.LogInformation("image saved!");
                           //becomes null, cant be overwritten
                            await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
                         } //why
-                        LMM.Listning.ListningImageURL ="/images/listnings/" + fileName;
+                        listingVeiwModel.Listning.ListningImageURL ="/images/listnings/" + fileName;
                        
                     }
 
-                    upDatedUser.ListningImageURL = LMM.Listning.ListningImageURL; 
+                    upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL; 
                      // Change this directory to the appropriate location where you want to save your images
                     
                      
