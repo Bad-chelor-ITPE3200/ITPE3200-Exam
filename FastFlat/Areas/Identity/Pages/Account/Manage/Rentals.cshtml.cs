@@ -36,14 +36,14 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         public async Task OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
-            var userRentalsWithAmenities = _listningRepository.GetAll()
-                .Include(l => l.ListningAmenities)
-                .ThenInclude(la => la.Amenity)
-                .Where(r => r.UserId == user.Id)
-                .ToList();
+            var userRentalsWithAmenities = (await _listningRepository.GetAll())
+    .AsQueryable() // Konverterer til IQueryable<T>
+    .Include(l => l.ListningAmenities)
+    .ThenInclude(la => la.Amenity)
+    .Where(r => r.UserId == user.Id)
+    .ToList();
             Rentals = userRentalsWithAmenities;
         }
-
 
     }
 }

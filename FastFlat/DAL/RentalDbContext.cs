@@ -24,10 +24,10 @@ public class RentalDbContext : IdentityDbContext
     //public DbSet<UserModel> Users { get; set; }
     public DbSet<BookingModel> Bookings { get; set; }
 
-    public DbSet<IdentityRole> Roles { get; set; } // roles for the database
+    public new DbSet<IdentityRole> Roles { get; set; } // roles for the database
 
     //public DbSet<CityModel> Cities { get; set; }
-    public DbSet<ApplicationUser> Users { get; set; }
+    public new DbSet<ApplicationUser> Users { get; set; }
 
     public DbSet<AmenityModel> Amenities { get; set; }
 

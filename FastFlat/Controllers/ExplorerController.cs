@@ -49,7 +49,7 @@ namespace FastFlat.Controllers
             var tokenResponse = await _httpClient.SendAsync(tokenRequest);
             var tokenData = await tokenResponse.Content.ReadFromJsonAsync<AmadeusTokenResponse>();
 
-            return tokenData?.AccessToken;
+            return tokenData?.AccessToken!;
         }
 
         private class AmadeusTokenResponse
@@ -61,53 +61,80 @@ namespace FastFlat.Controllers
         [HttpGet]
         public async Task<IActionResult> Explore([FromQuery] ExploreRequest request)
         {
-            var rentalList = _rentalRepo.GetAll();
-
+            var rentalList = await _rentalRepo.GetAll();
             // Search by city
-            if (!string.IsNullOrEmpty(request.City))
+            var city = request.City?.ToLower() ?? string.Empty;
+            if (!string.IsNullOrEmpty(city))
             {
-                rentalList = rentalList.Where(listing => listing.ListningCity.ToLower() == request.City.ToLower());
+                rentalList = rentalList.Where(listing => listing.ListningCity != null && listing.ListningCity.ToLower() == city);
             }
-
+            else
+            {
+                _logger.LogWarning($"[ExplorerController Explore() GET] City parameter is empty or null.");
+            }
             // Filter by fromDate. Assuming listings that are available "from" a date are available for bookings from that date.
             if (request.FromDate != default(DateTime))
             {
                 rentalList = rentalList.Where(listing => listing.FromDate.HasValue && listing.FromDate.Value <= request.FromDate);
             }
-
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] FromDate parameter not provided or is default.");
+            }
             // Filter by toDate. Assuming listings that are available "to" a date are available for bookings until that date.
             if (request.ToDate != default(DateTime))
             {
                 rentalList = rentalList.Where(listing => listing.ToDate.HasValue && listing.ToDate.Value >= request.ToDate);
             }
-
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] ToDate parameter not provided or is default.");
+            }
             // Filter by number of guests (compared with number of beds in the listing)
             if (request.Guests > 0)
             {
                 rentalList = rentalList.Where(listing => listing.NoOfBeds.HasValue && listing.NoOfBeds.Value >= request.Guests);
+            }
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] Guests parameter not provided or is zero.");
             }
             var requestedAmenities = new List<string>();
             // Assuming Amenities is a JSON string list. Deserialize it and filter listings based on amenities.
             if (!string.IsNullOrEmpty(request.Amenities))
             {
                 requestedAmenities = JsonConvert.DeserializeObject<List<string>>(request.Amenities);
-                if (requestedAmenities.Count > 0)
+                if (requestedAmenities?.Count > 0)
                 {
-                    var allRentals = rentalList.ToList();
+                    var allRentals = await _rentalRepo.GetAll();
 
                     // Then filter these in-memory listings based on the requested amenities.
                     allRentals = allRentals.Where(listing =>
-                        listing.ListningAmenities != null &&
-                        requestedAmenities.All(requestedAmenity =>
-                            listing.ListningAmenities.Any(listingAmenity =>
-                                listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+    listing.ListningAmenities != null &&
+    requestedAmenities.All(requestedAmenity =>
+        listing.ListningAmenities.Any(listingAmenity =>
+            listingAmenity.Amenity != null &&
+            listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+
 
                     rentalList = allRentals.AsQueryable();
                 }
+                else
+                {
+                    _logger.LogWarning($"[ExplorerController Explore() GET] Deserialized amenities list is empty.");
+                }
             }
-
-            var amenityList = _amenityRepo.GetAll();
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] Amenities parameter is empty or null.");
+            }
+            var amenityList = await _amenityRepo.GetAll();
             var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.City, request.Guests, request.FromDate, request.ToDate, "Card");
+            if (rentalListViewModel == null)
+            {
+                _logger.LogError($"[ExplorerController Explore() GET] Failed to create RentalListViewModel.");
+                return StatusCode(500, "Failed to create RentalListViewModel.");
+            }
             return View(rentalListViewModel);
         }
 
@@ -121,7 +148,7 @@ namespace FastFlat.Controllers
             if (listing == null)
             {
                 _logger.LogError($"[ExplorerController ViewListing() GET] Listing not found with id: {listingId}");
-                return NotFound("Listing could not be found.");
+                return StatusCode(500,"Listing could not be found.");
             }
 
             var userId = listing.UserId;
@@ -129,19 +156,21 @@ namespace FastFlat.Controllers
             if (user == null)
             {
                 _logger.LogError($"[ExplorerController ViewListing() GET] User not found with id: {userId}");
-                return NotFound("User could not be found.");
+                return StatusCode(500, "User could not be found.");
             }
 
             var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
             if (rentalListViewModel == null)
             {
                 _logger.LogError("[ExplorerController ViewListing() GET] Failed to create ListingViewModel.");
+                return StatusCode(500, "Failed to create ListingViewModel.");
             }
 
             rentalListViewModel.Booking = new BookingModel();
 
             return View(rentalListViewModel);
         }
+
 
 
         // Allows users to book a listing by providing booking details.
@@ -175,11 +204,13 @@ namespace FastFlat.Controllers
                 try
                 {
                     await _bookingRepo.Create(input.Booking);
-                    _logger.LogInformation("Creation of new booking succeeded. Booking details: {input.Booking}");
+                    _logger.LogInformation($"Creation of new booking succeeded. Booking details: {input.Booking}");
+
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError("[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
+                    _logger.LogError($"[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
+                    return StatusCode(500, "Failed to create booking.");
                 }
                 return RedirectToAction(nameof(Explore));
             }
@@ -203,8 +234,9 @@ namespace FastFlat.Controllers
             try
             {
                 // Fetch all bookings for the specified listing
-                var bookings = _rentalRepo.GetAll().OfType<BookingModel>()
-                                              .Where(b => b.ListningId == listningId).ToList();
+                var allRentals = await _rentalRepo.GetAll();
+                var bookings = allRentals.OfType<BookingModel>()
+                                         .Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
@@ -219,7 +251,7 @@ namespace FastFlat.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("[ExplorerController GetBookedDates()] Error occurred while fetching booked dates: {e.Message}");
+                _logger.LogError($"[ExplorerController GetBookedDates()] Error occurred while fetching booked dates: {e.Message}");
                 throw;
             }
         }
@@ -234,7 +266,7 @@ namespace FastFlat.Controllers
                 var listning = await _rentalRepo.GetById(listningId);
                 if (listning == null)
                 {
-                    _logger.LogWarning("[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
+                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
                 }
 
                 // Get the date range when the listing is available
@@ -244,8 +276,8 @@ namespace FastFlat.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("[ExplorerController GetAvailableDates()] Error occurred while fetching available dates: {e.Message}");
-                throw;
+                _logger.LogError($"[ExplorerController GetAvailableDates()] Error occurred while fetching available dates: {e.Message}");
+                return StatusCode(500, "Failed to fetch available dates.");
             }
         }
         [HttpGet("api/city-search")]

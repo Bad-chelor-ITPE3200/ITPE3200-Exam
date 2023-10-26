@@ -56,13 +56,13 @@ namespace FastFlat.Controllers
         {
             try
             {
-                var bookings = _bookingrepository.GetAll().ToList(); //finds all boooking
+                var bookings = (await _bookingrepository.GetAll()).ToList(); //finds all boooking
                 _logger.LogInformation("[AccountController ManageAllBookings()] Bookings retrieved successfully.");
                 return View(bookings);
             }
             catch (Exception e)
             {
-                _logger.LogWarning("[AccountController ManageAllBookings()] Error retrieving bookings: {e.Message}");
+                _logger.LogWarning($"[AccountController ManageAllBookings()] Error retrieving bookings: {e.Message}");
                 return NotFound();
             }
         }
@@ -79,7 +79,7 @@ namespace FastFlat.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogCritical("[AccountController _AdminAccounts()] Error retrieving users: {e.Message}");
+                _logger.LogCritical($"[AccountController _AdminAccounts()] Error retrieving users: {e.Message}");
                 return NotFound();
             }
         }
@@ -160,7 +160,7 @@ namespace FastFlat.Controllers
                     var ok = await _userManager.UpdateAsync(newuser);
                     if (ok.Succeeded)
                     {
-                        _logger.LogInformation("[AccountController AdminUpdateAuser()] User with email {user.Email} updated successfully.");
+                        _logger.LogInformation($"[AccountController AdminUpdateAuser()] User with email {user.Email} updated successfully.");
                         return RedirectToAction(nameof(_AdminAccounts));
                     }
                     else
@@ -186,13 +186,13 @@ namespace FastFlat.Controllers
         {
             if (!_userManager.GetRolesAsync(user).Equals(newrole))
             {
-                _logger.LogInformation("[AccountController updateRoles()] Role {newrole} added to user with ID {user.Id}.");
+                _logger.LogInformation($"[AccountController updateRoles()] Role {newrole} added to user with ID {user.Id}.");
                 await _userManager.AddToRoleAsync(user, newrole);
                 return RedirectToAction(nameof(_AdminAccounts));
             }
             else
             {
-                _logger.LogWarning("[AccountController updateRoles()] User with ID {user.Id} already had the role {newrole}.");
+                _logger.LogWarning($"[AccountController updateRoles()] User with ID {user.Id} already had the role {newrole}.");
                 return RedirectToAction(nameof(_AdminAccounts));
             }
         }
@@ -222,7 +222,7 @@ namespace FastFlat.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> _ManageListings()
         {
-            return View(_listingRepository.GetAll().ToList());
+            return View((await _listingRepository.GetAll()).ToList());
         }
 
         // Allows admins to delete a listing using its ID.
@@ -234,7 +234,7 @@ namespace FastFlat.Controllers
             {
                 var booked = _listingRepository.GetById(id).Result;
                 await _listingRepository.Delete(id);
-                _logger.LogInformation("[AccountController DeleteAlisting()] Listing with ID {id} deleted successfully.");
+                _logger.LogInformation($"[AccountController DeleteAlisting()] Listing with ID {id} deleted successfully.");
                 return RedirectToAction(nameof(ManageAllBookings));
             }
             catch (Exception e)
@@ -252,7 +252,7 @@ namespace FastFlat.Controllers
             {
                 var booked = _listingRepository.GetById(id).Result;
                 await _listingRepository.Delete(id);
-                _logger.LogInformation("[AccountController DeleteAlistingNormalUser()] Listing with ID {id} deleted by normal user.");
+                _logger.LogInformation($"[AccountController DeleteAlistingNormalUser()] Listing with ID {id} deleted by normal user.");
                 return LocalRedirect("~/Identity/Account/Manage/Rentals");
             }
             catch (Exception e)
