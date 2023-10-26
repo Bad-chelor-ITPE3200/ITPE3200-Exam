@@ -4,11 +4,11 @@ namespace FastFlat.ViewModels;
 
 public class ApplicationUserVeiwModel : IdentityUser
 {
-    public string UserName { get; set; }
+    public new string UserName { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
+    public new string Email { get; set; }
+    public new string PhoneNumber { get; set; }
     public byte[] ProfilePicture { get; set; }
     public string? _currentViewName;
 
