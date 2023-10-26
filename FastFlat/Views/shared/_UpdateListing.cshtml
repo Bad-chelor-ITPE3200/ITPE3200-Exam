@@ -6,7 +6,7 @@
 </head>
             
 <body>
-<form asp-controller="Account" asp-action="UpdateListing" asp-route-Id="@Model.Listning.ListningId">
+<form asp-controller="Account" asp-action="UpdateListing">
     <input type="hidden"  asp-for="@Model.Listning.ListningId"/>
     <div class="form-group">
         <label asp-for="@Model.Listning.ListningName"></label><span class="text-danger">*</span>

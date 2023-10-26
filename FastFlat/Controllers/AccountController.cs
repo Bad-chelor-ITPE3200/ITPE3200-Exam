@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.IdentityModel.Tokens;
 using Serilog.Data;
 using Index = System.Index;
 
@@ -252,15 +253,45 @@ namespace FastFlat.Controllers
         }
         [Authorize]
         [HttpPost]
-       public async Task<IActionResult> UpdateListing(int Id){ //id 0, should be 1, right id after routing 
+       public async Task<IActionResult> UpdateListing(NewListningViewModel LMM){ //id 0, should be 1, right id after routing 
             //todo: update the listing, we use standard account
             try
             {
+                
+                //modelstate not here, so we dont need to create a seperate validation
                 //todo: the veiw model to update the user
-                var upDatedUser = _listingRepository.GetById(Id).Result; //becomes null
-                NewListningViewModel listingVeiwModel = new NewListningViewModel(_amenityModelRepository.GetAll().ToList(), _countryReposity.GetAll().ToList(), "_UpdateListing");
+                var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; //becomes null
+                List<AmenityModel> amendities = _amenityModelRepository.GetAll().ToList();
+                List<ContryModel> contries = _countryReposity.GetAll().ToList(); 
+                NewListningViewModel listingVeiwModel = new NewListningViewModel(LMM.Listning,"_UpdateListing", LMM.ListningImage);
                 upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
                 upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
+                
+                //upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
+                
+                 // if it is updateda
+                 if (listingVeiwModel.Listning.ListningImageURL != upDatedUser.ListningImageURL)
+                 {
+                     var fileName = Path.GetFileName(listingVeiwModel.Listning.ListningImageURL);
+
+                     // Change this directory to the appropriate location where you want to save your images
+                     if (fileName != null)
+                     {
+                         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
+
+                         using (var fileStream = new FileStream(filePath, FileMode.Create))
+                         {
+                             await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
+                         }
+                     }
+                     
+                     // Save the path to your database
+                     listingVeiwModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
+                 }
+                    //image: 
+                   
+
+                
                 upDatedUser.FromDate = listingVeiwModel.Listning.FromDate; 
                 upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
                 upDatedUser.Location = listingVeiwModel.Listning.Location;

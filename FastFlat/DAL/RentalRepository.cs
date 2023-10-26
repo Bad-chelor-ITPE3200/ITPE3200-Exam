@@ -26,7 +26,7 @@ namespace FastFlat.DAL
             }
             catch (Exception e)
             {
-                _logger.LogCritical("error in getall in generic repository, error " +e);
+              _logger.LogCritical("error in getall in generic repository, error " +e);
                 return null; 
             }
         }

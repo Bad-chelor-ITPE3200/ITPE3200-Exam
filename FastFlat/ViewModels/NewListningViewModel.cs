@@ -9,7 +9,7 @@ namespace FastFlat.ViewModels
         public ListningModel Listning { get; set; }
 
         public List<AmenityModel>? Amenities { get; set; }
-        public String? CurrentVeiwName { get; set;  }
+        public string? CurrentVeiwName { get; set; }
         public IEnumerable<ContryModel>? AvailableCountries { get; set; }
 
         [MinItems(1, ErrorMessage = "Vennligst velg minst en amenity.")]
@@ -34,12 +34,14 @@ namespace FastFlat.ViewModels
             SelectedAmenities = new List<int>();
         }
 
-        public NewListningViewModel(List<AmenityModel> amenities, List<ContryModel> contries, 
-            String?  _currentVeiwName)
+        public NewListningViewModel(ListningModel listning,
+            string? currentVeiwName, IFormFile img)
         {
-            amenities = amenities ?? new List<AmenityModel>();
-            AvailableCountries = contries ?? new List<ContryModel>();
-            CurrentVeiwName = _currentVeiwName;
+           // Amenities = amenities ?? new List<AmenityModel>();
+            //AvailableCountries = contries ?? new List<ContryModel>();
+            Listning = listning;
+            CurrentVeiwName = currentVeiwName;
+            ListningImage = img; 
         }
     }
 }
