@@ -22,7 +22,7 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 //configure logger
 var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
     .File($"Logs/appLog.txt");
-
+builder.Services.AddHttpClient();
 //creating logger
 var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);

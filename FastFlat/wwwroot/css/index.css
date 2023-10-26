@@ -95,3 +95,14 @@
 h5 {
     margin: 0;
 }
+.location{
+    position: relative;
+}
+#output{
+    position: absolute;
+    top: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-content: start;
+}

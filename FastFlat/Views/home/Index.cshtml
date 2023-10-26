@@ -10,48 +10,8 @@
                 <h1>Finding your rental has never been easier.</h1>
                 <p>Lorem ipsum dolor si ames ah detru luer afn ela dilasti hestem lak.</p>
             </div>
-            <div class="searchbar">
-                <div class="location">
-                    <label for="location" class="searchbar-title">Hvor</label>
-                    <input type="text" placeholder="Søk etter lokasjon" id="location" hidden>
-                    <select id="countryDropdown">
-                        <!-- Options will be displayed here dynamically -->
-                    </select>
-                </div>
-                <div class="fromDate">
-                    <label for="fromDate" class="searchbar-title">Innsjekking</label>
-                    <input type="text" placeholder="Legg til dato" id="fromDate">
-                </div>
-                <div class="toDate">
-                    <label for="toDate" class="searchbar-title">Utsjekking</label>
-                    <input type="text" placeholder="Legg til dato" id="toDate">
-                </div>
-                <div class="guests">
-                    <label for="guests" class="searchbar-title">Gjester</label>
-                    <input type="number" placeholder="Legg til gjester" id="guests">
-                </div>
-                <div id="submit-btn">
-                    <img src="@Url.Content("~/images/icons/search.svg")">
-                </div>
-            </div>
+            <partial name="_SearchBar" />
         </div>
-        @{/*
-        <div class="hero-right">
-            <div class="thumbnail">
-                <div class="thumbnail-marker">
-                    <img src="@Url.Content("~/images/icons/marker.svg")">
-                </div>
-                <div class="thumbnail-text">
-                    <h5 class="card-title">Bahamas resort</h5>
-                    <p>17.-21. sep.</p>
-                    <p class="card-subtitle mb-2 text-body-secondary"><span class="price">1345 NOK</span> per natt</p>
-                </div>
-            </div>
-        </div>
-            */
-        }
-        @{
-
         
         <div class="hero-right">
             <div id="carouselImages" class="thumbnail carousel slide" data-bs-ride="true">
@@ -92,33 +52,13 @@
                                     </div>
                                 </div>
                             }
-                            i++;
-                        }
+                        i++;
+                    }
                 </div>
             </div>
         </div>
-    }
     </div>
 </section>
-
 <script>
-
-    $(document).ready(function () {
-        $.ajax({
-            url: '/api/available-countries',
-            type: 'GET',
-            success: function (data) {
-                console.log(data);
-                let countries = data.result; // Access the result property directly
-                let dropdown = $("#countryDropdown");
-                countries.forEach(function (country) {
-                    dropdown.append(new Option(country, country));
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error fetching countries:", textStatus, errorThrown);
-            }
-        });
-    });
-
+    const selectedAmenities = []
 </script>

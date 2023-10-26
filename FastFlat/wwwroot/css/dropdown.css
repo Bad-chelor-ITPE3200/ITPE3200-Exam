@@ -1,4 +1,4 @@
-﻿.dropdown-menu {
+﻿.dropdown-menu-og {
     max-height:0px;
     position: absolute;
     top:120%;
@@ -15,7 +15,7 @@
     border-radius: 10px;
 }
 
-.dropdown-menu.transform-menu {
+.transform-menu {
     max-height:600px;
 }
 

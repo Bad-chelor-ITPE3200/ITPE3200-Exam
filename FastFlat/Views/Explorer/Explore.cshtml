@@ -5,20 +5,43 @@
     <link rel="stylesheet" href="~/css/rentalCard.css" />
 }
 
+<script>
+    function addAmenity(amenity) {
+        if (selectedAmenities.includes(amenity)) {
+            let index = selectedAmenities.indexOf(amenity);
+            if (index !== -1) {
+                selectedAmenities.splice(index, 1);
+            }
+            $(`#${amenity}`).css("transform", "scale(1)")
+            $(`#${amenity}`).css("color", "#808080")
+            $(`#${amenity}`).css("font-weight", "regular")
+            console.log("fjerner")
+            search()
+        }else{
+            selectedAmenities.push(amenity)
+            $(`#${amenity}`).css("transform", "scale(1.2)")
+            $(`#${amenity}`).css("color", "black")
+            $(`#${amenity}`).css("font-weight", "bold")
+            console.log("legger til")
+            search()
+        }
+    }
+    
+
+</script>
+
 <section class="hero">
     <div class="search-section">
-        <partial name="_SearchBar" />
+        <partial name="_SearchBar" model="Model"/>
     </div>
     <div id="filters">
         @foreach (var amenity in Model.Amenities)
         {
-            var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
-            <form asp-action="Explore" method="post">
-                <button type="submit" name="SelectedAmenities" value="@amenity.AmenityName" class="amenity-button @isActive">
-                    @amenity.AmenityName
-                    <img class="amenity-icon" src="@amenity.AmenityLogo" />
-                </button>
-            </form>
+            //var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
+            <button type="submit" name="SelectedAmenities" value="@amenity.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.AmenityName')" id="@amenity.AmenityName">
+                @amenity.AmenityName
+                <img class="amenity-icon" src="@amenity.AmenityLogo" />
+            </button>
         }
     </div>
     <div class="result-wrapper">
@@ -32,3 +55,38 @@
         </div>
     </div>
 </section>
+<script>
+    const selectedAmenities = @Html.Raw(Json.Serialize(Model.SelectedAmenities));
+
+    if (selectedAmenities.length > 0 && selectedAmenities) {
+        selectedAmenities.forEach(amenity => {
+            $(`#${amenity}`).css("transform", "scale(1.2)")
+            $(`#${amenity}`).css("color", "black")
+            $(`#${amenity}`).css("font-weight", "bold")
+        })
+    }
+
+    // Get a reference to your div
+    const results = document.getElementById('results');
+    const filters = document.getElementById('filters');
+
+    // Function to check if the div has been scrolled down
+    function checkScroll() {
+        const scrollTop = results.scrollTop;
+
+        // Check if the div has been scrolled down (you can adjust the threshold)
+        if (scrollTop > 10) {
+            // Apply a box shadow or any other styling you want
+            filters.style.boxShadow = '0px 23px 21px -22px rgba(0,0,0,0.75)';
+        } else {
+            // Remove the box shadow or reset styling when the div is at the top
+            filters.style.boxShadow = 'none';
+        }
+    }
+
+    // Attach the scroll event listener to your div
+    results.addEventListener('scroll', checkScroll);
+
+    // Call the checkScroll function on page load to handle initial scroll position
+    checkScroll();
+</script>

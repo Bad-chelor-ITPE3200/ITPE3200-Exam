@@ -22,11 +22,12 @@ namespace FastFlat.Models
         public int? NoOfBeds { get; set; }
         public int? SquareMeter { get; set; }
         public float? Rating { get; set; }
-        public string? ListningAddress { get; set; } = string.Empty;
+        public string? ListningAddress { get; set; }
+        public string? ListningCity { get; set; }
         public decimal ListningPrice { get; set; }
 
         //public virtual CityModel City { get; set; }//legger til city
-        public virtual LocationModel? Location { get; set; } = default!;
+        //public virtual LocationModel? Location { get; set; } = default!;
 
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }

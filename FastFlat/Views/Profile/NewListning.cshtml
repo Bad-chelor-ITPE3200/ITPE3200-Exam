@@ -2,10 +2,13 @@
 
 @model NewListningViewModel
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/newlisting.css" />
+}
 <div class="container">
     <h2>Create New Listning</h2>
 
-    <form asp-action="NewListning" method="post" enctype="multipart/form-data">
+    <form asp-action="NewListning" method="post" enctype="multipart/form-data" id="form">
         <div class="form-group">
             <label asp-for="Listning.ListningName"></label><span class="text-danger">*</span>
             <input asp-for="Listning.ListningName" class="form-control" />
@@ -41,16 +44,15 @@
             <span asp-validation-for="Listning.ListningDescription" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Listning.ListningAddress">Country</label>
-            @if (Model.AvailableCountries != null && Model.AvailableCountries.Any())
-            {
-                <select asp-for="Listning.ListningAddress" asp-items="@(new SelectList(Model.AvailableCountries, "Contryname", "Contryname"))" class="form-control"></select>
-            }
-            else
-            {
-                <p>No countries available.</p>
-            }
+            <label asp-for="Listning.ListningAddress">Address</label>
+            <input asp-for="Listning.ListningAddress" class="form-control" />
             <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group city">
+            <label asp-for="Listning.ListningCity">Choose city</label>
+            <input asp-for="Listning.ListningCity" id="location"class="form-control" />
+            <span asp-validation-for="Listning.ListningCity" class="text-danger"></span>
+            <div id="output"></div>
         </div>
         <div class="form-group">
             <label asp-for="Listning.SquareMeter"></label>
@@ -84,5 +86,53 @@
     document.getElementById('fromDateInput').addEventListener('change', function() {
         const selectedDate = this.value;
         document.getElementById('toDateInput').setAttribute('min', selectedDate);
+    });
+    const cityInput = $('#location');
+    const cityOutput = document.getElementById('output');
+    let cityArray = []
+
+    function updateLocation(city) {
+        cityOutput.innerHTML = ' '
+        console.log(city)
+        cityInput.val(city)
+    }
+
+    cityInput.keyup(async () => {
+        cityArray = []
+        if (cityInput.val().length < 3) {
+            cityOutput.innerHTML = ' '
+            return
+        }
+        try {
+            const response = await fetch('/api/city-search?keyword=' + encodeURIComponent(cityInput.val()) + '&max=10');
+
+            if (!response.ok) {
+                console.error('Failed to fetch cities:', response.statusText);
+                return;
+            }
+
+            const data = await response.json();
+            cityArray = data.data
+            // Clearing previous output, if desired
+            output.innerHTML = '';
+
+            if (Array.isArray(cityArray)) {
+                cityArray.slice(0, 4).forEach(city => {
+                    output.innerHTML += `<button type="button" onclick="updateLocation('${city.name}')"><strong>${city.name}</strong>, ${city.address.countryCode}</button>`;
+                });
+            } else {
+                console.error('Data is not an array:', data);
+            }
+        } catch (error) {
+            console.error('Error occurred:', error);
+        }
+    });
+    
+
+    document.getElementById('form').addEventListener('keydown', function (event) {
+        if (event.key === "Enter") {
+            console.log(event.key)
+            event.preventDefault();
+        }
     });
 </script>

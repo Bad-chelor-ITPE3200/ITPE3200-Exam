@@ -20,7 +20,7 @@ namespace FastFlat.Controllers
         {
             var rentalList = _rentalRepo.GetAll();
             var amenityList = _amenityRepo.GetAll();
-            var rentalListViewModel = new RentalListViewModel(rentalList.Take(5), amenityList, "Card");
+            var rentalListViewModel = new RentalListViewModel(rentalList.Take(5), amenityList, null, null, null, null, null, "Card");
             return View(rentalListViewModel);
         }
     }
