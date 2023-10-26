@@ -1,7 +1,5 @@
 ﻿using FastFlat.Models;
 
-
-
 namespace FastFlat.ViewModels
 {
     public class RentalListViewModel
@@ -11,17 +9,45 @@ namespace FastFlat.ViewModels
         public List<String> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
         public string? CurrentViewName;
 
+        public string? City;
+        public int? Guests;
+        public DateTime? ToDate;
+        public DateTime? FromDate;
+
         public RentalListViewModel()
         {
             // Parameterless constructor for model binding
         }
 
-        public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, string? currentViewName)
+        public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, List<string>? selectedAmenities, string? city, int? guests, DateTime? fromDate, DateTime? toDate, string? currentViewName)
         {
             Rentals = rentals;
             Amenities = amenities;
-            CurrentViewName = currentViewName;
+            SelectedAmenities = selectedAmenities;
+            City = city;
+            Guests = guests ?? 1;
 
+            // Handle fromDate
+            if (!fromDate.HasValue || fromDate.Value.Year == 1)
+            {
+                FromDate = DateTime.Today;
+            }
+            else
+            {
+                FromDate = fromDate.Value.Date;
+            }
+
+            // Handle toDate
+            if (!toDate.HasValue || toDate.Value.Date < FromDate || toDate.Value.Year == 1)
+            {
+                ToDate = FromDate.Value.AddDays(7);
+            }
+            else
+            {
+                ToDate = toDate.Value.Date;
+            }
+
+            CurrentViewName = currentViewName;
         }
     }
 }

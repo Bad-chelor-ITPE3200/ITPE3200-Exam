@@ -144,6 +144,9 @@ namespace FastFlat.Migrations
                     b.Property<string>("ListningAddress")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ListningCity")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ListningDescription")
                         .HasMaxLength(350)
                         .HasColumnType("TEXT");
@@ -157,9 +160,6 @@ namespace FastFlat.Migrations
 
                     b.Property<decimal>("ListningPrice")
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("LocationID")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("NoOfBeds")
                         .HasColumnType("INTEGER");
@@ -181,36 +181,11 @@ namespace FastFlat.Migrations
 
                     b.HasKey("ListningId");
 
-                    b.HasIndex("LocationID");
-
                     b.HasIndex("UserId");
 
                     b.HasIndex("UserModelId");
 
                     b.ToTable("Rentals");
-                });
-
-            modelBuilder.Entity("FastFlat.Models.LocationModel", b =>
-                {
-                    b.Property<int>("LocationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("LocationID");
-
-                    b.ToTable("LocationModel");
                 });
 
             modelBuilder.Entity("FastFlat.Models.RenterModel", b =>
@@ -525,10 +500,6 @@ namespace FastFlat.Migrations
 
             modelBuilder.Entity("FastFlat.Models.ListningModel", b =>
                 {
-                    b.HasOne("FastFlat.Models.LocationModel", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationID");
-
                     b.HasOne("ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -536,8 +507,6 @@ namespace FastFlat.Migrations
                     b.HasOne("FastFlat.Models.UserModel", null)
                         .WithMany("Rentals")
                         .HasForeignKey("UserModelId");
-
-                    b.Navigation("Location");
 
                     b.Navigation("User");
                 });

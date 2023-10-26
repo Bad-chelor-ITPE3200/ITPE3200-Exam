@@ -124,7 +124,7 @@ namespace FastFlat.DAL
 
                     new AmenityModel
                     {
-                        AmenityName = "ParkingPlace",
+                        AmenityName = "Parking",
                         AmenityDescription = "Dedicated space for vehicle parking.",
                         AmenityLogo = "/images/amenity/ParkingPlace.svg"
                     },
@@ -142,7 +142,7 @@ namespace FastFlat.DAL
                     },
                     new AmenityModel
                     {
-                        AmenityName = "Waching Machine", // Might want to change this to "WashingMachine"
+                        AmenityName = "Waching", // Might want to change this to "WashingMachine"
                         AmenityDescription = "A machine for cleaning clothes.",
                         AmenityLogo = "/images/amenity/WachingMachine.svg"
                     },

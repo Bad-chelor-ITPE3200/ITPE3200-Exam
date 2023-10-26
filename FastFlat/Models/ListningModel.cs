@@ -27,11 +27,12 @@ namespace FastFlat.Models
         [RegularExpression(@"^[0-9. /-]{1,10}", ErrorMessage = "You can only have numbers between 0 and 9, and 10 letters")]
         public int? SquareMeter { get; set; }
         public float? Rating { get; set; }
-        public string? ListningAddress { get; set; } = string.Empty;
+        public string? ListningAddress { get; set; }
+        public string? ListningCity { get; set; }
         public decimal ListningPrice { get; set; }
 
         //public virtual CityModel City { get; set; }//legger til city
-        public virtual LocationModel? Location { get; set; } = default!;
+        //public virtual LocationModel? Location { get; set; } = default!;
 
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }

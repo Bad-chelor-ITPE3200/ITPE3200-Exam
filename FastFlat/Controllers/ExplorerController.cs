@@ -8,6 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
+using System.Net.Http;
+using System.Text.Json.Serialization;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FastFlat.Controllers
 {
@@ -16,6 +23,7 @@ namespace FastFlat.Controllers
     {
         // ... (variables and constructor) ...
 
+        private readonly HttpClient _httpClient;
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,69 +31,94 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<ContryModel> _contryRepo;
         private readonly ILogger<ExplorerController> _logger;
 
-        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager,IRentalRepository<ContryModel> contryRepo, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController>logger)
+        public ExplorerController(IHttpClientFactory httpClientFactory, IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController>logger)
         {
+            _httpClient = httpClientFactory.CreateClient();
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;
             _userManager = userManager;
             _bookingRepo = bookingRepo;
-            _contryRepo = contryRepo;
             _logger = logger; 
         }
 
-        // Displays a view with all available rentals and amenities.
-        [HttpGet]
-        public async Task<IActionResult> Explore()
+        private async Task<string> GetAmadeusAccessTokenAsync()
         {
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, "https://test.api.amadeus.com/v1/security/oauth2/token");
 
-            var rentalList = _rentalRepo.GetAll();
-            if (rentalList == null)
-            {
-                _logger.LogError("[ExplorerController Expore() GET] rentalList list not found while executing _rentalRepo.GetAll()");
-            }
-            var amenityList = _amenityRepo.GetAll();
-            if (amenityList == null)
-            {
-                _logger.LogError("[ExplorerController] amenityList list not found while executing _amenityRepo.GetAll()");
-            }
+            var client_id = "AtXWGpJxGJHSdIFtL1LOASA6kzGcWAFS"; // Read from a secure place, NOT hardcoded
+            var client_secret = "AGPvwdO8OF1Fhjao"; // Read from a secure place, NOT hardcoded
 
-            var rentalListViewModel = new RentalListViewModel(rentalList, amenityList, "Card");
-            return View(rentalListViewModel);
+            tokenRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                {"grant_type", "client_credentials"},
+                {"client_id", client_id},
+                {"client_secret", client_secret}
+            });
+
+            var tokenResponse = await _httpClient.SendAsync(tokenRequest);
+            var tokenData = await tokenResponse.Content.ReadFromJsonAsync<AmadeusTokenResponse>();
+
+            return tokenData?.AccessToken;
         }
 
-        // Filters and displays rentals based on user-selected amenities.
-        [HttpPost]
-        public async Task<IActionResult> Explore(RentalListViewModel input)
+        private class AmadeusTokenResponse
         {
+            [JsonPropertyName("access_token")]
+            public string? AccessToken { get; set; }
 
-            // Filter the 'allRentals' list based on the amenities selected by the user.
-            // For each 'rental' in 'allRentals', we check its 'ListningAmenities'.
-            // We then see if any of these amenities exist in the user's 'SelectedAmenities' list.
-            // If there's a match (i.e., the rental has at least one amenity that the user selected), 
-            // the rental remains in the 'allRentals' list. If not, it's excluded.
-            var allRentals = _rentalRepo.GetAll();
-            if(allRentals == null)
+           
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Explore([FromQuery] ExploreRequest request)
+        {
+            var rentalList = _rentalRepo.GetAll();
+
+            // Search by city
+            if (!string.IsNullOrEmpty(request.City))
             {
-                _logger.LogError("[ExplorerController Expore() POST] allRentals list not found while executing _rentalRepo.GetAll()");
+                rentalList = rentalList.Where(listing => listing.ListningCity.ToLower() == request.City.ToLower());
             }
 
-            if (input != null)
+            // Filter by fromDate. Assuming listings that are available "from" a date are available for bookings from that date.
+            if (request.FromDate != default(DateTime))
             {
-                allRentals = allRentals.Where(rental => rental.ListningAmenities.Any(am => input.SelectedAmenities.Contains(am.Amenity.AmenityName)));
+                rentalList = rentalList.Where(listing => listing.FromDate.HasValue && listing.FromDate.Value <= request.FromDate);
+            }
+
+            // Filter by toDate. Assuming listings that are available "to" a date are available for bookings until that date.
+            if (request.ToDate != default(DateTime))
+            {
+                rentalList = rentalList.Where(listing => listing.ToDate.HasValue && listing.ToDate.Value >= request.ToDate);
+            }
+
+            // Filter by number of guests (compared with number of beds in the listing)
+            if (request.Guests > 0)
+            {
+                rentalList = rentalList.Where(listing => listing.NoOfBeds.HasValue && listing.NoOfBeds.Value >= request.Guests);
+            }
+            var requestedAmenities = new List<string>();
+            // Assuming Amenities is a JSON string list. Deserialize it and filter listings based on amenities.
+            if (!string.IsNullOrEmpty(request.Amenities))
+            {
+                requestedAmenities = JsonConvert.DeserializeObject<List<string>>(request.Amenities);
+                if (requestedAmenities.Count > 0)
+                {
+                    var allRentals = rentalList.ToList();
+
+                    // Then filter these in-memory listings based on the requested amenities.
+                    allRentals = allRentals.Where(listing =>
+                        listing.ListningAmenities != null &&
+                        requestedAmenities.All(requestedAmenity =>
+                            listing.ListningAmenities.Any(listingAmenity =>
+                                listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+
+                    rentalList = allRentals.AsQueryable();
+                }
             }
 
             var amenityList = _amenityRepo.GetAll();
-            if (amenityList == null)
-            {
-                _logger.LogError("[ExplorerController Expore() POST] amenityList list not found while executing _amenityRepo.GetAll()");
-            }
-            var rentalListViewModel = new RentalListViewModel(allRentals, amenityList, "Card");
-
-            ViewBag.SelectedAmenity = input.SelectedAmenities.FirstOrDefault(); // Lagre den valgte amenity i ViewBag for å bruke den i visningen
-            if (ViewBag.SelectedAmenity == null)
-            {
-                _logger.LogWarning("[ExplorerController Explore() POST] No selected amenity found in input.SelectedAmenities.");
-            }
+            var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.City, request.Guests, request.FromDate, request.ToDate, "Card");
             return View(rentalListViewModel);
         }
 
@@ -226,29 +259,47 @@ namespace FastFlat.Controllers
                 throw;
             }
         }
-
-
-        // Fetches and returns a list of available countries from the repository.
-        [HttpGet("api/available-countries")]
-        public async Task<IActionResult> GetAvailableCountries()
+        [HttpGet("api/city-search")]
+        public async Task<IActionResult> GetAvailableCities([FromQuery] string keyword)
         {
-            try
+            if (string.IsNullOrEmpty(keyword) || keyword.Length <= 2)
             {
-                var allCountries = _contryRepo.GetAll();
-                if (allCountries == null)
+                return NoContent();
+            }
+            else
+            {
+                try
                 {
-                    _logger.LogWarning("[ExplorerController GetAvailableCountries()] No countries found in the repository.");
+                    var accessToken = await GetAmadeusAccessTokenAsync();
+                    if (string.IsNullOrEmpty(accessToken))
+                    {
+                        return BadRequest("Unable to obtain Amadeus access token.");
+                    }
+
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                    // Add the keyword to the query parameter
+                    var endpointUrl = $"https://test.api.amadeus.com/v1/reference-data/locations/cities?keyword={Uri.EscapeDataString(keyword)}";
+
+                    var response = await _httpClient.GetAsync(endpointUrl);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Kunne ikke hente byer, feil i responsen.");
+                        return BadRequest($"Error fetching cfewknfewknities: {response}");
+                    }
+
+                    var cities = await response.Content.ReadAsStringAsync();
+                    return Ok(cities);
                 }
-
-                var countryNames = await allCountries.Select(c => c.Contryname).ToListAsync();
-
-                return Ok(countryNames);
+                catch (Exception ex)
+                {
+                    // Handle any exceptions that occur during the API call
+                    Console.WriteLine($"Kunne ikke hente byer: ${ex}");
+                    return BadRequest($"An error occurred: {ex.Message}");
+                }
             }
-            catch (Exception e)
-            {
-                _logger.LogError("[ExplorerController GetAvailableCountries()] Error occurred while fetching available countries: {e.Message}");
-                throw;
-            }
+
         }
 
 

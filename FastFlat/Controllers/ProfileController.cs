@@ -17,19 +17,17 @@ namespace FastFlat.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<AmenityModel> _amenityRepository;
         private readonly IRentalRepository<ListningAmenity> _listningAmenityRepository;
-        private readonly IRentalRepository<ContryModel> _contryRepository;
         private readonly ILogger<ProfileController> _logger;
 
         public ProfileController(IRentalRepository<ListningModel> listningRepository,
             IRentalRepository<BookingModel> bookingRepository, UserManager<ApplicationUser> userManager,
             IRentalRepository<AmenityModel> amenityRepository,
-            IRentalRepository<ListningAmenity> listningAmenityRepository,IRentalRepository<ContryModel>contryRepository,ILogger<ProfileController> logger)
+            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ProfileController> logger)
         {
             _listningRepository = listningRepository;
             _bookingRepository = bookingRepository;
             _userManager = userManager;
             _amenityRepository = amenityRepository;
-            _contryRepository = contryRepository; 
             _listningAmenityRepository = listningAmenityRepository;
             _logger = logger;
         }

@@ -25,12 +25,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
   <ItemGroup>
 
     <Folder Include="Logs\" />
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\listnings\" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
   </ItemGroup>

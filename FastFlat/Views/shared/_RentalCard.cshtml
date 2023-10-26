@@ -6,16 +6,13 @@
             <h5>@Model.ListningName</h5>
             <p>@Model.FromDate.ToString("dd.MM.yyyy") - @Model.ToDate.ToString("dd.MM.yyyy")</p>
             <p><span class="pricePerNight">kr @Model.ListningPrice</span> natt.</p>
+            <div class="card--footer">
+                    @foreach (var listningAmenity in Model.ListningAmenities)
+                    {
+                            <img src="@listningAmenity.Amenity.AmenityLogo" alt="@listningAmenity.Amenity.AmenityName" />
+                    }
+            </div>
         </div>
-        <div class="card-footer">
-            <ul class="list-inline">
-                @foreach (var listningAmenity in Model.ListningAmenities)
-                {
-                    <li class="list-inline-item">
-                        <img src="@listningAmenity.Amenity.AmenityLogo" alt="@listningAmenity.Amenity.AmenityName">
-                    </li>
-                }
-            </ul>
-        </div>
+        
     </div>
 </a>
