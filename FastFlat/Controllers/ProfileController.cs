@@ -64,9 +64,7 @@ namespace FastFlat.Controllers
         [Authorize]
         public async Task<IActionResult> NewListning(NewListningViewModel viewModel)
         {
-         
             var userId = _userManager.GetUserId(User);
-
             if (ModelState.IsValid)
             {
                 if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)

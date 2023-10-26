@@ -21,8 +21,7 @@ namespace FastFlat.Controllers
     // This controller handles operations related to exploring listings on the platform.
     public class ExplorerController : Controller
     {
-        // ... (variables and constructor) ...
-
+      
         private readonly HttpClient _httpClient;
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
@@ -65,8 +64,6 @@ namespace FastFlat.Controllers
         {
             [JsonPropertyName("access_token")]
             public string? AccessToken { get; set; }
-
-           
         }
 
         [HttpGet]
