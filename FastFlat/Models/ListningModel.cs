@@ -1,14 +1,12 @@
 using System.Collections;
-using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FastFlat.Attributes;
 
 //Jeg har gjort alle atributer null for å teste CRUD
 
 namespace FastFlat.Models
 {
-    public class ListningModel 
+    public class ListningModel
     {
         [Key]
         public int ListningId { get; set; }
@@ -17,9 +15,14 @@ namespace FastFlat.Models
 
         public virtual ApplicationUser? User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
 
+        [RegularExpression(@"^[0-9a-zæøåA-ZÆØÅ. /-]{4,20}", ErrorMessage = "The Listing Name needs to be between 4 and 20 signs and letters from a - å")]
         public string ListningName { get; set; } = string.Empty;
+
+        [StringLength(350)]
         public string? ListningDescription { get; set; }
+        [RegularExpression(@"^[0-9. /-]{1,10}", ErrorMessage = "You can only have numbers between 0 and 9, and 10 letters")]
         public int? NoOfBeds { get; set; }
+        [RegularExpression(@"^[0-9. /-]{1,10}", ErrorMessage = "You can only have numbers between 0 and 9, and 10 letters")]
         public int? SquareMeter { get; set; }
         public float? Rating { get; set; }
         public string? ListningAddress { get; set; }
@@ -35,7 +38,7 @@ namespace FastFlat.Models
 
         public virtual List<BookingModel>? bookings { get; set; }
 
-        
+
         public virtual List<ListningAmenity>? ListningAmenities { get; set; } = default!;
 
 

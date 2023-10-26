@@ -3,9 +3,7 @@ using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NuGet.Packaging.Signing;
 
 namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {

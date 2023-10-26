@@ -10,6 +10,7 @@
     @foreach (var rental in Model.Rentals)
     {
         <partial name="_RentalCard" model="rental" />
+        <a asp-controller="Account" asp-action="DeleteAlistingNormalUser" asp-route-id="@rental.ListningId">Delete Listing</a>
     }
     <a class="btn btn-primary"
        asp-controller="Listing"

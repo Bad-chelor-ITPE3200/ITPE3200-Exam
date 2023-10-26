@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.Identity
+@model ApplicationUser
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Update user"]</title>
+</head>
+<body>
+@**TODO: form content: 
+First and last name -SHOWN
+role - SHOWN
+New password -not shown, can only change the password
+*@
+<form asp-controller="Account" asp-action="AdminUpdateAuser">
+    <div asp-validation-summary="All"></div>
+
+    <label asp-for="FirstName"/>
+    <input type="text" asp-for="FirstName"/>
+    <span asp-validation-for="FirstName"></span>
+    <label for="LastName" asp-for="LastName"/>
+    <input type="text" asp-for="LastName"/>
+    <span asp-validation-for="LastName"></span>
+    <label for="updateMail" asp-for="Email"/>
+    <input type="text" asp-for="Email"/>
+    <input type="text" asp-for="UserName"/>
+    <input type="text" asp-for="PhoneNumber"/>
+    <input type="hidden" asp-for="PasswordHash"/>
+    <input type="hidden" asp-for="ProfilePicture"/>
+    <button type="submit"> change account details</button>
+    <a asp-controller="Account" asp-action="_AdminAccounts"> cancel</a>
+</form>
+</body>
+</html>

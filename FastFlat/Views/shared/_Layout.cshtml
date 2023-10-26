@@ -27,7 +27,7 @@
             <h1 id="--nav-logo">Fast&Flat</h1>
             <ul class="--nav-tabs">
                 <li class="nav-list">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="activeTab">Home</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="active">Home</a>
                 </li>
                 <li class="nav-list">
                     <a asp-area="" asp-controller="Explorer" asp-action="Explore">Rentals</a>
@@ -39,11 +39,10 @@
             @if(User.IsInRole("Admin"))  {    <li class="nav-list">
                     <a asp-area="" asp-controller="Account" asp-action="Account">Accounts</a>
                 </li>
-                <li class = "nav-list">
-                    <a asp-area=""  asp-controller="Account" asp-action="ManageAllBookings">all bookings</a>
-                </li>
-            }
-           
+              <li class = "nav-list"> <a asp-area=""  asp-controller="Account" asp-action="ManageAllBookings">admin</a> </li>}
+            @**    <li class="nav-list"> TODO: trenger vi dette?
+                    <a asp-area="" asp-controller="Profile" asp-action="Profile">Profile</a>
+                </li>*@
 
             </ul>
 
