@@ -21,12 +21,12 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<AmenityModel> _amenityRepository;
         private readonly IRentalRepository<ListningAmenity> _listningAmenityRepository;
-        private readonly ILogger<ProfileController> _logger;
+        private readonly ILogger<ListingController> _logger;
 
         public RentalsModel(IRentalRepository<ListningModel> listningRepository, 
             UserManager<ApplicationUser> userManager,
             IRentalRepository<AmenityModel> amenityRepository,
-            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ProfileController> logger)
+            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ListingController> logger)
         {
             _listningRepository = listningRepository;
             _userManager = userManager;
