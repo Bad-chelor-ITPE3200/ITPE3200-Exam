@@ -266,28 +266,34 @@ namespace FastFlat.Controllers
                 NewListningViewModel listingVeiwModel = new NewListningViewModel(LMM.Listning,"_UpdateListing", LMM.ListningImage);
                 upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
                 upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
-                
+                upDatedUser.NoOfBeds = listingVeiwModel.Listning.NoOfBeds;
                 //upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
                 
-                 // if it is updateda
-                 if (listingVeiwModel.Listning.ListningImageURL != upDatedUser.ListningImageURL)
-                 {
-                     var fileName = Path.GetFileName(listingVeiwModel.Listning.ListningImageURL);
+                 // if it is updated
+                
+                
+                     
+                
+                _logger.LogInformation(upDatedUser.ListningImageURL);
+                var fileName = Path.GetFileName(upDatedUser.ListningImageURL);
+                if (ModelState.IsValid)
+                {
+                    if (fileName != null)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
 
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
+                        }
+                        listingVeiwModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
+                    }
+                }
                      // Change this directory to the appropriate location where you want to save your images
-                     if (fileName != null)
-                     {
-                         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
-
-                         using (var fileStream = new FileStream(filePath, FileMode.Create))
-                         {
-                             await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
-                         }
-                     }
+                    
                      
                      // Save the path to your database
-                     listingVeiwModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
-                 }
+                    
                     //image: 
                    
 
