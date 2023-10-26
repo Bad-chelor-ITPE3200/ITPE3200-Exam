@@ -274,21 +274,26 @@ namespace FastFlat.Controllers
                 
                      
                 
-                _logger.LogInformation(upDatedUser.ListningImageURL);
-                var fileName = Path.GetFileName(upDatedUser.ListningImageURL);
-                if (ModelState.IsValid)
-                {
+                _logger.LogInformation(LMM.Listning.ListningImageURL); //URL to image == null -> maybe  with the form
+                var fileName = Path.GetFileName(LMM.Listning.ListningImageURL);
+               
                     if (fileName != null)
                     {
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
-
+                      var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
+                        
+                   
+                   
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
-                        }
-                        listingVeiwModel.Listning.ListningImageURL = "/images/listnings/" + fileName;
+                            _logger.LogInformation("image saved!");
+                          //becomes null, cant be overwritten
+                           await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
+                        } //why
+                        LMM.Listning.ListningImageURL ="/images/listnings/" + fileName;
+                       
                     }
-                }
+
+                    upDatedUser.ListningImageURL = LMM.Listning.ListningImageURL; 
                      // Change this directory to the appropriate location where you want to save your images
                     
                      

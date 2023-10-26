@@ -15,7 +15,7 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<AmenityModel> _amenityRepository;
         private readonly IRentalRepository<ListningAmenity> _listningAmenityRepository;
         private readonly IRentalRepository<ContryModel> _contryRepository;
-        private readonly ILogger<ProfileController> _logger;
+        private readonly ILogger<ProfileController> _logger;                
 
         public ProfileController(IRentalRepository<ListningModel> listningRepository,
             IRentalRepository<BookingModel> bookingRepository, UserManager<ApplicationUser> userManager,
