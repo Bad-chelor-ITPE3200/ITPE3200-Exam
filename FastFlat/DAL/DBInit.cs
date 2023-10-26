@@ -198,30 +198,6 @@ namespace FastFlat.DAL
                 context.SaveChanges();
             }*/
 
-            //Country
-            if (!context.Countries.Any())
-            {
-                var country = new List<ContryModel>
-                {
-                    new ContryModel
-                    {
-                        Contryname = "Norway"
-                    },
-
-                    new ContryModel
-                    {
-                        Contryname = "Sweden"
-                    },
-
-                    new ContryModel
-                    {
-                        Contryname = "Denmark"
-                    },
-                };
-                await context.AddRangeAsync(country);
-                await context.SaveChangesAsync();
-            }
-
             if (!context.Roles.Any())
                 //roles for the acess controll
                 //we let the controller control everything about what they can edit or not

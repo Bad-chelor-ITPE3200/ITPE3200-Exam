@@ -10,19 +10,19 @@ using Microsoft.Extensions.Hosting;
 
 namespace FastFlat.Controllers
 {
-    public class ProfileController : Controller
+    public class ListingController : Controller
     {
         private readonly IRentalRepository<ListningModel> _listningRepository;
         private readonly IRentalRepository<BookingModel> _bookingRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<AmenityModel> _amenityRepository;
         private readonly IRentalRepository<ListningAmenity> _listningAmenityRepository;
-        private readonly ILogger<ProfileController> _logger;
+        private readonly ILogger<ListingController> _logger;
 
-        public ProfileController(IRentalRepository<ListningModel> listningRepository,
+        public ListingController(IRentalRepository<ListningModel> listningRepository,
             IRentalRepository<BookingModel> bookingRepository, UserManager<ApplicationUser> userManager,
             IRentalRepository<AmenityModel> amenityRepository,
-            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ProfileController> logger)
+            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ListingController> logger)
         {
             _listningRepository = listningRepository;
             _bookingRepository = bookingRepository;
