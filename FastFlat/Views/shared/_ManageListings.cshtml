@@ -7,7 +7,7 @@
 <table>
     @foreach (var listings in Model)
     {
-        <tr> <td>@listings.ListningName</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a>update</a></td> <td><a  asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td></tr>
+        <tr> <td>@listings.ListningName</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@listings.ListningId" >update</a></td> <td><a  asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td></tr>
     }
 </table>
 

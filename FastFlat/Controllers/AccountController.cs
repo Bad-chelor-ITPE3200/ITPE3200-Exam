@@ -1,4 +1,5 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
+﻿using System.Net;
+using Castle.Components.DictionaryAdapter.Xml;
 using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
@@ -223,7 +224,7 @@ namespace FastFlat.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize] //autorize so you need to be logged in 
         public async Task<IActionResult> DeleteAlistingNormalUser(int id)
         {
             try
@@ -251,6 +252,83 @@ namespace FastFlat.Controllers
             listings.Amenities =_amenityModelRepository.GetAll().ToList();
             return View(listings);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+       public async Task<IActionResult> UpdateListingAdmin(NewListningViewModel LMM){ //id 0, should be 1, right id after routing 
+            //todo: update the listing, we use standard account
+            try
+            {
+                
+                //modelstate not here, so we dont need to create a seperate validation, alts
+                //todo: the veiw model to update the user
+                    var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; //becomes null
+                    List<AmenityModel> amendities = _amenityModelRepository.GetAll().ToList();
+                    List<ContryModel> contries = _countryReposity.GetAll().ToList();
+
+                    var fileName = Path.GetFileName(LMM.Listning.ListningImageURL);
+
+                    if (fileName != null)
+                    {
+                        /* var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
+
+
+                        /*
+                         using (var fileStream = new FileStream(filePath, FileMode.Create))
+                         {
+                             _logger.LogInformation("a "+fileStream.Name + " " + fileName.Length);
+                             _logger.LogInformation(" b image saved!");
+                             //becomes null, cant be overwritten
+                             //  listingVeiwModel.ListningImage.OpenReadStream();
+                             //_logger.LogInformation("c"+  LMM.ListningImage.ToString());
+                             await LMM.ListningImage.CopyToAsync(fileStream); //still crashes here tb
+                         } //why
+                         LMM.Listning.ListningImageURL ="/images/listnings/" + fileName;*/
+
+                    }
+
+                    NewListningViewModel listingVeiwModel =
+                        new NewListningViewModel(LMM.Listning, "_UpdateListing", LMM.ListningImage);
+                    upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
+                    upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
+                    upDatedUser.NoOfBeds = listingVeiwModel.Listning.NoOfBeds;
+                    //  upDatedUser.ListningImageURL = LMM.Listning.ListningImageURL;
+
+                    // if it is updated
+
+
+
+
+                    _logger.LogInformation(LMM.Listning
+                        .ListningImageURL); //URL to image == null -> maybe  with the form
+
+
+                   // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
+                    // Change this directory to the appropriate location where you want to save your images
+
+
+                    // Save the path to your database
+
+                    //image: 
+
+
+
+                    upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
+                    upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
+                    upDatedUser.Location = listingVeiwModel.Listning.Location;
+                    _logger.LogInformation("LOGGGING OK");
+                    var result = _listingRepository.Update(upDatedUser);
+                //  _logger.LogInformation(restult.ToString());
+  
+              
+                  return RedirectToAction(nameof(_ManageListings));
+              
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("error in updating user:  \n  " + e);
+                return NotFound(e);
+            }
+        }
         [Authorize]
         [HttpPost]
        public async Task<IActionResult> UpdateListing(NewListningViewModel LMM){ //id 0, should be 1, right id after routing 
@@ -258,58 +336,65 @@ namespace FastFlat.Controllers
             try
             {
                 
-                //modelstate not here, so we dont need to create a seperate validation
+                //modelstate not here, so we dont need to create a seperate validation, alts
                 //todo: the veiw model to update the user
-                var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; //becomes null
-                List<AmenityModel> amendities = _amenityModelRepository.GetAll().ToList();
-                List<ContryModel> contries = _countryReposity.GetAll().ToList(); 
-                NewListningViewModel listingVeiwModel = new NewListningViewModel(LMM.Listning,"_UpdateListing", LMM.ListningImage);
-                upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
-                upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
-                upDatedUser.NoOfBeds = listingVeiwModel.Listning.NoOfBeds;
-                upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
-                
-                 // if it is updated
-                
-                
-                     
-                
-                _logger.LogInformation(LMM.Listning.ListningImageURL); //URL to image == null -> maybe  with the form
-                var fileName = Path.GetFileName(LMM.Listning.ListningImageURL);
-               
+                    var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; //becomes null
+                    List<AmenityModel> amendities = _amenityModelRepository.GetAll().ToList();
+                    List<ContryModel> contries = _countryReposity.GetAll().ToList();
+
+                    var fileName = Path.GetFileName(LMM.Listning.ListningImageURL);
+
                     if (fileName != null)
                     {
-                      var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
-                        
-                   
-                   
-                        using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
-                        {
-                            _logger.LogInformation(fileStream.ToString());
-                            _logger.LogInformation("image saved!");
-                          //becomes null, cant be overwritten
-                           await listingVeiwModel.ListningImage.CopyToAsync(fileStream);
-                        } //why
-                        listingVeiwModel.Listning.ListningImageURL ="/images/listnings/" + fileName;
-                       
+                        /* var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
+
+
+                        /*
+                         using (var fileStream = new FileStream(filePath, FileMode.Create))
+                         {
+                             _logger.LogInformation("a "+fileStream.Name + " " + fileName.Length);
+                             _logger.LogInformation(" b image saved!");
+                             //becomes null, cant be overwritten
+                             //  listingVeiwModel.ListningImage.OpenReadStream();
+                             //_logger.LogInformation("c"+  LMM.ListningImage.ToString());
+                             await LMM.ListningImage.CopyToAsync(fileStream); //still crashes here tb
+                         } //why
+                         LMM.Listning.ListningImageURL ="/images/listnings/" + fileName;*/
+
                     }
 
-                    upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL; 
-                     // Change this directory to the appropriate location where you want to save your images
-                    
-                     
-                     // Save the path to your database
-                    
-                    //image: 
-                   
+                    NewListningViewModel listingVeiwModel =
+                        new NewListningViewModel(LMM.Listning, "_UpdateListing", LMM.ListningImage);
+                    upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
+                    upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
+                    upDatedUser.NoOfBeds = listingVeiwModel.Listning.NoOfBeds;
+                    //  upDatedUser.ListningImageURL = LMM.Listning.ListningImageURL;
 
-                
-                upDatedUser.FromDate = listingVeiwModel.Listning.FromDate; 
-                upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
-                upDatedUser.Location = listingVeiwModel.Listning.Location;
-                _logger.LogInformation("LOGGGING OK"); 
-                var result = _listingRepository.Update(upDatedUser);
-              //  _logger.LogInformation(restult.ToString());
+                    // if it is updated
+
+
+
+
+                    _logger.LogInformation(LMM.Listning
+                        .ListningImageURL); //URL to image == null -> maybe  with the form
+
+
+                   // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
+                    // Change this directory to the appropriate location where you want to save your images
+
+
+                    // Save the path to your database
+
+                    //image: 
+
+
+
+                    upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
+                    upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
+                    upDatedUser.Location = listingVeiwModel.Listning.Location;
+                    _logger.LogInformation("LOGGGING OK");
+                    var result = _listingRepository.Update(upDatedUser);
+                //  _logger.LogInformation(restult.ToString());
   
               
                   return LocalRedirect("~/Identity/Account/Manage/Rentals");
