@@ -175,7 +175,7 @@ namespace FastFlat.Controllers
             try
             {
                 // Fetch all bookings for the specified listing
-                var bookings = _rentalRepo.GetAll().OfType<BookingModel>()
+                var bookings = _bookingRepo.GetAll()
                                               .Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
