@@ -45,14 +45,9 @@
         </div>
         <div class="form-group">
             <label asp-for="Listning.ListningAddress">Address</label>
-            <input asp-for="Listning.ListningAddress" class="form-control" />
+            <input asp-for="Listning.ListningAddress" class="form-control" id="address" />
             <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
-        </div>
-        <div class="form-group city">
-            <label asp-for="Listning.ListningCity">Choose city</label>
-            <input asp-for="Listning.ListningCity" id="location"class="form-control" />
-            <span asp-validation-for="Listning.ListningCity" class="text-danger"></span>
-            <div id="output"></div>
+            <div id="addressResults"></div>
         </div>
         <div class="form-group">
             <label asp-for="Listning.SquareMeter"></label>
@@ -65,6 +60,14 @@
             <input asp-for="Listning.NoOfBeds" class="form-control" />
             <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
         </div>
+
+        <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
+        <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
+        <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden/>
+        <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
+
+
+
        
         
 
@@ -87,47 +90,6 @@
         const selectedDate = this.value;
         document.getElementById('toDateInput').setAttribute('min', selectedDate);
     });
-    const cityInput = $('#location');
-    const cityOutput = document.getElementById('output');
-    let cityArray = []
-
-    function updateLocation(city) {
-        cityOutput.innerHTML = ' '
-        console.log(city)
-        cityInput.val(city)
-    }
-
-    cityInput.keyup(async () => {
-        cityArray = []
-        if (cityInput.val().length < 3) {
-            cityOutput.innerHTML = ' '
-            return
-        }
-        try {
-            const response = await fetch('/api/city-search?keyword=' + encodeURIComponent(cityInput.val()) + '&max=10');
-
-            if (!response.ok) {
-                console.error('Failed to fetch cities:', response.statusText);
-                return;
-            }
-
-            const data = await response.json();
-            cityArray = data.data
-            // Clearing previous output, if desired
-            output.innerHTML = '';
-
-            if (Array.isArray(cityArray)) {
-                cityArray.slice(0, 4).forEach(city => {
-                    output.innerHTML += `<button type="button" onclick="updateLocation('${city.name}')"><strong>${city.name}</strong>, ${city.address.countryCode}</button>`;
-                });
-            } else {
-                console.error('Data is not an array:', data);
-            }
-        } catch (error) {
-            console.error('Error occurred:', error);
-        }
-    });
-    
 
     document.getElementById('form').addEventListener('keydown', function (event) {
         if (event.key === "Enter") {
@@ -135,4 +97,77 @@
             event.preventDefault();
         }
     });
+
+    const addressInput = $("#address")
+    const addressOutput = document.getElementById("addressResults")
+    let addressArray = []
+
+    addressInput.keyup(async() => { 
+        addressArray = []
+        if (addressInput.val().length < 3) {
+            addressOutput.innerHTML = ' '
+            return
+        }
+        try{
+            const response = await fetch(`/api/address-search?input=${encodeURIComponent(addressInput.val())}`)
+
+            if (!response.ok) {
+                console.error('Failed to fetch cities:', response.statusText);
+                return;
+            }
+            const data = await response.json();
+            addressArray = data.predictions
+
+            addressOutput.innerHTML = '';
+
+            if (Array.isArray(addressArray)) {
+                addressArray.forEach(address => {
+            
+                    addressOutput.innerHTML += `<button type="button" onclick="onPlaceSelected('${address.place_id}')"><strong>${address.description}</strong></button>`;
+                });
+            } else {
+                console.error('Data is not an array:', data);
+            }
+
+            
+        }catch(error){
+            console.error('Error occurred:', error);
+        }
+    });
+    
+    function onPlaceSelected(placeId) {
+
+        addressOutput.innerHTML = ' '
+
+        fetch(`/api/place-details?placeId=${placeId}`)
+            .then(response => response.json())
+            .then(data => {
+                const result = data.result;
+
+
+                addressInput.val(result.formatted_address);
+                const addressComponents = result.address_components;
+                const address = result.formatted_address;
+                const cityComponent = addressComponents.find(comp => comp.types.includes("locality"))
+                    || addressComponents.find(comp => comp.types.includes("postal_town"));
+
+                const city = cityComponent?.long_name;
+                const country = addressComponents.find(comp => comp.types.includes("country"))?.long_name;
+                const lat = result.geometry.location.lat;
+                const lng = result.geometry.location.lng;
+
+                console.log(result)
+                console.log(address)
+                console.log(city)
+                console.log(country)
+                console.log(lat, " ", lng)
+
+                document.getElementById("cityInput").value = city;
+                document.getElementById("countryInput").value = country;
+                document.getElementById("latInput").value = lat;
+                document.getElementById("lngInput").value = lng;
+            });
+    }
+
+
 </script>

@@ -20,8 +20,7 @@ namespace FastFlat.ViewModels
         {
             Listing = listing;
             User = user;
-
-            _currentViewName = currentViewName;
+            _currentViewName = currentViewName; 
         }
     }
 }

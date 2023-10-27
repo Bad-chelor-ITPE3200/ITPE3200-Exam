@@ -10,7 +10,7 @@
 
         // Add parameters if they are not empty
         if (city) {
-            url += `city=${city}&`;
+            url += `location=${city}&`;
         }
 
         if (fromDate) {
@@ -43,7 +43,7 @@
 <div class="searchbar">
     <div class="location">
         <label for="location" class="searchbar-title">Hvor</label>
-        <input type="text" placeholder="Søk etter lokasjon" id="location" value="@Model.City"/>
+        <input type="text" placeholder="Søk etter lokasjon" id="location" value="@Model.Location"/>
         <div id="output"></div>
     </div>
     <div class="fromDate">
@@ -56,7 +56,14 @@
     </div>
     <div class="guests">
         <label for="guests" class="searchbar-title">Gjester</label>
-        <input type="number" placeholder="Legg til gjester" id="guests" value="@Model.Guests">
+        @if(Model.Guests == 0)
+        {
+            <input type="number" placeholder="Legg til gjester" id="guests" value="1">
+        }
+        else
+        {
+            <input type="number" placeholder="Legg til gjester" id="guests" value="@Model.Guests">
+        }
     </div>
     <div id="submit-btn" onclick="search()">
         <img src="@Url.Content("~/images/icons/search.svg")">
@@ -81,7 +88,7 @@
             return
         }
         try {
-            const response = await fetch('/api/city-search?keyword=' + encodeURIComponent(cityInput.val()) + '&max=10');
+            const response = await fetch('/api/locality-search?input=' + encodeURIComponent(cityInput.val()));
 
             if (!response.ok) {
                 console.error('Failed to fetch cities:', response.statusText);
@@ -89,13 +96,15 @@
             }
 
             const data = await response.json();
-            cityArray = data.data
+                  
+            cityArray = data.predictions;
             // Clearing previous output, if desired
             output.innerHTML = '';
 
             if (Array.isArray(cityArray)) {
-                cityArray.slice(0, 5).forEach(city => {
-                    output.innerHTML += `<button onclick="updateLocation('${city.name}')"><strong>${city.name}</strong>, ${city.address.countryCode}</button>`;
+                cityArray.forEach(city => {
+              
+                    output.innerHTML += `<button onclick="updateLocation('${city.description.split(",")[0]}')">${city.description}</button>`;
                 });
             } else {
                 console.error('Data is not an array:', data);

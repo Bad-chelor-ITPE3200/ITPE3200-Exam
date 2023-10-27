@@ -12,7 +12,7 @@
     height: calc(100vh - 110px);
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: start;
     align-items: start;
 }
 
@@ -54,27 +54,27 @@
     height: 60vh;
     padding: 0 0px 0 50px;
     display: flex;
+    display: flex;
+    gap: 2rem;
 }
 
 #results {
-    width: 1160px;
+    width: 60%;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
     overflow-y: scroll;
     padding-top: 10px;
-    padding-right: 30px;
     gap : 2rem;
 }
 
-.map {
+#map {
     width: calc(40% - 100px);
-    height: 100%;
+    height: 90%;
     background-image: url("./pictures/map2.png");
     background-size: cover;
     border-radius: 20px;
-    margin-left: 30px;
 }
 
 a {
@@ -99,5 +99,18 @@ a {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
+}
+
+.rental-marker {
+    background-color: #ABB3FF;
+    color: white;
+    font-size: 1rem;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.rental-marker:hover{
+    cursor: pointer;
+    transform: scale(1.2);
 }
 

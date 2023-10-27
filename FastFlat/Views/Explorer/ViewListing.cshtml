@@ -65,13 +65,13 @@
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.FromDate">Available From</label><span class="text-danger">*</span>
-                            <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="text" class="form-control"  />
+                            <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="date" class="form-control"  />
                             <span asp-validation-for="@Model.Booking.FromDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.ToDate">Available To</label><span class="text-danger">*</span>
-                            <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="text" class="form-control" />
+                            <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="date" class="form-control" />
                             <span asp-validation-for="@Model.Booking.ToDate" class="text-danger"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Book</button>
@@ -96,11 +96,11 @@
 <script>
     $(document).ready(function () {
         // Retrieve the value from the form
-        var listingId = $('#Listing_ListingId').val();
+        var listingId = @Model.Listing.ListningId
 
         // AJAX request to fetch available dates for the listing
         $.ajax({
-            url: '/Explorer/GetAvailableDatesForListing?listingId=' + listingId,
+                url: '/Explorer/GetAvailableDates?listingId=' + listingId,
             method: 'GET',
             dataType: 'json',
             success: function (availabilityData) {
