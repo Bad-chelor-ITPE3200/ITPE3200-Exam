@@ -339,36 +339,45 @@ namespace FastFlat.Controllers
                 //modelstate not here, so we dont need to create a seperate validation, alts
                 //todo: the veiw model to update the user
                     var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; //becomes null
+
                     List<AmenityModel> amendities = _amenityModelRepository.GetAll().ToList();
                     List<ContryModel> contries = _countryReposity.GetAll().ToList();
 
-                    var fileName = Path.GetFileName(LMM.Listning.ListningImageURL);
-
+                    _logger.LogInformation("URLen til bilde er: " + LMM.Listning.ListningImageURL);
+                    var fileName = Path.GetFileName(LMM.ListningImage.FileName);
+                    
+                    _logger.LogInformation("Ayy Lmao " + fileName);
                     if (fileName != null)
                     {
-                        /* var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
+                         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/listnings", fileName);
 
-
-                        /*
+                        
+                        
                          using (var fileStream = new FileStream(filePath, FileMode.Create))
                          {
                              _logger.LogInformation("a "+fileStream.Name + " " + fileName.Length);
-                             _logger.LogInformation(" b image saved!");
+                             _logger.LogInformation($"The filStream object itself is {(fileStream == null ? "null" : "not null")}");
                              //becomes null, cant be overwritten
                              //  listingVeiwModel.ListningImage.OpenReadStream();
                              //_logger.LogInformation("c"+  LMM.ListningImage.ToString());
-                             await LMM.ListningImage.CopyToAsync(fileStream); //still crashes here tb
+                             if(fileStream != null)
+                             {
+                                 _logger.LogInformation($"The LMM.ListningImage object is {(LMM.ListningImage == null ? "null" : "not null")}");
+                                 await LMM.ListningImage.CopyToAsync(fileStream); //still crashes here tb
+                             }
+                             
                          } //why
-                         LMM.Listning.ListningImageURL ="/images/listnings/" + fileName;*/
+                         LMM.Listning.ListningImageURL ="/images/listnings/" + fileName;
 
                     }
 
+                    _logger.LogInformation("Yo mama" + LMM.Listning.ListningImageURL);
                     NewListningViewModel listingVeiwModel =
                         new NewListningViewModel(LMM.Listning, "_UpdateListing", LMM.ListningImage);
                     upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
                     upDatedUser.ListningDescription = listingVeiwModel.Listning.ListningDescription;
                     upDatedUser.NoOfBeds = listingVeiwModel.Listning.NoOfBeds;
-                    //  upDatedUser.ListningImageURL = LMM.Listning.ListningImageURL;
+                    upDatedUser.ListningImageURL = LMM.Listning.ListningImageURL;
 
                     // if it is updated
 

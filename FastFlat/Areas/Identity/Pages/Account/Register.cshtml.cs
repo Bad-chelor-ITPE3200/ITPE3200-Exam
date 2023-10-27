@@ -125,7 +125,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
                 string userName = address.User;
 
                 // Read the default profile picture and convert it to a byte array
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "images", "profilepicture", "gisle.jpg");
+                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", "profilepicture", "gisle.jpg");
                 byte[] profilePictureData;
                 using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
                 {

@@ -21,13 +21,12 @@
         <input asp-for="@Model.Listning.ListningPrice" class="form-control"/>
         <span asp-validation-for="@Model.Listning.ListningPrice" class="text-danger"></span>
     </div>
-
-    @**NOTE: due to this beeing a MVP, we did not have the oppertunity to make the upload of images work the way we intended**@
-    @** <div class="form-group">
-        <label for="ListningImage">Listning Image:</label>
-        <input asp-for="@Model.Listning.ListningImageURL"type="file" accept=".png,.jpg,.jpeg" id="ListningImage" multiple="false" name="Listning.ListningImageURL" class="form-control-file">
-        <span asp-validation-for="@Model.Listning.ListningImageURL" class="text-danger"></span>
-    </div>**@
+            <div class="form-group">
+                <label for="ListningImage">Listning Image:</label>
+                <input asp-for="ListningImage" type="file" accept=".png,.jpg,.jpeg" id="ListningImage"
+                       multiple="false" class="form-control-file">
+                <span asp-validation-for="ListningImage" class="text-danger"></span>
+            </div>*
     <div class="form-group">
         <label asp-for="@Model.Listning.FromDate">Available From</label>
         <span class="text-danger">*</span>
@@ -89,7 +88,7 @@
 
 }
 else{
-<form asp-controller="Account" asp-action="UpdateListing">
+<form asp-controller="Account" asp-action="UpdateListing" enctype="multipart/form-data">
     <input type="hidden" asp-for="@Model.Listning.ListningId"/>
     <div class="form-group">
         <label asp-for="@Model.Listning.ListningName"></label>
@@ -104,12 +103,12 @@ else{
         <span asp-validation-for="@Model.Listning.ListningPrice" class="text-danger"></span>
     </div>
 
-    @**NOTE: due to this beeing a MVP, we did not have the oppertunity to make the upload of images work the way we intended**@
-    @** <div class="form-group">
+    <div class="form-group">
         <label for="ListningImage">Listning Image:</label>
-        <input asp-for="@Model.Listning.ListningImageURL"type="file" accept=".png,.jpg,.jpeg" id="ListningImage" multiple="false" name="Listning.ListningImageURL" class="form-control-file">
-        <span asp-validation-for="@Model.Listning.ListningImageURL" class="text-danger"></span>
-    </div>**@
+        <input asp-for="ListningImage" type="file" accept=".png,.jpg,.jpeg" id="ListningImage"
+        multiple="false" class="form-control-file">
+        <span asp-validation-for="ListningImage" class="text-danger"></span>
+    </div>*
     <div class="form-group">
         <label asp-for="@Model.Listning.FromDate">Available From</label>
         <span class="text-danger">*</span>
