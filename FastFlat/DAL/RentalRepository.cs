@@ -16,6 +16,8 @@ namespace FastFlat.DAL
             _logger = logger;
         }
 
+        //prøver å gjøre det til async
+        /*
         public IQueryable<T> GetAll() //hvorfor har vi ikke async her?
         {
             try
@@ -23,6 +25,21 @@ namespace FastFlat.DAL
                 return _context.Set<T>();
             }
 
+            catch (Exception e)
+            {
+                _logger.LogError("[RentalRepository] Set<T> failed when GetAll(), error message: {e}", e.Message);
+                return null;
+            }
+        }
+        */
+
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            try
+            {
+                // Returner en liste for å utføre en umiddelbar evaluering, akkurat som i lærerens eksempel.
+                return await _context.Set<T>().ToListAsync();
+            }
             catch (Exception e)
             {
                 _logger.LogError("[RentalRepository] Set<T> failed when GetAll(), error message: {e}", e.Message);
@@ -96,12 +113,7 @@ namespace FastFlat.DAL
                 return false;
             }
 
-
         }
 
-
-
     }
-
-
 }

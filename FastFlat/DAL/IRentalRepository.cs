@@ -2,8 +2,14 @@ namespace FastFlat.DAL
 {
     public interface IRentalRepository<T> where T : class
     {
+
+        /*
         //må gjøre sånn for å få flere SQL spørringer. Får å få .include()
         IQueryable<T> GetAll();
+
+        */
+
+        Task<IEnumerable<T>> GetAll();
 
         Task<T> GetById(int id);
         Task<bool> Create(T entity);
