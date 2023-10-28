@@ -15,7 +15,7 @@ namespace FastFlat.Models
 
         public virtual ApplicationUser? User { get; set; }  // Dette er navigeringsegenskapen som lar deg navigere fra en 'Listning' til den tilknyttede 'User'
 
-        [RegularExpression(@"^[0-9a-zæøåA-ZÆØÅ. /-]{4,20}", ErrorMessage = "The Listing Name needs to be between 4 and 20 signs and letters from a - å")]
+        [RegularExpression(@"^[0-9a-zæøåA-ZÆØÅ. /-]{10,60}", ErrorMessage = "The Listing Name needs to be between 4 and 20 signs and letters from a - å")]
         public string ListningName { get; set; } = string.Empty;
 
         [StringLength(350)]
@@ -28,6 +28,7 @@ namespace FastFlat.Models
         public string? ListningAddress { get; set; }
         public string? ListningCity { get; set; }
         public string? ListningCountry { get; set; }
+
         public string? ListningLat { get; set; }
         public string? ListningLng { get; set; }
         public decimal ListningPrice { get; set; }

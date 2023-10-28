@@ -12,11 +12,11 @@
             </p>
             <div class="plot-name-wrapper">
                 <p class="booking-card-sub">Entire Plot</p>
-                <p class="plot-name">@Model.Listing.ListningName</p>
+                <p class="plot-name">@Model.Listing.ListningName - @Model.Listing.SquareMeter m<sup>2</sup> - @Model.Listing.NoOfBeds @(Model.Listing.NoOfBeds == 1 ? "bed" : "beds")</p>
             </div>
             <div class="plot-add-wrapper">
                 <p class="booking-card-sub">Address</p>
-                <p class="plot-add">COMING SOON</p>
+                <p class="plot-add">@Model.Listing.ListningAddress</p>
             </div>
             <div class="plot-owner-wrapper">
                 <p class="booking-card-sub">Contact</p>
@@ -27,16 +27,16 @@
     </div>
     <div class="card-end">
         <div class="checkin">
-            <h5 class="sub-header">Check-In</h5>
-            <h3>@Model.Booking.FromDate</h3>
+            <p class="booking-card-sub">Check-In</p>
+            <h4>@Model.Booking.FromDate.ToString("dd-MM-yyyy")</h4>
         </div>
         <div class="checkout">
-            <h5 class="sub-header">Check-Out</h5>
-            <h3>@Model.Booking.ToDate</h3>
+            <p class="booking-card-sub">Check-Out</p>
+            <h4>@Model.Booking.ToDate.ToString("dd-MM-yyyy")</h4>
         </div>
         <div class="booking-price">
-            <h5 class="sub-header">Total Price</h5>
-            <h3>@Model.Booking.TotalPrice</h3>
+            <p class="booking-card-sub">Total Price</p>
+            <h3>@Math.Ceiling(Model.Booking.TotalPrice) kr,-</h3>
         </div>
     </div>
 </div>

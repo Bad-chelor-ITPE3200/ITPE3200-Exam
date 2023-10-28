@@ -119,11 +119,11 @@ namespace FastFlat.Migrations
                     b.Property<string>("ListningImageURL")
                         .HasColumnType("TEXT");
 
-                    b.Property<float?>("ListningLat")
-                        .HasColumnType("REAL");
+                    b.Property<string>("ListningLat")
+                        .HasColumnType("TEXT");
 
-                    b.Property<float?>("ListningLng")
-                        .HasColumnType("REAL");
+                    b.Property<string>("ListningLng")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ListningName")
                         .IsRequired()
