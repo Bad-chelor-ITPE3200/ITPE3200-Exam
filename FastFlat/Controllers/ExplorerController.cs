@@ -194,7 +194,7 @@ namespace FastFlat.Controllers
             {
                 // Fetch all bookings for the specified listing
                 var bookings = await _bookingRepo.GetAll();
-                bookings = bookings.Where(b => b.ListningId == listingId).ToList();
+                bookings = bookings.Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
