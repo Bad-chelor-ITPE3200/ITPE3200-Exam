@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/css/global.css" />
     <link rel="stylesheet" href="~/css/dropdown.css" />
     <link rel="stylesheet" href="~/css/searchbar.css" />
+    <link rel="stylesheet" href="~/css/feet.css" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -53,16 +54,14 @@
                     </div>
                 </div>
 
-            </div>
+            </div>  
             -->
         </nav>
     </header>
     @RenderBody()
     @RenderSection("scripts", required: false)
     <footer>
-        <div class="container">
-            <p class="lead">Copyright</p>
-        </div>
+        <partial name="_Feet" />
     </footer>
 </body>
 </html>
