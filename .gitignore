@@ -372,3 +372,5 @@ FodyWeavers.xsd
 /FastFlat/RentalDatabase.db-shm
 /FastFlat/RentalDatabase.db-wal
 /FastFlat/Migrations/*
+/FastFlat/Migrations
+/FastFlat/plantuml

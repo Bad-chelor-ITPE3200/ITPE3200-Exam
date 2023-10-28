@@ -1,8 +1,6 @@
 
 using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace FastFlat.DAL
@@ -124,7 +122,7 @@ namespace FastFlat.DAL
 
                     new AmenityModel
                     {
-                        AmenityName = "ParkingPlace",
+                        AmenityName = "Parking",
                         AmenityDescription = "Dedicated space for vehicle parking.",
                         AmenityLogo = "/images/amenity/ParkingPlace.svg"
                     },
@@ -142,7 +140,7 @@ namespace FastFlat.DAL
                     },
                     new AmenityModel
                     {
-                        AmenityName = "Waching Machine", // Might want to change this to "WashingMachine"
+                        AmenityName = "Waching Machine",
                         AmenityDescription = "A machine for cleaning clothes.",
                         AmenityLogo = "/images/amenity/WachingMachine.svg"
                     },
@@ -197,35 +195,11 @@ namespace FastFlat.DAL
                 context.AddRange(cities);
                 context.SaveChanges();
             }*/
-
-            //Country
-            if (!context.Countries.Any())
-            {
-                var country = new List<ContryModel>
-                {
-                    new ContryModel
-                    {
-                        Contryname = "Norway"
-                    },
-
-                    new ContryModel
-                    {
-                        Contryname = "Sweden"
-                    },
-
-                    new ContryModel
-                    {
-                        Contryname = "Denmark"
-                    },
-                };
-                await context.AddRangeAsync(country);
-                await context.SaveChangesAsync();
-            }
+            
 
             if (!context.Roles.Any())
-                //roles for the acess controll
-                //we let the controller control everything about what they can edit or not
-                //adds role 0 as Admin
+            //roles for the acess controll
+            //we let the controller control everything about what they can edit or not
             {
                 var roles = new List<IdentityRole> //identityrole as list, this makes it easier to expand with new roles
                 {

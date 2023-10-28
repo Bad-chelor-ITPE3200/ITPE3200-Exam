@@ -3,9 +3,7 @@ using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NuGet.Packaging.Signing;
 
 namespace FastFlat.Areas.Identity.Pages.Account.Manage
 {
@@ -26,7 +24,7 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         public async Task OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
-            var userBookings = (_bookingRepository.GetAll()).Where(b => b.UserId == user.Id).ToList();
+            var userBookings = (await _bookingRepository.GetAll()).Where(b => b.UserId == user.Id).ToList();
             var bookingsExtended = new List<BookingViewModel>();
             foreach (var booking in userBookings)
             {
@@ -37,5 +35,6 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
 
             Bookings = bookingsExtended;
         }
+
     }
 }

@@ -65,13 +65,13 @@
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.FromDate">Available From</label><span class="text-danger">*</span>
-                            <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="text" class="form-control"  />
+                            <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="date" class="form-control"  />
                             <span asp-validation-for="@Model.Booking.FromDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.ToDate">Available To</label><span class="text-danger">*</span>
-                            <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="text" class="form-control" />
+                            <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="date" class="form-control" />
                             <span asp-validation-for="@Model.Booking.ToDate" class="text-danger"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Book</button>
@@ -94,76 +94,78 @@
 </div>
 
 <script>
-
-
-
     $(document).ready(function () {
-        var listningId = $('#Listing_ListningId').val(); // henter verdien fra form
+        // Retrieve the value from the form
+        var listingId = @Model.Listing.ListningId
 
-        // Forespørsel for å hente tilgjengelige datoer for listningen
+        // AJAX request to fetch available dates for the listing
         $.ajax({
-            url: '/Explorer/GetAvailableDatesForListning?listningId=' + listningId,
+                url: '/Explorer/GetAvailableDates?listingId=' + listingId,
             method: 'GET',
             dataType: 'json',
             success: function (availabilityData) {
-                // Forespørsel for å hente bookede datoer
+                // AJAX request to fetch booked dates
                 $.ajax({
-                    url: '/Explorer/GetBookedDates?listningId=' + listningId,
+                    url: '/Explorer/GetBookedDates?listingId=' + listingId,
                     method: 'GET',
                     dataType: 'json',
                     success: function (bookedDates) {
-                        // Konverterer datoene til 'yy-mm-dd' format
+                        // Convert dates to 'yy-mm-dd' format
                         var convertedBookedDates = bookedDates.map(date => date.split('T')[0]);
 
-                        // Finn den første bookede datoen
+                        // Find the first booked date
                         var firstBookedDate = new Date(convertedBookedDates.sort()[0]);
 
-                        // Få dagen før første booking
+                        // Get the day before the first booking
                         firstBookedDate.setDate(firstBookedDate.getDate() - 1);
 
-                        // Setter initialverdier for dato-inputfeltene
+                        // Set initial values for date input fields based on availability data
                         $("#fromDateInput").val(jQuery.datepicker.formatDate('yy-mm-dd', new Date(availabilityData.fromDate)));
                         $("#toDateInput").val(jQuery.datepicker.formatDate('yy-mm-dd', firstBookedDate));
 
+                        // Configure the "From Date" picker
                         $("#fromDateInput").datepicker({
                             dateFormat: "yy-mm-dd",
                             minDate: new Date(availabilityData.fromDate),
                             maxDate: new Date(availabilityData.toDate),
                             beforeShowDay: function (date) {
+                                // Check if the date is already booked
                                 var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                                 return [convertedBookedDates.indexOf(string) === -1];
                             },
                             onSelect: function (selectedDate) {
+                                // Set the minimum date for the "To Date" picker based on the selected date in the "From Date" picker
                                 $("#toDateInput").datepicker("option", "minDate", selectedDate);
                             }
                         });
 
+                        // Configure the "To Date" picker
                         $("#toDateInput").datepicker({
                             dateFormat: "yy-mm-dd",
                             minDate: new Date(availabilityData.fromDate),
                             maxDate: new Date(availabilityData.toDate),
                             beforeShowDay: function (date) {
+                                // Check if the date is already booked
                                 var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                                 return [convertedBookedDates.indexOf(string) === -1];
                             },
                             onSelect: function (selectedDate) {
+                                // Set the maximum date for the "From Date" picker based on the selected date in the "To Date" picker
                                 $("#fromDateInput").datepicker("option", "maxDate", selectedDate);
                             }
                         });
 
                     },
                     error: function (error) {
+                        // Log an error if there's a problem fetching booked dates
                         console.error("Error fetching booked dates:", error);
                     }
                 });
             },
             error: function (error) {
+                // Log an error if there's a problem fetching available dates
                 console.error("Error fetching available dates:", error);
             }
         });
     });
-
-
-
-
 </script>

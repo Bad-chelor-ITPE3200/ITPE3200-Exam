@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using FastFlat.DAL;
-using FastFlat.Models;
 using Microsoft.AspNetCore.Identity;
-using Serilog.Events;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
@@ -21,24 +19,20 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 });
 //configure logger
 var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
-    .File($"Logs/appLog.txt");
+    .File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log"); // gjord endring på formatet
+
+//filtrerer loggen
+loggerConf.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceContext", out var value) &&
+e.Level == LogEventLevel.Information && e.MessageTemplate.Text.Contains("Ececuted DbCommand"));
 
 //creating logger
 var logger = loggerConf.CreateLogger();
 builder.Logging.AddSerilog(logger);
+
+
+builder.Services.AddHttpClient();
 //builder.Services.AddScoped<SignInManager<IdentityUser>>();
-/*
-var loggerConfiguration = new LoggerConfiguration()
-    .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
-    .WriteTo.File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
 
-loggerConfiguration.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceContext", out var value) &&
-                            e.Level == LogEventLevel.Information &&
-                            e.MessageTemplate.Text.Contains("Executed DbCommand"));
-
-var logger = loggerConfiguration.CreateLogger();
-builder.Logging.AddSerilog(logger);
-*/
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Password Settings
@@ -80,7 +74,8 @@ builder.Services.AddTransient<DBInit>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()){
+if (app.Environment.IsDevelopment())
+{
     // Create an instance of DBInit and call Seed
     using var scope = app.Services.CreateScope();
     await DBInit.Seed(app); // This line calls the Seed method on the DBInit instance.

@@ -1,24 +1,117 @@
-﻿<div class="searchbar">
-    <div class="location" style="max-height: 40%; overflow-y: visible;">
+﻿<script>
+    function search() {
+        let city = $('#location').val();
+        let fromDate = $('#fromDate').val();
+        let toDate = $('#toDate').val();
+        let guests = $('#guests').val();
+
+        // Start with the base URL
+        let url = "/Explorer/Explore?";
+
+        // Add parameters if they are not empty
+        if (city) {
+            url += `location=${city}&`;
+        }
+
+        if (fromDate) {
+            url += `fromDate=${fromDate}&`;
+        }
+
+        if (toDate) {
+            url += `toDate=${toDate}&`;
+        }
+
+        if (guests) {
+            url += `guests=${guests}&`;
+        }
+
+        // Add amenities if the list is not empty
+        if (selectedAmenities && selectedAmenities.length > 0) {
+            url += `amenities=${encodeURIComponent(JSON.stringify(selectedAmenities))}`;
+        }
+
+        // Trim any trailing '&' or '?' characters
+        url = url.endsWith('&') ? url.slice(0, -1) : url;
+        url = url.endsWith('?') ? url.slice(0, -1) : url;
+
+        // Redirect to the constructed URL
+        window.location.href = url
+    }
+
+</script>
+
+<div class="searchbar">
+    <div class="location">
         <label for="location" class="searchbar-title">Hvor</label>
-        <input type="text" placeholder="Søk etter lokasjon" id="location">
-        <div id="city-search-results">
-        </div>
+        <input type="text" placeholder="Søk etter lokasjon" id="location" value="@Model.Location"/>
+        <div id="output"></div>
     </div>
     <div class="fromDate">
         <label for="fromDate" class="searchbar-title">Innsjekking</label>
-        <input type="text" placeholder="Legg til dato" id="fromDate">
+        <input type="date" placeholder="Legg til dato" id="fromDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.ToString("yyyy-MM-dd")">
     </div>
     <div class="toDate">
         <label for="toDate" class="searchbar-title">Utsjekking</label>
-        <input type="text" placeholder="Legg til dato" id="toDate">
+        <input type="date" placeholder="Legg til dato" id="toDate" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")">
     </div>
     <div class="guests">
         <label for="guests" class="searchbar-title">Gjester</label>
-        <input type="number" placeholder="Legg til gjester" id="guests">
+        @if(Model.Guests == 0)
+        {
+            <input type="number" placeholder="Legg til gjester" id="guests" value="1">
+        }
+        else
+        {
+            <input type="number" placeholder="Legg til gjester" id="guests" value="@Model.Guests">
+        }
     </div>
-    <div id="submit-btn">
-        <img src="~/images/icons/search.svg">
+    <div id="submit-btn" onclick="search()">
+        <img src="@Url.Content("~/images/icons/search.svg")">
     </div>
 </div>
-<script src="~/js/search.js"></script>
+
+<script>
+    const cityInput = $('#location');
+    const cityOutput = document.getElementById('output');
+    let cityArray = []
+
+    function updateLocation(city) {
+        cityOutput.innerHTML = ' '
+        console.log(city)
+        cityInput.val(city)
+    }
+
+    cityInput.keyup(async () => {
+        cityArray = []
+        if (cityInput.val().length < 3) {
+            cityOutput.innerHTML = ' '
+            return
+        }
+        try {
+            const response = await fetch('/api/locality-search?input=' + encodeURIComponent(cityInput.val()));
+
+            if (!response.ok) {
+                console.error('Failed to fetch cities:', response.statusText);
+                return;
+            }
+
+            const data = await response.json();
+                  
+            cityArray = data.predictions;
+            // Clearing previous output, if desired
+            output.innerHTML = '';
+
+            if (Array.isArray(cityArray)) {
+                cityArray.forEach(city => {
+              
+                    output.innerHTML += `<button onclick="updateLocation('${city.description.split(",")[0]}')">${city.description}</button>`;
+                });
+            } else {
+                console.error('Data is not an array:', data);
+            }
+        } catch (error) {
+            console.error('Error occurred:', error);
+        }
+    });
+
+</script>

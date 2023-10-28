@@ -10,7 +10,7 @@ namespace FastFlat.ViewModels
 
         public List<AmenityModel>? Amenities { get; set; }
         public string? CurrentVeiwName { get; set; }
-        public IEnumerable<ContryModel>? AvailableCountries { get; set; }
+      
 
         [MinItems(1, ErrorMessage = "Vennligst velg minst en amenity.")]
         public List<int>? SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
@@ -22,11 +22,10 @@ namespace FastFlat.ViewModels
         }
 
         // Konstruktør for NewListningViewModel.
-        public NewListningViewModel(List<AmenityModel> amenities, List<ContryModel> contries)
+        public NewListningViewModel(List<AmenityModel> amenities)
         {
             // Setter Amenities-property med den mottatte listen eller en ny tom liste hvis den mottatte listen er null.
             Amenities = amenities ?? new List<AmenityModel>();
-            AvailableCountries = contries ?? new List<ContryModel>();
 
 
             // Initialiserer SelectedAmenities som en tom liste.

@@ -1,15 +1,14 @@
-﻿using System.Composition;
-using System.Reflection.Metadata.Ecma335;
-using FastFlat.DAL;
+﻿using FastFlat.DAL;
 using FastFlat.Models;
 using FastFlat.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using NuGet.Protocol.Core.Types;
+using Newtonsoft.Json;
 
 namespace FastFlat.Controllers
 {
+    // This controller handles operations related to exploring listings on the platform.
     public class ExplorerController : Controller
     {
 
@@ -17,61 +16,122 @@ namespace FastFlat.Controllers
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRentalRepository<BookingModel> _bookingRepo;
+
         private readonly ILogger<ExplorerController> _logger;
 
-        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController>logger)
+        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController> logger)
         {
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;
             _userManager = userManager;
             _bookingRepo = bookingRepo;
-            _logger = logger; 
+            _logger = logger;
         }
+
         [HttpGet]
-        public async Task<IActionResult> Explore()
+        public async Task<IActionResult> Explore([FromQuery] ExploreRequest request)
         {
-
-            var rentalList = _rentalRepo.GetAll();
-            var amenityList = _amenityRepo.GetAll();
-            var rentalListViewModel = new RentalListViewModel(rentalList, amenityList, "Card");
-            return View(rentalListViewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Explore(RentalListViewModel input)
-        {
-
-            var allRentals = _rentalRepo.GetAll();
-
-            if (input != null)
+            var rentalList = await _rentalRepo.GetAll();
+            // Search by city
+            if (!string.IsNullOrEmpty(request.Location))
             {
-                allRentals = allRentals.Where(rental => rental.ListningAmenities.Any(am => input.SelectedAmenities.Contains(am.Amenity.AmenityName)));
+                rentalList = rentalList.Where(listing => listing.ListningCity.ToLower() == request.Location.ToLower()
+                                                || listing.ListningCountry.ToLower()== request.Location.ToLower());
+            }
+            // Filter by fromDate. Assuming listings that are available "from" a date are available for bookings from that date.
+            if (request.FromDate != default(DateTime))
+            {
+                rentalList = rentalList.Where(listing => listing.FromDate.HasValue && listing.FromDate.Value <= request.FromDate);
+            }
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] FromDate parameter not provided or is default.");
+            }
+            // Filter by toDate. Assuming listings that are available "to" a date are available for bookings until that date.
+            if (request.ToDate != default(DateTime))
+            {
+                rentalList = rentalList.Where(listing => listing.ToDate.HasValue && listing.ToDate.Value >= request.ToDate);
+            }
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] ToDate parameter not provided or is default.");
+            }
+            // Filter by number of guests (compared with number of beds in the listing)
+            if (request.Guests > 0)
+            {
+                rentalList = rentalList.Where(listing => listing.NoOfBeds.HasValue && listing.NoOfBeds.Value >= request.Guests);
+            }
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] Guests parameter not provided or is zero.");
+            }
+            var requestedAmenities = new List<string>();
+            // Assuming Amenities is a JSON string list. Deserialize it and filter listings based on amenities.
+            if (!string.IsNullOrEmpty(request.Amenities))
+            {
+                requestedAmenities = JsonConvert.DeserializeObject<List<string>>(request.Amenities);
+                if (requestedAmenities?.Count > 0)
+                {
+                    var allRentals = await _rentalRepo.GetAll();
+
+                    // Then filter these in-memory listings based on the requested amenities.
+                    allRentals = allRentals.Where(listing =>
+    listing.ListningAmenities != null &&
+    requestedAmenities.All(requestedAmenity =>
+        listing.ListningAmenities.Any(listingAmenity =>
+            listingAmenity.Amenity != null &&
+            listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+
+
+                    rentalList = allRentals.AsQueryable();
+                }
+                else
+                {
+                    _logger.LogWarning($"[ExplorerController Explore() GET] Deserialized amenities list is empty.");
+                }
             }
 
             var amenityList = _amenityRepo.GetAll();
-            var rentalListViewModel = new RentalListViewModel(allRentals, amenityList, "Card");
-
-            ViewBag.SelectedAmenity = input.SelectedAmenities.FirstOrDefault(); // Lagre den valgte amenity i ViewBag for å bruke den i visningen
+            var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.Location, request.Guests, request.FromDate, request.ToDate, "Card");
             return View(rentalListViewModel);
         }
 
 
 
-
+        // Displays detailed view of a single listing.
         [HttpGet]
         public async Task<IActionResult> ViewListing(int listingId)
         {
             var listing = await _rentalRepo.GetById(listingId);
+            if (listing == null)
+            {
+                _logger.LogError($"[ExplorerController ViewListing() GET] Listing not found with id: {listingId}");
+                return StatusCode(500,"Listing could not be found.");
+            }
+
             var userId = listing.UserId;
             var user = await _userManager.FindByIdAsync(userId);
-
+            if (user == null)
+            {
+                _logger.LogError($"[ExplorerController ViewListing() GET] User not found with id: {userId}");
+                return StatusCode(500, "User could not be found.");
+            }
+            
             var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
+            if (rentalListViewModel == null)
+            {
+                _logger.LogError("[ExplorerController ViewListing() GET] Failed to create ListingViewModel.");
+                return StatusCode(500, "Failed to create ListingViewModel.");
+            }
+
             rentalListViewModel.Booking = new BookingModel();
+
             return View(rentalListViewModel);
         }
 
-        
-        //legger til booking 
+
+
+        // Allows users to book a listing by providing booking details.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ViewListing(ListingViewModel input)
@@ -82,76 +142,105 @@ namespace FastFlat.Controllers
             input.Booking.UserId = userId;
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Modelstate is not valid in VeiwListing");
-                foreach (var modelStateKey in ModelState.Keys)
-                {
-                  
-                    var modelStateVal = ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        // Du kan logge feilen, skrive den ut i konsollen eller bare se den i debug-modus.
-                        System.Diagnostics.Debug.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}"); // hva i alle dager er dette???
-                      
-                    }
-                }
-                
+                _logger.LogError("[ExplorerController ViewListing() POST] Modelstate is not valid in VeiwListing");
             }
-            
-                if (ModelState.IsValid)
+
+            if (ModelState.IsValid)
+            {
+
+                // Calculate the total number of days between the 'FromDate' and 'ToDate'.
+                DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
+                DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
+                var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
+
+
+                // Calculate the total price for the booking based on the daily rate and the total number of days.
+                var totalPrice = input.Listing.ListningPrice * numberOfDays;
+                input.Booking.TotalPrice = totalPrice;
+                input.Booking.ListningId = input.Listing.ListningId;
+
+                try
                 {
-                    DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
-                    DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
-                    var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
-                    var totalPrice = input.Listing.ListningPrice * numberOfDays;
-
-                    input.Booking.TotalPrice = totalPrice;
-
-                    //var totalDays = (input.Listing.ToDate - input.Listing.FromDate).Days;
-
-                    input.Booking.ListningId = input.Listing.ListningId;
-                  //  _logger.LogInformation("Account is created");
                     await _bookingRepo.Create(input.Booking);
-                    _logger.LogInformation("creation of new booking is 200" +input.Booking);
-                    return RedirectToAction(nameof(Explore));
+                    _logger.LogInformation($"Creation of new booking succeeded. Booking details: {input.Booking}");
+
                 }
-                else
+                catch (Exception e)
+                {
+                    _logger.LogError($"[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
+                    return StatusCode(500, "Failed to create booking.");
+                }
+                return RedirectToAction(nameof(Explore));
+            }
+
+            else
             {
                 // Hvis ModelState er ugyldig, bygg ListingViewModel på nytt
-                var listing = await _rentalRepo.GetById(input.Listing.ListningId); // Anta at ListingId er tilgjengelig fra input
+                var listing = await _rentalRepo.GetById(input.Listing.ListningId);
                 var ownerUserId = listing.UserId;
                 var user = await _userManager.FindByIdAsync(ownerUserId);
-
                 var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
-                rentalListViewModel.Booking = input.Booking; // Behold bookinginformasjonen som brukeren har sendt
-
+                rentalListViewModel.Booking = input.Booking;
                 return View(rentalListViewModel);
             }
         }
 
-        //henter booked dato
-        [HttpGet]
-        public async Task<IActionResult> GetBookedDates(int listningId)
+        // AJAX endpoint: Retrieves a list of dates when a specific listing is already booked.
+        // This method is designed to work in conjunction with frontend AJAX calls to fetch booked dates and update the datepickers.
+        [HttpGet("Explorer/GetBookedDates")]
+        public async Task<ActionResult> GetBookedDates([FromQuery] int listningId)
         {
-            // Hent alle booking datoer for denne listningen fra databasen
-            var bookedDates = await _bookingRepo.GetBookedDatesForListning(listningId);
-            return Json(bookedDates);
+            try
+            {
+                // Fetch all bookings for the specified listing
+                var bookings = _bookingRepo.GetAll()
+                                              .Where(b => b.ListningId == listningId).ToList();
+
+                var bookedDates = new List<DateTime>();
+                foreach (var booking in bookings)
+
+                {   // Populate the 'bookedDates' list with every individual date from each booking's 'FromDate' to 'ToDate'.
+                    for (var date = booking.FromDate; date <= booking.ToDate; date = date.AddDays(1))
+                    {
+                        bookedDates.Add(date);
+                    }
+                }
+                return Ok(bookedDates);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"[ExplorerController GetBookedDates()] Error occurred while fetching booked dates: {e.Message}");
+                throw;
+            }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableDatesForListning(int listningId)
+        // AJAX endpoint: Retrieves the start and end dates when a specific listing is available for booking.
+        // This method is designed to work in conjunction with frontend AJAX calls to fetch available date ranges and update the datepickers.
+        [HttpGet("Explorer/GetAvailableDates")]
+        public async Task<ActionResult> GetAvailableDates([FromQuery] int listingId)
         {
-            //Gets all the dates that are available for booking
-            var dates = await _rentalRepo.GetAvailableDatesForListning(listningId);
-            _logger.LogInformation("available dates have been gained" + dates);
-            return Ok(new { fromDate = dates.StartDate, toDate = dates.EndDate });
+            try
+            {
+                // Fetch the specified listing
+                var listning = await _rentalRepo.GetById(listingId);
+                if (listning == null)
+                {
+                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
+                }
+
+                // Get the date range when the listing is available
+                var availableDates = (listning?.FromDate, listning?.ToDate);
+
+                return Ok(availableDates);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"[ExplorerController GetAvailableDates()] Error occurred while fetching available dates: {e.Message}");
+                return StatusCode(500, "Failed to fetch available dates.");
+            }
         }
 
-        [HttpGet("api/available-countries")]
-        public IActionResult GetAvailableCountries()
-        {
-            var countries = _rentalRepo.GetAvailableCountries(); // Assuming _rentalRepository is an instance of RentalRepository
-            return Ok(countries);
-        }
+
 
     }
 }

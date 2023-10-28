@@ -1,6 +1,0 @@
-@startuml
-class LandlordModel {
-    + landlordModelId : int <<get>> <<set>>
-    + rating : float <<get>> <<set>>
-}
-@enduml

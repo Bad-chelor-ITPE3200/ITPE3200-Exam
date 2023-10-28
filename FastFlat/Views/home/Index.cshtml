@@ -1,6 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RentalListViewModel
+
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css" />
 }
@@ -11,64 +10,55 @@
                 <h1>Finding your rental has never been easier.</h1>
                 <p>Lorem ipsum dolor si ames ah detru luer afn ela dilasti hestem lak.</p>
             </div>
-            <div class="searchbar">
-                <div class="location">
-                    <label for="location" class="searchbar-title">Hvor</label>
-                    <input type="text" placeholder="Søk etter lokasjon" id="location" hidden>
-                    <select id="countryDropdown">
-                        <!-- Options will be displayed here dynamically -->
-                    </select>
-                </div>
-                <div class="fromDate">
-                    <label for="fromDate" class="searchbar-title">Innsjekking</label>
-                    <input type="text" placeholder="Legg til dato" id="fromDate">
-                </div>
-                <div class="toDate">
-                    <label for="toDate" class="searchbar-title">Utsjekking</label>
-                    <input type="text" placeholder="Legg til dato" id="toDate">
-                </div>
-                <div class="guests">
-                    <label for="guests" class="searchbar-title">Gjester</label>
-                    <input type="number" placeholder="Legg til gjester" id="guests">
-                </div>
-                <div id="submit-btn">
-                    <img src="@Url.Content("~/images/icons/search.svg")">
-                </div>
-            </div>
+            <partial name="_SearchBar" />
         </div>
+        
         <div class="hero-right">
-            <div class="thumbnail">
+            <div id="carouselImages" class="thumbnail carousel slide" data-bs-ride="true">
                 <div class="thumbnail-marker">
                     <img src="@Url.Content("~/images/icons/marker.svg")">
                 </div>
-                <div class="thumbnail-text">
-                    <h5 class="card-title">Bahamas resort</h5>
-                    <p>17.-21. sep.</p>
-                    <p class="card-subtitle mb-2 text-body-secondary"><span class="price">1345 NOK</span> per natt</p>
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="1" class="active" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="2" class="active" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="3" class="active" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="4" class="active" aria-label="Slide 5"></button>
+                    </div>
+                <div class="carousel-inner">
+                    @{var i = 0;}
+                    @foreach (var rental in Model.Rentals)
+                    {
+                            @if(i==0){
+                                <div class="thumbnail carousel-item active">
+                                    <img class="thumbnail-img" src="@rental.ListningImageURL">
+
+                                    <div class="thumbnail-text">
+                                        <h5 class="card-title">@rental.ListningName</h5>
+                                        <p>@rental.FromDate - @rental.ToDate</p>
+                                        <p class="card-subtitle mb-2 text-body-secondary"><span class="price">@rental.ListningPrice</span> per natt</p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="thumbnail carousel-item">
+                                    <img class="thumbnail-img" src="@rental.ListningImageURL">
+
+                                    <div class="thumbnail-text">
+                                        <h5 class="card-title">@rental.ListningName</h5>
+                                        <p>@rental.FromDate - @rental.ToDate</p>
+                                        <p class="card-subtitle mb-2 text-body-secondary"><span class="price">@rental.ListningPrice</span> per natt</p>
+                                    </div>
+                                </div>
+                            }
+                        i++;
+                    }
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 <script>
-
-    $(document).ready(function () {
-        $.ajax({
-            url: '/api/available-countries',
-            type: 'GET',
-            success: function (data) {
-                console.log(data);
-                let countries = data.result; // Access the result property directly
-                let dropdown = $("#countryDropdown");
-                countries.forEach(function (country) {
-                    dropdown.append(new Option(country, country));
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error fetching countries:", textStatus, errorThrown);
-            }
-        });
-    });
-
+    const selectedAmenities = []
 </script>
