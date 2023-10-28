@@ -37,7 +37,7 @@
     color: lightslategray;
     width: 90%;
     margin-top: -5px;
-    margin-bottom: 10px; 
+    margin-bottom: 5px; 
 }
 
 .submenu-link {
@@ -45,26 +45,35 @@
     align-items:center;
     text-decoration:none;
     margin-left: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: dimgray;
 }
 
 
 .submenu-link p,
 #logout {
+    align-content: center;
     margin-left: 10px;
-    font-size: inherit; /* Inherit font size from the parent (.submenu-link) */
-    font-family: inherit; /* Inherit font family from the parent (.submenu-link) */
-    color: dimgray; /* Set the color */
-    background: none; /* Remove background */
-    border: none; /* Remove border */
-    cursor: pointer; /* Set cursor style */
+    font-size: inherit; 
+    font-family: inherit; 
+    color: dimgray; 
+    background: none; 
+    border: none;
+    cursor: pointer;
     padding-left: 0;
     transition: transform 0.5s;
 }
 
+#logoutForm {
+    margin-top:15px;
+}
+
+.submenu-link p{
+    padding-top: 10px;
+}
+
 .submenu-link span {
-    margin-left: auto; /* Align the ">" to the right */
+    margin-left: auto; /* So that I can align the ">" to the right */
     margin-right: 15px;
     font-size: 23px;
     transition: transform 0.5s;

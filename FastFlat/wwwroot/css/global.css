@@ -94,13 +94,12 @@ nav {
     font-size: 1rem;
 }
 
-.active {
+/* .active {
     color: #000000 !important;
     font-weight: bolder;
 }
-
+*/
 /* Hamburger Menu */
-
 .icon:hover .out {
     display: block;
     opacity: 1;
