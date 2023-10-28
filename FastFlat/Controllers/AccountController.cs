@@ -348,6 +348,8 @@ namespace FastFlat.Controllers
                 upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
                 upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
                 upDatedUser.ListningAddress = listingVeiwModel.Listning.ListningAddress;
+                upDatedUser.ListningLat = listingVeiwModel.Listning.ListningLat;
+                upDatedUser.ListningLng = listingVeiwModel.Listning.ListningLng;
                 _logger.LogInformation("LOGGGING OK");
                 var result = _listingRepository.Update(upDatedUser);
                 //  _logger.LogInformation(restult.ToString());

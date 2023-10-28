@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FastFlat.Models
 
@@ -7,8 +8,8 @@ namespace FastFlat.Models
     {
         [Key]
         public int BookingId { get; set; }
+        [ForeignKey("ApplicationUser")]
         public string UserId { get; set; }  // Fremmednøkkel for User
-        //public virtual ApplicationUser? User { get; set; }  // Navigasjonsegenskap for User
         public int ListningId { get; set; } // Fremmednøkkel for Listning
         public virtual ListningModel? Listning { get; set; } // Navigasjonsegenskap for Listning
 
