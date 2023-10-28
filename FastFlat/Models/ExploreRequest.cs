@@ -2,7 +2,7 @@
 {
     public class ExploreRequest
     {
-        public string City { get; set; }
+        public string Location { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public int Guests { get; set; }

@@ -9,8 +9,8 @@ namespace FastFlat.ViewModels
         public List<String> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
         public string? CurrentViewName;
 
-        public string? City;
-        public int? Guests;
+        public string? Location;
+        public int Guests;
         public DateTime? ToDate;
         public DateTime? FromDate;
 
@@ -19,12 +19,12 @@ namespace FastFlat.ViewModels
             // Parameterless constructor for model binding
         }
 
-        public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, List<string>? selectedAmenities, string? city, int? guests, DateTime? fromDate, DateTime? toDate, string? currentViewName)
+        public RentalListViewModel(IEnumerable<ListningModel> rentals, IEnumerable<AmenityModel> amenities, List<string>? selectedAmenities, string? location, int? guests, DateTime? fromDate, DateTime? toDate, string? currentViewName)
         {
             Rentals = rentals;
             Amenities = amenities;
             SelectedAmenities = selectedAmenities;
-            City = city;
+            Location = location;
             Guests = guests ?? 1;
 
             // Handle fromDate

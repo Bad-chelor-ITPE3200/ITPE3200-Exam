@@ -12,11 +12,11 @@ namespace FastFlat.Attributes
             _minItems = minItems;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value is IList list && list.Count >= _minItems)
             {
-                return ValidationResult.Success;
+                return ValidationResult.Success!;
             }
 
             return new ValidationResult(ErrorMessage ?? $"Du må velge minst {_minItems} element(er).");

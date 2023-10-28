@@ -41,7 +41,7 @@ namespace FastFlat.Controllers
             try
             {
                 // Henter alle fasiliteter fra databasen ved å bruke _amenityRepository.
-                var amenities = _amenityRepository.GetAll().ToList();
+                var amenities = await _amenityRepository.GetAll();
                 // Oppretter en ny instans av NewListningViewModel med fasilitetene vi nettopp hentet.
 
                 // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
@@ -52,7 +52,7 @@ namespace FastFlat.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogWarning("[NewListningController NewListning() GET] Error retrieving amenities and available countries: {e.Message}");
+                _logger.LogWarning($"[NewListningController NewListning() GET] Error retrieving amenities and available countries: {e.Message}");
                 return NotFound(e);
             }
         }
@@ -63,6 +63,8 @@ namespace FastFlat.Controllers
         public async Task<IActionResult> NewListning(NewListningViewModel viewModel)
         {
             var userId = _userManager.GetUserId(User);
+            _logger.LogDebug("lat: " + viewModel.Listning.ListningLat);
+            _logger.LogDebug("long" + viewModel.Listning.ListningLng);
             if (ModelState.IsValid)
             {
                 if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)
@@ -83,23 +85,31 @@ namespace FastFlat.Controllers
                 // Sjekk at viewModel.Listning.ListningId nå har en gyldig verdi.
                 if (viewModel.Listning.ListningId > 0)
                 {
-                    foreach (var amenityId in viewModel.SelectedAmenities)
+                    if (viewModel.SelectedAmenities != null)
                     {
-                        var listningAmenity = new ListningAmenity
+                        foreach (var amenityId in viewModel.SelectedAmenities)
                         {
-                            ListningId = viewModel.Listning.ListningId,
-                            AmenityId = amenityId
-                        };
+                            var listningAmenity = new ListningAmenity
+                            {
+                                ListningId = viewModel.Listning.ListningId,
+                                AmenityId = amenityId
+                            };
 
-                        await _listningAmenityRepository.Create(listningAmenity);
-
+                            await _listningAmenityRepository.Create(listningAmenity);
+                        }
                     }
+                    else
+                    {
+                        _logger.LogWarning("[NewListningController NewListning() POST] SelectedAmenities is null.");
+                    }
+
                     _logger.LogInformation($"[NewListningController NewListning() POST] Successfully created new listing with ID {viewModel.Listning.ListningId} by user ID {userId}.");
                     return Redirect("/Identity/Account/Manage/Rentals");
                 }
                 else
                 {
-                    _logger.LogError("[NewListningController NewListning() POST] Failed to create a new Listning in the database.User ID: { userId}.");
+                    _logger.LogError($"[NewListningController NewListning() POST] Failed to create a new Listning in the database.User ID: { userId}.");
+                    return StatusCode(500, "Failed to create new listing.");
                 }
             }
             else
@@ -109,11 +119,13 @@ namespace FastFlat.Controllers
             }
 
             // Hvis ModelState er ugyldig eller en annen feil oppstår, hent fasilitetene på nytt.
-            var amenities = _amenityRepository.GetAll().ToList();
-            viewModel.Amenities = amenities.ToList();
+            var amenityList = await _amenityRepository.GetAll();
+            viewModel.Amenities = amenityList.ToList();
 
             return View(viewModel);
         }
+        
+        
     }
 }
 

@@ -1,3 +1,5 @@
+using FastFlat.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.DAL
@@ -16,13 +18,13 @@ namespace FastFlat.DAL
             _logger = logger;
         }
 
-        public IQueryable<T> GetAll() //hvorfor har vi ikke async her?
+        public async Task<IEnumerable<T>> GetAll()
         {
             try
             {
-                return _context.Set<T>();
+                // Returner en liste for � utf�re en umiddelbar evaluering, akkurat som i l�rerens eksempel.
+                return await _context.Set<T>().ToListAsync();
             }
-
             catch (Exception e)
             {
                 _logger.LogError("[RentalRepository] Set<T> failed when GetAll(), error message: {e}", e.Message);
@@ -96,12 +98,7 @@ namespace FastFlat.DAL
                 return false;
             }
 
-
         }
 
-
-
     }
-
-
 }

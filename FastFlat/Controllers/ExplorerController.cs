@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
 
 namespace FastFlat.Controllers
 {
@@ -14,7 +12,6 @@ namespace FastFlat.Controllers
     public class ExplorerController : Controller
     {
 
-        private readonly HttpClient _httpClient;
         private readonly IRentalRepository<ListningModel> _rentalRepo;
         private readonly IRentalRepository<AmenityModel> _amenityRepo;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,9 +19,8 @@ namespace FastFlat.Controllers
 
         private readonly ILogger<ExplorerController> _logger;
 
-        public ExplorerController(IHttpClientFactory httpClientFactory, IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController> logger)
+        public ExplorerController(IRentalRepository<ListningModel> rentalRepo, IRentalRepository<AmenityModel> amenityRepo, UserManager<ApplicationUser> userManager, IRentalRepository<BookingModel> bookingRepo, ILogger<ExplorerController> logger)
         {
-            _httpClient = httpClientFactory.CreateClient();
             _rentalRepo = rentalRepo;
             _amenityRepo = amenityRepo;
             _userManager = userManager;
@@ -32,82 +28,71 @@ namespace FastFlat.Controllers
             _logger = logger;
         }
 
-        private async Task<string> GetAmadeusAccessTokenAsync()
-        {
-            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, "https://test.api.amadeus.com/v1/security/oauth2/token");
-
-            var client_id = "AtXWGpJxGJHSdIFtL1LOASA6kzGcWAFS"; // Read from a secure place, NOT hardcoded
-            var client_secret = "AGPvwdO8OF1Fhjao"; // Read from a secure place, NOT hardcoded
-
-            tokenRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                {"grant_type", "client_credentials"},
-                {"client_id", client_id},
-                {"client_secret", client_secret}
-            });
-
-            var tokenResponse = await _httpClient.SendAsync(tokenRequest);
-            var tokenData = await tokenResponse.Content.ReadFromJsonAsync<AmadeusTokenResponse>();
-
-            return tokenData?.AccessToken;
-        }
-
-        private class AmadeusTokenResponse
-        {
-            [JsonPropertyName("access_token")]
-            public string? AccessToken { get; set; }
-        }
-
         [HttpGet]
         public async Task<IActionResult> Explore([FromQuery] ExploreRequest request)
         {
-            var rentalList = _rentalRepo.GetAll();
-
+            var rentalList = await _rentalRepo.GetAll();
             // Search by city
-            if (!string.IsNullOrEmpty(request.City))
+            if (!string.IsNullOrEmpty(request.Location))
             {
-                rentalList = rentalList.Where(listing => listing.ListningCity.ToLower() == request.City.ToLower());
+                rentalList = rentalList.Where(listing => listing.ListningCity.ToLower() == request.Location.ToLower()
+                                                || listing.ListningCountry.ToLower()== request.Location.ToLower());
             }
-
             // Filter by fromDate. Assuming listings that are available "from" a date are available for bookings from that date.
             if (request.FromDate != default(DateTime))
             {
                 rentalList = rentalList.Where(listing => listing.FromDate.HasValue && listing.FromDate.Value <= request.FromDate);
             }
-
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] FromDate parameter not provided or is default.");
+            }
             // Filter by toDate. Assuming listings that are available "to" a date are available for bookings until that date.
             if (request.ToDate != default(DateTime))
             {
                 rentalList = rentalList.Where(listing => listing.ToDate.HasValue && listing.ToDate.Value >= request.ToDate);
             }
-
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] ToDate parameter not provided or is default.");
+            }
             // Filter by number of guests (compared with number of beds in the listing)
             if (request.Guests > 0)
             {
                 rentalList = rentalList.Where(listing => listing.NoOfBeds.HasValue && listing.NoOfBeds.Value >= request.Guests);
+            }
+            else
+            {
+                _logger.LogInformation($"[ExplorerController Explore() GET] Guests parameter not provided or is zero.");
             }
             var requestedAmenities = new List<string>();
             // Assuming Amenities is a JSON string list. Deserialize it and filter listings based on amenities.
             if (!string.IsNullOrEmpty(request.Amenities))
             {
                 requestedAmenities = JsonConvert.DeserializeObject<List<string>>(request.Amenities);
-                if (requestedAmenities.Count > 0)
+                if (requestedAmenities?.Count > 0)
                 {
-                    var allRentals = rentalList.ToList();
+                    var allRentals = await _rentalRepo.GetAll();
 
                     // Then filter these in-memory listings based on the requested amenities.
                     allRentals = allRentals.Where(listing =>
-                        listing.ListningAmenities != null &&
-                        requestedAmenities.All(requestedAmenity =>
-                            listing.ListningAmenities.Any(listingAmenity =>
-                                listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+    listing.ListningAmenities != null &&
+    requestedAmenities.All(requestedAmenity =>
+        listing.ListningAmenities.Any(listingAmenity =>
+            listingAmenity.Amenity != null &&
+            listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+
 
                     rentalList = allRentals.AsQueryable();
                 }
+                else
+                {
+                    _logger.LogWarning($"[ExplorerController Explore() GET] Deserialized amenities list is empty.");
+                }
             }
 
-            var amenityList = _amenityRepo.GetAll();
-            var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.City, request.Guests, request.FromDate, request.ToDate, "Card");
+            var amenityList = await _amenityRepo.GetAll();
+            var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.Location, request.Guests, request.FromDate, request.ToDate, "Card");
             return View(rentalListViewModel);
         }
 
@@ -121,7 +106,7 @@ namespace FastFlat.Controllers
             if (listing == null)
             {
                 _logger.LogError($"[ExplorerController ViewListing() GET] Listing not found with id: {listingId}");
-                return NotFound("Listing could not be found.");
+                return StatusCode(500,"Listing could not be found.");
             }
 
             var userId = listing.UserId;
@@ -129,19 +114,21 @@ namespace FastFlat.Controllers
             if (user == null)
             {
                 _logger.LogError($"[ExplorerController ViewListing() GET] User not found with id: {userId}");
-                return NotFound("User could not be found.");
+                return StatusCode(500, "User could not be found.");
             }
-
+            
             var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
             if (rentalListViewModel == null)
             {
                 _logger.LogError("[ExplorerController ViewListing() GET] Failed to create ListingViewModel.");
+                return StatusCode(500, "Failed to create ListingViewModel.");
             }
 
             rentalListViewModel.Booking = new BookingModel();
 
             return View(rentalListViewModel);
         }
+
 
 
         // Allows users to book a listing by providing booking details.
@@ -175,11 +162,13 @@ namespace FastFlat.Controllers
                 try
                 {
                     await _bookingRepo.Create(input.Booking);
-                    _logger.LogInformation("Creation of new booking succeeded. Booking details: {input.Booking}");
+                    _logger.LogInformation($"Creation of new booking succeeded. Booking details: {input.Booking}");
+
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError("[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
+                    _logger.LogError($"[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
+                    return StatusCode(500, "Failed to create booking.");
                 }
                 return RedirectToAction(nameof(Explore));
             }
@@ -198,13 +187,14 @@ namespace FastFlat.Controllers
 
         // AJAX endpoint: Retrieves a list of dates when a specific listing is already booked.
         // This method is designed to work in conjunction with frontend AJAX calls to fetch booked dates and update the datepickers.
-        public async Task<ActionResult> GetBookedDates(int listningId)
+        [HttpGet("Explorer/GetBookedDates")]
+        public async Task<ActionResult> GetBookedDates([FromQuery] int listningId)
         {
             try
             {
                 // Fetch all bookings for the specified listing
-                var bookings = _rentalRepo.GetAll().OfType<BookingModel>()
-                                              .Where(b => b.ListningId == listningId).ToList();
+                var bookings = await _bookingRepo.GetAll();
+                bookings = bookings.Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
@@ -215,80 +205,39 @@ namespace FastFlat.Controllers
                         bookedDates.Add(date);
                     }
                 }
-                return View(bookedDates);
+                return Ok(bookedDates);
             }
             catch (Exception e)
             {
-                _logger.LogError("[ExplorerController GetBookedDates()] Error occurred while fetching booked dates: {e.Message}");
+                _logger.LogError($"[ExplorerController GetBookedDates()] Error occurred while fetching booked dates: {e.Message}");
                 throw;
             }
         }
 
         // AJAX endpoint: Retrieves the start and end dates when a specific listing is available for booking.
         // This method is designed to work in conjunction with frontend AJAX calls to fetch available date ranges and update the datepickers.
-        public async Task<ActionResult> GetAvailableDates(int listningId)
+        [HttpGet("Explorer/GetAvailableDates")]
+        public async Task<ActionResult> GetAvailableDates([FromQuery] int listingId)
         {
             try
             {
                 // Fetch the specified listing
-                var listning = await _rentalRepo.GetById(listningId);
+                var listning = await _rentalRepo.GetById(listingId);
                 if (listning == null)
                 {
-                    _logger.LogWarning("[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
+                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listingId}");
                 }
 
                 // Get the date range when the listing is available
                 var availableDates = (listning?.FromDate, listning?.ToDate);
 
-                return View(availableDates);
+                return Json(availableDates);
             }
             catch (Exception e)
             {
-                _logger.LogError("[ExplorerController GetAvailableDates()] Error occurred while fetching available dates: {e.Message}");
-                throw;
+                _logger.LogError($"[ExplorerController GetAvailableDates()] Error occurred while fetching available dates: {e.Message}");
+                return StatusCode(500, "Failed to fetch available dates.");
             }
-        }
-        [HttpGet("api/city-search")]
-        public async Task<IActionResult> GetAvailableCities([FromQuery] string keyword)
-        {
-            if (string.IsNullOrEmpty(keyword) || keyword.Length <= 2)
-            {
-                return NoContent();
-            }
-            else
-            {
-                try
-                {
-                    var accessToken = await GetAmadeusAccessTokenAsync();
-                    if (string.IsNullOrEmpty(accessToken))
-                    {
-                        return BadRequest("Unable to obtain Amadeus access token.");
-                    }
-
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-                    // Add the keyword to the query parameter
-                    var endpointUrl = $"https://test.api.amadeus.com/v1/reference-data/locations/cities?keyword={Uri.EscapeDataString(keyword)}";
-
-                    var response = await _httpClient.GetAsync(endpointUrl);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine("Kunne ikke hente byer, feil i responsen.");
-                        return BadRequest($"Error fetching cfewknfewknities: {response}");
-                    }
-
-                    var cities = await response.Content.ReadAsStringAsync();
-                    return Ok(cities);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions that occur during the API call
-                    Console.WriteLine($"Kunne ikke hente byer: ${ex}");
-                    return BadRequest($"An error occurred: {ex.Message}");
-                }
-            }
-
         }
 
 

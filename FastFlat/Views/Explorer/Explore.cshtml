@@ -1,8 +1,22 @@
-﻿@model RentalListViewModel
+﻿@using System.Text.Json
+
+@model RentalListViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/css/explore.css" />
     <link rel="stylesheet" href="~/css/rentalCard.css" />
+}
+
+@{
+    var simplifiedRentals = Model.Rentals.Select(r => new
+    {
+        ListningId = r.ListningId,
+        ListningName = r.ListningName,
+        ListningLat = r.ListningLat,
+        ListningLng = r.ListningLng,
+        ListningPrice = r.ListningPrice
+        // ... other properties you want to include
+    }).ToList();
 }
 
 <script>
@@ -51,11 +65,67 @@
                 <partial name="_RentalCard" model="rental" />
             }
         </div>
-        <div class="map">
+        <div id="map">
         </div>
     </div>
 </section>
 <script>
+    (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+        key: "AIzaSyBHz8GEbiV4GVf1ZLD1FBMOlFhYSOOp3oI",
+        v: "weekly",
+        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
+        // Add other bootstrap parameters as needed, using camel case.
+    });
+</script>
+<script>
+
+    const rentalsArray = @Html.Raw(Json.Serialize(simplifiedRentals));
+
+    async function initMap() {
+
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+        const myLatLng = { lat: parseFloat(rentalsArray[0].listningLat), lng: parseFloat(rentalsArray[0].listningLng) };
+
+        const map = new Map(document.getElementById('map'), {
+            zoom: 4,
+            center: myLatLng,
+            mapId: "79bb9437d0fed325",
+        });
+
+
+        let bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < rentalsArray.length; i++) {
+            const rentalPos = { lat: parseFloat(rentalsArray[i].listningLat), lng: parseFloat(rentalsArray[i].listningLng) }
+
+            const content = document.createElement("div");
+            content.className = "rental-marker";
+            content.textContent = rentalsArray[i].listningPrice;
+
+            const marker = new AdvancedMarkerElement({
+                map: map,
+                position: rentalPos,
+                title: rentalsArray[i].listningName,
+                content: content,
+                collisionBehavior: "OPTIONAL_AND_HIDES_LOWER_PRIORITY",
+            });
+
+            (function (index) {
+                marker.addListener('click', function () {
+                    window.location.href = `/Explorer/ViewListing?listingId=${rentalsArray[index].listningId}`;
+                });
+            })(i);
+            bounds.extend(rentalPos);
+        }
+
+        map.fitBounds(bounds);
+
+        
+    }
+    initMap()
+
     const selectedAmenities = @Html.Raw(Json.Serialize(Model.SelectedAmenities));
 
     if (selectedAmenities.length > 0 && selectedAmenities) {
@@ -89,4 +159,15 @@
 
     // Call the checkScroll function on page load to handle initial scroll position
     checkScroll();
+
+
+    // Parse the serialized data back into a JS array
+
+    // Log the array to the console (for testing purposes)
+    console.log(rentalsArray);
+
+    // Now you can access each rental's properties in JavaScript:
+    
+
+
 </script>

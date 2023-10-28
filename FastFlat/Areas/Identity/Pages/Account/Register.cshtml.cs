@@ -125,7 +125,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
                 string userName = address.User;
 
                 // Read the default profile picture and convert it to a byte array
-                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", "profilepicture", "gisle.jpg");
+                var imagePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", "profilepicture", "standard.jpg");
                 byte[] profilePictureData;
                 using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
                 {
@@ -150,7 +150,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
                     //todo Add rolemanager
-                    _userManager.AddToRoleAsync(user, "Renter");
+                    await _userManager.AddToRoleAsync(user, "Renter");
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

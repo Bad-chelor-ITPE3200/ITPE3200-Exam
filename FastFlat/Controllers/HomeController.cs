@@ -16,12 +16,13 @@ namespace FastFlat.Controllers
             _amenityRepo = amenityRepo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var rentalList = _rentalRepo.GetAll();
-            var amenityList = _amenityRepo.GetAll();
+            var rentalList = await _rentalRepo.GetAll();
+            var amenityList = await _amenityRepo.GetAll();
             var rentalListViewModel = new RentalListViewModel(rentalList.Take(5), amenityList, null, null, null, null, null, "Card");
             return View(rentalListViewModel);
         }
+
     }
 }

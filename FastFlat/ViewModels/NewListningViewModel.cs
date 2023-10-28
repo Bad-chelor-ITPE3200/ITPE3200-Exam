@@ -9,7 +9,8 @@ namespace FastFlat.ViewModels
         public ListningModel Listning { get; set; }
 
         public List<AmenityModel>? Amenities { get; set; }
-
+        public string? CurrentVeiwName { get; set; }
+      
 
         [MinItems(1, ErrorMessage = "Vennligst velg minst en amenity.")]
         public List<int>? SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
@@ -32,5 +33,14 @@ namespace FastFlat.ViewModels
             SelectedAmenities = new List<int>();
         }
 
+        public NewListningViewModel(ListningModel listning,
+            string? currentVeiwName, IFormFile img)
+        {
+           // Amenities = amenities ?? new List<AmenityModel>();
+            //AvailableCountries = contries ?? new List<ContryModel>();
+            Listning = listning;
+            CurrentVeiwName = currentVeiwName;
+            ListningImage = img; 
+        }
     }
 }
