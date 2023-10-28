@@ -16,23 +16,6 @@ namespace FastFlat.DAL
             _logger = logger;
         }
 
-        //prøver å gjøre det til async
-        /*
-        public IQueryable<T> GetAll() //hvorfor har vi ikke async her?
-        {
-            try
-            {
-                return _context.Set<T>();
-            }
-
-            catch (Exception e)
-            {
-                _logger.LogError("[RentalRepository] Set<T> failed when GetAll(), error message: {e}", e.Message);
-                return null;
-            }
-        }
-        */
-
         public async Task<IEnumerable<T>> GetAll()
         {
             try

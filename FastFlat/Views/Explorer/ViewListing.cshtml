@@ -65,13 +65,13 @@
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.FromDate">Available From</label><span class="text-danger">*</span>
-                            <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="date" class="form-control"  />
+                            <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="text" class="form-control"  />
                             <span asp-validation-for="@Model.Booking.FromDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="@Model.Booking.ToDate">Available To</label><span class="text-danger">*</span>
-                            <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="date" class="form-control" />
+                            <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="text" class="form-control" />
                             <span asp-validation-for="@Model.Booking.ToDate" class="text-danger"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Book</button>
@@ -104,6 +104,14 @@
             method: 'GET',
             dataType: 'json',
             success: function (availabilityData) {
+                console.log(availabilityData)
+
+
+                    const fromDate = availabilityData.item1.split("T")[0]
+                    const toDate = availabilityData.item2.split("T")[0]
+
+                console.log(fromDate, " ", toDate)
+
                 // AJAX request to fetch booked dates
                 $.ajax({
                     url: '/Explorer/GetBookedDates?listingId=' + listingId,
@@ -120,14 +128,14 @@
                         firstBookedDate.setDate(firstBookedDate.getDate() - 1);
 
                         // Set initial values for date input fields based on availability data
-                        $("#fromDateInput").val(jQuery.datepicker.formatDate('yy-mm-dd', new Date(availabilityData.fromDate)));
-                        $("#toDateInput").val(jQuery.datepicker.formatDate('yy-mm-dd', firstBookedDate));
+                        $("#fromDateInput").val(fromDate);
+                        $("#toDateInput").val(toDate);
 
                         // Configure the "From Date" picker
                         $("#fromDateInput").datepicker({
                             dateFormat: "yy-mm-dd",
-                            minDate: new Date(availabilityData.fromDate),
-                            maxDate: new Date(availabilityData.toDate),
+                            minDate: fromDate,
+                            maxDate: toDate,
                             beforeShowDay: function (date) {
                                 // Check if the date is already booked
                                 var string = jQuery.datepicker.formatDate('yy-mm-dd', date);

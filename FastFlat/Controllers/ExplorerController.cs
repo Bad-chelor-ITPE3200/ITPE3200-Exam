@@ -91,7 +91,7 @@ namespace FastFlat.Controllers
                 }
             }
 
-            var amenityList = _amenityRepo.GetAll();
+            var amenityList = await _amenityRepo.GetAll();
             var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.Location, request.Guests, request.FromDate, request.ToDate, "Card");
             return View(rentalListViewModel);
         }
@@ -188,13 +188,13 @@ namespace FastFlat.Controllers
         // AJAX endpoint: Retrieves a list of dates when a specific listing is already booked.
         // This method is designed to work in conjunction with frontend AJAX calls to fetch booked dates and update the datepickers.
         [HttpGet("Explorer/GetBookedDates")]
-        public async Task<ActionResult> GetBookedDates([FromQuery] int listningId)
+        public async Task<ActionResult> GetBookedDates([FromQuery] int listingId)
         {
             try
             {
                 // Fetch all bookings for the specified listing
-                var bookings = _bookingRepo.GetAll()
-                                              .Where(b => b.ListningId == listningId).ToList();
+                var bookings = await _bookingRepo.GetAll();
+                bookings = bookings.Where(b => b.ListningId == listingId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
@@ -205,7 +205,7 @@ namespace FastFlat.Controllers
                         bookedDates.Add(date);
                     }
                 }
-                return Ok(bookedDates);
+                return Json(bookedDates);
             }
             catch (Exception e)
             {
@@ -225,13 +225,13 @@ namespace FastFlat.Controllers
                 var listning = await _rentalRepo.GetById(listingId);
                 if (listning == null)
                 {
-                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
+                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listingId}");
                 }
 
                 // Get the date range when the listing is available
                 var availableDates = (listning?.FromDate, listning?.ToDate);
 
-                return Ok(availableDates);
+                return Json(availableDates);
             }
             catch (Exception e)
             {
