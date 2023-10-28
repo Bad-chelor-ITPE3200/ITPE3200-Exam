@@ -193,8 +193,8 @@ namespace FastFlat.Controllers
             try
             {
                 // Fetch all bookings for the specified listing
-                var bookings = _bookingRepo.GetAll()
-                    .Result.Where(b => b.ListningId == listningId).ToList();
+                var bookings = await _bookingRepo.GetAll();
+                bookings = bookings.Where(b => b.ListningId == listingId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
@@ -231,7 +231,7 @@ namespace FastFlat.Controllers
                 // Get the date range when the listing is available
                 var availableDates = (listning?.FromDate, listning?.ToDate);
 
-                return Ok(availableDates);
+                return Json(availableDates);
             }
             catch (Exception e)
             {
