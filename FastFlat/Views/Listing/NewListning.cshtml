@@ -63,8 +63,9 @@
 
         <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
         <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
-        <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden/>
-        <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
+        <input asp-for="Listning.ListningLat" class="form-control" id="latInput"   hidden />
+        <input asp-for="Listning.ListningLng" class="form-control" id="lngInput"   hidden />
+
 
 
 
@@ -164,8 +165,8 @@
 
                 document.getElementById("cityInput").value = city;
                 document.getElementById("countryInput").value = country;
-                document.getElementById("latInput").value = lat;
-                document.getElementById("lngInput").value = lng;
+                document.getElementById("latInput").value = String(lat);
+                document.getElementById("lngInput").value = String(lng);
             });
     }
 

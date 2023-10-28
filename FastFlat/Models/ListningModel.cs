@@ -28,8 +28,8 @@ namespace FastFlat.Models
         public string? ListningAddress { get; set; }
         public string? ListningCity { get; set; }
         public string? ListningCountry { get; set; }
-        public float? ListningLat { get; set; }
-        public float? ListningLng { get; set; }
+        public string? ListningLat { get; set; }
+        public string? ListningLng { get; set; }
         public decimal ListningPrice { get; set; }
 
         //public virtual CityModel City { get; set; }//legger til city
