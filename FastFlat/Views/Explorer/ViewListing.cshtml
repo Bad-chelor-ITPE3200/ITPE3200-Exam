@@ -74,7 +74,14 @@
                             <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="text" class="form-control" />
                             <span asp-validation-for="@Model.Booking.ToDate" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Book</button>
+                        @if (loggedInUser != null)
+                        {
+                            <button type="submit" class="btn btn-primary">Book</button>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Ser ut som du ikke er logget inn. Logg inn for å lage en booking.</span>
+                        }
 
                     </form>
         @**<div class="form-group">
