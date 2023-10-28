@@ -143,7 +143,14 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary">Book now</button>
+                        @if (loggedInUser != null)
+                        {
+                            <button type="submit" class="btn btn-primary">Book now!</button>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Ser ut som du ikke er logget inn. Logg inn for å lage en booking.</span>
+                        }
                     </form>
                 </div>
 
