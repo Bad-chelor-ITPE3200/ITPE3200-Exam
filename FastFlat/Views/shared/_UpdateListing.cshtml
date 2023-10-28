@@ -74,18 +74,96 @@
     <button type="submit" class="btn btn-primary">update</button>
     <span asp-validation-for="SelectedAmenities" class="text-danger"></span>
     <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
-            <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
-            <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden/>
-            <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
+        <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
+             <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
+             <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden/>
+             <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
 
 </form>
 <script>
-    document.getElementById('fromDateInput').addEventListener('change', function() {
-        const selectedDate = this.value;
-        document.getElementById('toDateInput').setAttribute('min', selectedDate);
-    });
+ document.getElementById('fromDateInput').addEventListener('change', function() {
+         const selectedDate = this.value;
+         document.getElementById('toDateInput').setAttribute('min', selectedDate);
+     });
+ 
+     document.getElementById('form').addEventListener('keydown', function (event) {
+         if (event.key === "Enter") {
+             console.log(event.key)
+             event.preventDefault();
+         }
+     });
+ 
+     const addressInput = $("#address")
+     const addressOutput = document.getElementById("addressResults")
+     let addressArray = []
+ 
+     addressInput.keyup(async() => { 
+         addressArray = []
+         if (addressInput.val().length < 3) {
+             addressOutput.innerHTML = ' '
+             return
+         }
+         try{
+             const response = await fetch(`/api/address-search?input=${encodeURIComponent(addressInput.val())}`)
+ 
+             if (!response.ok) {
+                 console.error('Failed to fetch cities:', response.statusText);
+                 return;
+             }
+             const data = await response.json();
+             addressArray = data.predictions
+ 
+             addressOutput.innerHTML = '';
+ 
+             if (Array.isArray(addressArray)) {
+                 addressArray.forEach(address => {
+             
+                     addressOutput.innerHTML += `<button type="button" onclick="onPlaceSelected('${address.place_id}')"><strong>${address.description}</strong></button>`;
+                 });
+             } else {
+                 console.error('Data is not an array:', data);
+             }
+ 
+             
+         }catch(error){
+             console.error('Error occurred:', error);
+         }
+     });
+     
+     function onPlaceSelected(placeId) {
+ 
+         addressOutput.innerHTML = ' '
+ 
+         fetch(`/api/place-details?placeId=${placeId}`)
+             .then(response => response.json())
+             .then(data => {
+                 const result = data.result;
+ 
+ 
+                 addressInput.val(result.formatted_address);
+                 const addressComponents = result.address_components;
+                 const address = result.formatted_address;
+                 const cityComponent = addressComponents.find(comp => comp.types.includes("locality"))
+                     || addressComponents.find(comp => comp.types.includes("postal_town"));
+ 
+                 const city = cityComponent?.long_name;
+                 const country = addressComponents.find(comp => comp.types.includes("country"))?.long_name;
+                 const lat = result.geometry.location.lat;
+                 const lng = result.geometry.location.lng;
+ 
+                 console.log(result)
+                 console.log(address)
+                 console.log(city)
+                 console.log(country)
+                 console.log(lat, " ", lng)
+ 
+                 document.getElementById("cityInput").value = city;
+                 document.getElementById("countryInput").value = country;
+                 document.getElementById("latInput").value = lat;
+                 document.getElementById("lngInput").value = lng;
+             });
+     }
 </script>
-}
 
 </body>
 </html>

@@ -63,6 +63,8 @@ namespace FastFlat.Controllers
         public async Task<IActionResult> NewListning(NewListningViewModel viewModel)
         {
             var userId = _userManager.GetUserId(User);
+            _logger.LogDebug("lat: " + viewModel.Listning.ListningLat);
+            _logger.LogDebug("long" + viewModel.Listning.ListningLng);
             if (ModelState.IsValid)
             {
                 if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)
