@@ -63,8 +63,10 @@ namespace FastFlat.Controllers
         public async Task<IActionResult> NewListning(NewListningViewModel viewModel)
         {
             var userId = _userManager.GetUserId(User);
-            _logger.LogDebug("lat: " + viewModel.Listning.ListningLat);
-            _logger.LogDebug("long" + viewModel.Listning.ListningLng);
+           
+            _logger.LogInformation($"ListningLat: {viewModel.Listning.ListningLat}, Type: {viewModel.Listning.ListningLat?.GetType()}");
+            _logger.LogInformation($"ListningLng: {viewModel.Listning.ListningLng}, Type: {viewModel.Listning.ListningLng?.GetType()}");
+            _logger.LogInformation($"Received lat and lng: {viewModel.Listning.ListningLat}, {viewModel.Listning.ListningLng}");
             if (ModelState.IsValid)
             {
                 if (viewModel.ListningImage != null && viewModel.ListningImage.Length > 0)
@@ -116,6 +118,17 @@ namespace FastFlat.Controllers
             {
                 _logger.LogWarning("[NewListningController NewListning() POST] ModelState is invalid.\"",
                     ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+
+                // logging of invalid keys
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    if (state.Errors.Any())
+                    {
+                        var errors = string.Join(", ", state.Errors.Select(e => e.ErrorMessage));
+                        _logger.LogWarning($"Key: {key}, Errors: {errors}");
+                    }
+                }
             }
 
             // Hvis ModelState er ugyldig eller en annen feil oppstår, hent fasilitetene på nytt.
@@ -124,8 +137,6 @@ namespace FastFlat.Controllers
 
             return View(viewModel);
         }
-        
-        
     }
 }
 

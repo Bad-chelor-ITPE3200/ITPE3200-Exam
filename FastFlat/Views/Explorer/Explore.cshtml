@@ -98,6 +98,7 @@
         let bounds = new google.maps.LatLngBounds();
 
         for (var i = 0; i < rentalsArray.length; i++) {
+            console.log(rentalsArray[i])
             const rentalPos = { lat: parseFloat(rentalsArray[i].listningLat), lng: parseFloat(rentalsArray[i].listningLng) }
 
             const content = document.createElement("div");
