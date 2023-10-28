@@ -38,8 +38,8 @@
     object-fit: cover;
     border-radius: 10px;
 }
-.booking-card-desc{
-    color: gray;
+.booking-card-desc {
+    color: #313131;
     margin: 0;
     font-size: 0.8rem;
 }
@@ -48,24 +48,29 @@
     margin: 0;
     font-weight: bolder;
 }
-.plot-add{
+.plot-add {
     margin: 0;
+    color: #313131;
 }
-.plot-name{
+.plot-name {
     margin: 0;
+    color: #313131;
 }
-.plot-owner{
+.plot-owner {
     margin: 0;
+    color: #313131;
 }
 .card-end{
-    padding: 0rem 1rem;
     display: flex;
     width: calc(100% - 2rem);
     margin-top: 1rem;
     justify-content: space-between;
 }
-.card-end h5, h3{
+.card-end h4, p{
     margin: 0;
+}
+.card-end h4, h3{
+    color: black;
 }
 .sub-header{
     color: gray;

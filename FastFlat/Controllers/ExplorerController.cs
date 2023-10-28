@@ -156,7 +156,7 @@ namespace FastFlat.Controllers
 
                 // Calculate the total price for the booking based on the daily rate and the total number of days.
                 var totalPrice = input.Listing.ListningPrice * numberOfDays;
-                input.Booking.TotalPrice = totalPrice;
+                input.Booking.TotalPrice = totalPrice * (decimal)1.05;
                 input.Booking.ListningId = input.Listing.ListningId;
 
                 try

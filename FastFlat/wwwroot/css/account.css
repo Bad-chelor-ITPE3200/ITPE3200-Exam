@@ -1,5 +1,6 @@
 ﻿.settings-wrapper{
     padding: 2rem;
+    min-height: calc(100vh - 110px);
 }
 .settings-wrapper h1, h3{
     margin: 0;
