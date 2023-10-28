@@ -91,7 +91,7 @@ namespace FastFlat.Controllers
                 }
             }
 
-            var amenityList = _amenityRepo.GetAll();
+            var amenityList = await _amenityRepo.GetAll();
             var rentalListViewModel = new RentalListViewModel(rentalList.ToList(), amenityList, requestedAmenities, request.Location, request.Guests, request.FromDate, request.ToDate, "Card");
             return View(rentalListViewModel);
         }
@@ -194,7 +194,7 @@ namespace FastFlat.Controllers
             {
                 // Fetch all bookings for the specified listing
                 var bookings = _bookingRepo.GetAll()
-                                              .Where(b => b.ListningId == listningId).ToList();
+                    .Result.Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
@@ -225,7 +225,7 @@ namespace FastFlat.Controllers
                 var listning = await _rentalRepo.GetById(listingId);
                 if (listning == null)
                 {
-                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listningId}");
+                    _logger.LogWarning($"[ExplorerController GetAvailableDates()] Listing not found with id: {listingId}");
                 }
 
                 // Get the date range when the listing is available

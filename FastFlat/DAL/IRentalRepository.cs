@@ -27,6 +27,6 @@ namespace FastFlat.DAL
         Task<(DateTime? StartDate, DateTime? EndDate)> GetAvailableDatesForListning(int listningId);
         */
 
-        Task<List<string?>> GetAvailableCountries();
+      //  Task<List<string?>> GetAvailableCountries();
     }
 }

@@ -44,18 +44,12 @@
         <input asp-for="@Model.Listning.ListningDescription" class="form-control"/>
         <span asp-validation-for="@Model.Listning.ListningDescription" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="@Model.Listning.ListningAddress">Country</label>
-        @if (Model.AvailableCountries != null && Model.AvailableCountries.Any())
-        {
-            <select asp-for="@Model.Listning.ListningAddress" asp-items="@(new SelectList(Model.AvailableCountries, "Contryname", "Contryname"))" class="form-control"></select>
-        }
-        else
-        {
-            <p>No countries available.</p>
-        }
-        <span asp-validation-for="@Model.Listning.ListningAddress" class="text-danger"></span>
-    </div>
+  <div class="form-group">
+            <label asp-for="Listning.ListningAddress">Address</label>
+            <input asp-for="Listning.ListningAddress" class="form-control" id="address" />
+            <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
+            <div id="addressResults"></div>
+        </div>
     <div class="form-group">
         <label asp-for="@Model.Listning.SquareMeter"></label>
         <input asp-for="@Model.Listning.SquareMeter" class="form-control"/>
@@ -66,6 +60,7 @@
         <input asp-for="Listning.NoOfBeds" class="form-control"/>
         <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
     </div>
+    
     @** <h4>Select Amenities:</h4>**@
     @** for this version we also ignore the amenities TODO: hvis noen vil se på dette så værsegod
     @foreach (var amenity in Model.Amenities)
@@ -78,6 +73,11 @@
     }**@
     <button type="submit" class="btn btn-primary">update</button>
     <span asp-validation-for="SelectedAmenities" class="text-danger"></span>
+    <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
+            <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
+            <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden/>
+            <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
+
 </form>
 <script>
     document.getElementById('fromDateInput').addEventListener('change', function() {

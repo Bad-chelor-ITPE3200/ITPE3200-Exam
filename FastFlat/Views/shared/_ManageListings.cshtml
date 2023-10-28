@@ -5,10 +5,10 @@
 <body>
 
 <table>
-    <tr><th>Name:</th><th>Adress</th><th>Owned by: </th><th>Actions</th></tr>
+    <tr><th>Name:</th><th>Adress</th><th>Owned by: </th><th>Actions</th><th></th><th>Image</th></tr>
     @foreach (var listings in Model)
     {
-        <tr> <td>@listings.ListningName</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@listings.ListningId">update</a></td> <td><a asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td> <td> <img src="@listings.ListningImageURL" style="width: 10%; height: auto;"/></td></tr> @**used to limit the image sizes*@
+        <tr> <td>@listings.ListningId</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@listings.ListningId">update</a></td> <td><a asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td> <td> <img src="@listings.ListningImageURL" style="width: 10%; height: auto;"/></td></tr> @**used to limit the image sizes*@
     }
 </table>
 
