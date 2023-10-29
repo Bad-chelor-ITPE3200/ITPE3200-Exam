@@ -1,3 +1,5 @@
+using FastFlat.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastFlat.DAL
@@ -20,7 +22,7 @@ namespace FastFlat.DAL
         {
             try
             {
-                // Returner en liste for å utføre en umiddelbar evaluering, akkurat som i lærerens eksempel.
+                // Returner en liste for ï¿½ utfï¿½re en umiddelbar evaluering, akkurat som i lï¿½rerens eksempel.
                 return await _context.Set<T>().ToListAsync();
             }
             catch (Exception e)

@@ -188,13 +188,13 @@ namespace FastFlat.Controllers
         // AJAX endpoint: Retrieves a list of dates when a specific listing is already booked.
         // This method is designed to work in conjunction with frontend AJAX calls to fetch booked dates and update the datepickers.
         [HttpGet("Explorer/GetBookedDates")]
-        public async Task<ActionResult> GetBookedDates([FromQuery] int listingId)
+        public async Task<ActionResult> GetBookedDates([FromQuery] int listningId)
         {
             try
             {
                 // Fetch all bookings for the specified listing
                 var bookings = await _bookingRepo.GetAll();
-                bookings = bookings.Where(b => b.ListningId == listingId).ToList();
+                bookings = bookings.Where(b => b.ListningId == listningId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)
@@ -205,7 +205,7 @@ namespace FastFlat.Controllers
                         bookedDates.Add(date);
                     }
                 }
-                return Json(bookedDates);
+                return Ok(bookedDates);
             }
             catch (Exception e)
             {

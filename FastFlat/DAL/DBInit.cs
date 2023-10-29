@@ -140,7 +140,7 @@ namespace FastFlat.DAL
                     },
                     new AmenityModel
                     {
-                        AmenityName = "Waching", // Might want to change this to "WashingMachine"
+                        AmenityName = "Waching Machine",
                         AmenityDescription = "A machine for cleaning clothes.",
                         AmenityLogo = "/images/amenity/WachingMachine.svg"
                     },
@@ -151,7 +151,7 @@ namespace FastFlat.DAL
                         AmenityLogo = "/images/amenity/Wifi.svg"
                     },
                 };
-                await context.AddRangeAsync(amenities);
+                await context.AddRangeAsync(amenities); 
                 await context.SaveChangesAsync();
             }
 
@@ -195,34 +195,35 @@ namespace FastFlat.DAL
                 context.AddRange(cities);
                 context.SaveChanges();
             }*/
+            
 
             if (!context.Roles.Any())
             //roles for the acess controll
             //we let the controller control everything about what they can edit or not
             {
-                var roles = new List<IdentityRole>
+                var roles = new List<IdentityRole> //identityrole as list, this makes it easier to expand with new roles
                 {
                     new IdentityRole
                     {
-                        Id = "0", Name = "Admin" //BIG BOSS, can do everything
+                        Id = "0", Name = "Admin" //can do everything
                     },
                     new IdentityRole
                     {
-                        Id = "2", Name = "Renter" //BUY THING
+                        Id = "2", Name = "Renter" //Standard role for new users
                     }
                 };
 
                 foreach (var r in roles)
                 {
-                    var ok = roleman.CreateAsync(r).Result;
+                    var ok = roleman.CreateAsync(r).Result; //checks the result of the adding
                     Console.Write(ok);
                     if (ok.Succeeded)
                     {
-                        Console.Write(r.Name + "is created at: " + DateTime.Now);
+                        Console.Write(r.Name + "is created at: " + DateTime.Now); //prints out the roles with name
                     }
                     else
                     {
-                        Console.Write("error in creating Role " + r);
+                        Console.Write("error in creating Role " + r); //prints out a basic error
                     }
                 }
             }
@@ -279,8 +280,7 @@ namespace FastFlat.DAL
                 {
                     foreach (ApplicationUser u in users) //for loop for all the users
                     {
-                        var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@")
-                            .Result; //a check if the account is created or not
+                        var ok = userman.CreateAsync(u, "2?7E'AbTy96?vC@").Result; //a check if the account is created or not
                         Console.Write(ok);
                         if (ok.Succeeded) //if it is allright
                         {

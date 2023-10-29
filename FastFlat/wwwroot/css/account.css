@@ -40,13 +40,14 @@
 .menu-item:hover{
     background-color: #abbfff;
 }
-.active {
+/*.active {
     background-color: #abb3ff;
     transform: scale(1.1);
 }
-.settings-container{
+*/
+.settings-container {
     display: flex;
-    gap:3rem;
+    gap: 3rem;
 }
 .index-settings{
     height: fit-content;

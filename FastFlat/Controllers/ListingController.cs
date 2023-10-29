@@ -119,7 +119,7 @@ namespace FastFlat.Controllers
                 _logger.LogWarning("[NewListningController NewListning() POST] ModelState is invalid.\"",
                     ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
 
-                // Logge ugyldige nøkler og feilmeldinger
+                // logging of invalid keys
                 foreach (var key in ModelState.Keys)
                 {
                     var state = ModelState[key];

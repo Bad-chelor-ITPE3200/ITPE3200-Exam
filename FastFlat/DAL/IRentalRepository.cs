@@ -1,3 +1,5 @@
+using FastFlat.Models;
+
 namespace FastFlat.DAL
 {
     public interface IRentalRepository<T> where T : class
