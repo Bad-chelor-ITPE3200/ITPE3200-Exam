@@ -25,7 +25,7 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _amenityRepository = amenityRepository;
             _listningAmenityRepository = listningAmenityRepository;
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         //--------------------------

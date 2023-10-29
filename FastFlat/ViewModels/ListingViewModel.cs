@@ -7,7 +7,7 @@ namespace FastFlat.ViewModels
         public ListningModel Listing { get; set; } = default!;
         public ApplicationUser? User { get; set; }
 
-        public BookingModel Booking { get; set; }
+        public BookingModel Booking { get; set; } = null!;
 
 
         public string? _currentViewName;

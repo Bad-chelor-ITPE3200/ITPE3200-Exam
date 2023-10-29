@@ -154,49 +154,7 @@ namespace FastFlat.DAL
                 await context.AddRangeAsync(amenities); 
                 await context.SaveChangesAsync();
             }
-
-
-            //City
-            /*
-            if(!context.Cities.Any())
-            {
-                var cities = new List<CityModel>
-                {
-                    new CityModel
-                    {
-                        CityName="Oslo",
-                        Country="Norway"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Bergen",
-                        Country="Norway"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Trondheim",
-                        Country="Norway"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Stockholm",
-                        Country="Sweden"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Stockholm",
-                        Country="Gothenburg"
-                    },
-                };
-                context.AddRange(cities);
-                context.SaveChanges();
-            }*/
             
-
             if (!context.Roles.Any())
             //roles for the acess controll
             //we let the controller control everything about what they can edit or not

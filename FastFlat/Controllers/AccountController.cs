@@ -78,7 +78,7 @@ namespace FastFlat.Controllers
             try
             {
                 var users = _userManager.Users;
-                _logger.LogInformation("[AccountController _AdminAccounts()] Users retrieved successfully.");
+                _logger.LogInformation("[AccountController _AdminAccounts()] Users retrieved successfully");
                 return View(users);
             }
             catch (Exception e)
@@ -320,8 +320,7 @@ namespace FastFlat.Controllers
 
                     LMM.Listning.ListningImageURL = "/images/listnings/" + fileName;
                 }
-
-                _logger.LogInformation("Yo mama" + LMM.Listning.ListningImageURL);
+                
                 NewListningViewModel listingVeiwModel =
                     new NewListningViewModel(LMM.Listning, "_UpdateListing", LMM.ListningImage);
                 upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
@@ -332,24 +331,28 @@ namespace FastFlat.Controllers
                 // if it is updated
 
 
-                _logger.LogInformation(LMM.Listning
-                    .ListningImageURL); //URL to image == null -> maybe  with the form
+                if (LMM.Listning != null)
+                {
+                    _logger.LogInformation(LMM.Listning
+                        .ListningImageURL); //URL to image == null -> maybe  with the form
 
 
-                // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
-                // Change this directory to the appropriate location where you want to save your images
+                    // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
+                    // Change this directory to the appropriate location where you want to save your images
 
 
-                // Save the path to your database
+                    // Save the path to your database
 
-                //image: 
+                    //image: 
 
 
-                upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
-                upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
-                upDatedUser.ListningAddress = listingVeiwModel.Listning.ListningAddress;
-                upDatedUser.ListningLat = listingVeiwModel.Listning.ListningLat;
-                upDatedUser.ListningLng = listingVeiwModel.Listning.ListningLng;
+                    upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
+                    upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
+                    upDatedUser.ListningAddress = listingVeiwModel.Listning.ListningAddress;
+                    upDatedUser.ListningLat = listingVeiwModel.Listning.ListningLat;
+                    upDatedUser.ListningLng = listingVeiwModel.Listning.ListningLng;
+                }
+
                 _logger.LogInformation("LOGGGING OK");
                 var result = _listingRepository.Update(upDatedUser);
                 //  _logger.LogInformation(restult.ToString());

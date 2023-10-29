@@ -123,7 +123,7 @@ namespace FastFlat.Controllers
                 foreach (var key in ModelState.Keys)
                 {
                     var state = ModelState[key];
-                    if (state.Errors.Any())
+                    if (state != null && state.Errors.Any())
                     {
                         var errors = string.Join(", ", state.Errors.Select(e => e.ErrorMessage));
                         _logger.LogWarning($"Key: {key}, Errors: {errors}");

@@ -5,8 +5,8 @@ namespace FastFlat.ViewModels
 {
     public class NewListningViewModel
     {
-        public IFormFile ListningImage { get; set; }
-        public ListningModel Listning { get; set; }
+        public IFormFile ListningImage { get; set; } = null!;
+        public ListningModel Listning { get; set; } = null!;
 
         public List<AmenityModel>? Amenities { get; set; }
         public string? CurrentVeiwName { get; set; }

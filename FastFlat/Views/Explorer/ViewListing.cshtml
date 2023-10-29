@@ -10,7 +10,7 @@
 }
 <div class="hero">
     <div class="rental-wrapper">
-        @if (loggedInUser != null && Model.User.Id == loggedInUser.Id)
+        @if (loggedInUser != null && Model.User?.Id == loggedInUser.Id)
         {
 
             <div class="title-top">
@@ -43,13 +43,16 @@
                     <hr>
                     <p class="rental-subtitle">This rental offers:</p>
                     <div class="rental-amenities">
-                        @foreach (var amenity in Model.Listing.ListningAmenities)
+                        @if (Model.Listing.ListningAmenities != null)
                         {
-                        //var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
-                            <button type="submit" name="SelectedAmenities" value="@amenity.Amenity.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity.AmenityName')" id="@amenity.Amenity.AmenityName">
-                                @amenity.Amenity.AmenityName
-                                <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo" />
-                            </button>
+                            foreach (var amenity in Model.Listing.ListningAmenities)
+                            {
+                                //var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
+                                <button type="submit" name="SelectedAmenities" value="@amenity.Amenity?.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity?.AmenityName')" id="@amenity.Amenity.AmenityName">
+                                    @amenity.Amenity.AmenityName
+                                    <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo"/>
+                                </button>
+                            }
                         }
                     </div>
                     <hr>
@@ -98,7 +101,7 @@
                         @foreach (var amenity in Model.Listing.ListningAmenities)
                         {
                         //var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
-                            <button type="submit" name="SelectedAmenities" value="@amenity.Amenity.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity.AmenityName')" id="@amenity.Amenity.AmenityName">
+                            <button type="submit" name="SelectedAmenities" value="@amenity.Amenity?.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity.AmenityName')" id="@amenity.Amenity.AmenityName">
                                 @amenity.Amenity.AmenityName
                                 <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo" />
                             </button>
