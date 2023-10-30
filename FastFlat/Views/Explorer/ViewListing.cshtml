@@ -14,7 +14,7 @@
         {
 
             <div class="title-top">
-                <img class="title-top-icon" src="/images/icons/icon_theme_color.svg">
+                <img class="title-top-icon" src="/images/icons/icon_theme_color.svg" alt = "Location Pin">
                 <h3 class="rental-top-title">@Model.Listing.ListningAddress</h3>
             </div>
             <img class="rental-banner" src="@Model.Listing.ListningImageURL" alt="Forside bilde." />
@@ -199,7 +199,7 @@
 
 
     $(document).ready(function () {
-        var listingId = @Model.Listing.ListningId;
+        const listingId = @Model.Listing.ListningId;
 
         // Fetch available dates
         fetchAvailableDates(listingId, function (availabilityData) {
@@ -265,7 +265,7 @@
             minDate: fromDate,
             maxDate: toDate,
             beforeShowDay: function (date) {
-                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                 return [convertedBookedDates.indexOf(string) === -1];
             },
             onSelect: function (selectedDate) {
@@ -278,7 +278,7 @@
             minDate: fromDate,
             maxDate: toDate,
             beforeShowDay: function (date) {
-                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                 return [convertedBookedDates.indexOf(string) === -1];
             }
         });
