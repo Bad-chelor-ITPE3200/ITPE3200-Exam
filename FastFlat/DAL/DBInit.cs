@@ -17,7 +17,8 @@ namespace FastFlat.DAL
                 serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>(); //Hostingprovider
 
             //Paths for pbs
-
+            //standard profile picture
+            byte[] standprof;
             //Oli PB
             byte[] oliarr; //declears the array
             using (var filestreamOli =
@@ -234,6 +235,9 @@ namespace FastFlat.DAL
                         //Bookings = new List<BookingModel> { },
                     }
                 };
+                // Adds account that are not admin
+                ApplicationUser[] applicationUsers = { new ApplicationUser(){UserName = "test1", FirstName = "tester", LastName = "testsønn", Email = "testerjr@gmail.com", PhoneNumber = "123456789", ProfilePicture = oliarr}};
+              
                 try
                 {
                     foreach (ApplicationUser u in users) //for loop for all the users
@@ -249,6 +253,15 @@ namespace FastFlat.DAL
                         else
                         {
                             Console.Write("error in creating user " + u); //if there is a error 
+                        }
+                    }
+
+                    foreach (var u in applicationUsers)
+                    {
+                        var ok = await userman.CreateAsync(u, "Password123!");
+                        if (ok.Succeeded)
+                        {
+                            await userman.AddToRoleAsync(u, "Renter"); 
                         }
                     }
                 }
