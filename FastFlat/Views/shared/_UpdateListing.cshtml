@@ -1,9 +1,8 @@
 @model NewListningViewModel
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewData["Update a listing"]</title>
-</head>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/newlisting.css" />
+}
             
 <div class="page-container">
     <h2>Update your listing</h2>
@@ -45,11 +44,11 @@
             <input asp-for="@Model.Listning.ListningDescription" class="form-control" />
             <span asp-validation-for="@Model.Listning.ListningDescription" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group address">
             <label asp-for="Listning.ListningAddress">Address</label>
             <input asp-for="Listning.ListningAddress" class="form-control" id="address" />
             <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
-            <div id="addressResults"></div>
+            <div id="output"></div>
         </div>
         <div class="form-group">
             <label asp-for="@Model.Listning.SquareMeter"></label>
@@ -61,17 +60,6 @@
             <input asp-for="Listning.NoOfBeds" class="form-control" />
             <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
         </div>
-
-        @** <h4>Select Amenities:</h4>**@
-        @** for this version we also ignore the amenities TODO: hvis noen vil se på dette så værsegod
-        @foreach (var amenity in Model.Amenities)
-        {
-        <input type="checkbox" name="SelectedAmenities" value="@amenity.AmenityId"/>
-        @amenity.AmenityName
-
-
-        <br/>
-        }**@
         <button type="submit" class="btn btn-primary">update</button>
         <span asp-validation-for="SelectedAmenities" class="text-danger"></span>
         <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden />
@@ -98,7 +86,7 @@
      });
  
      const addressInput = $("#address")
-     const addressOutput = document.getElementById("addressResults")
+     const addressOutput = document.getElementById("output")
      let addressArray = []
  
      addressInput.keyup(async() => { 
@@ -122,7 +110,7 @@
              if (Array.isArray(addressArray)) {
                  addressArray.forEach(address => {
              
-                     addressOutput.innerHTML += `<button type="button" onclick="onPlaceSelected('${address.place_id}')"><strong>${address.description}</strong></button>`;
+                     addressOutput.innerHTML += `<div class="autocomplete" onclick="onPlaceSelected('${address.place_id}')">${address.description}</div>`;
                  });
              } else {
                  console.error('Data is not an array:', data);

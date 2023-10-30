@@ -25,7 +25,6 @@
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <input type="submit" value="Login">
-            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
             <div class="breaker"></div>
             <p>Dont have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a> </p>
         </form>
