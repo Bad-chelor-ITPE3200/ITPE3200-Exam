@@ -18,7 +18,6 @@ namespace FastFlat.DAL
 
             //Paths for pbs
             //standard profile picture
-            byte[] standprof;
             //Oli PB
             byte[] oliarr; //declears the array
             using (var filestreamOli =
