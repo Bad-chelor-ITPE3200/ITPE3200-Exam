@@ -146,7 +146,7 @@ namespace FastFlat.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt. Please enter a valid e-mail and password");
                     return Page();
                 }
             }

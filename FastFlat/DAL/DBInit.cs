@@ -150,7 +150,7 @@ namespace FastFlat.DAL
                     },
                     new AmenityModel
                     {
-                        AmenityName = "Waching Machine",
+                        AmenityName = "Waching",
                         AmenityDescription = "A machine for cleaning clothes.",
                         AmenityLogo = "/images/amenity/WachingMachine.svg"
                     },

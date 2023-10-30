@@ -39,4 +39,8 @@
     <Folder Include="wwwroot\images\listnings\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\images\listnings\end-of-evangelion-br-1561679366459_160w.jpg" />
+  </ItemGroup>
+
 </Project>
