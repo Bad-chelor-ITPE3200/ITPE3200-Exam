@@ -4,9 +4,11 @@
     ViewData["Title"] = "Download Your Data";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
+<div class="index-settings">
+    <h3>@ViewData["Title"]</h3>
 
-<h3>@ViewData["Title"]</h3>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
