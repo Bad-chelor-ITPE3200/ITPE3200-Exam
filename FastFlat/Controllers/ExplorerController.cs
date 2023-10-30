@@ -35,8 +35,8 @@ namespace FastFlat.Controllers
             // Search by city
             if (!string.IsNullOrEmpty(request.Location))
             {
-                rentalList = rentalList.Where(listing => listing.ListningCity.ToLower() == request.Location.ToLower()
-                                                || listing.ListningCountry.ToLower()== request.Location.ToLower());
+                rentalList = rentalList.Where(listing => listing.ListningCity?.ToLower() == request.Location.ToLower()
+                                                || listing.ListningCountry?.ToLower()== request.Location.ToLower());
             }
             // Filter by fromDate. Assuming listings that are available "from" a date are available for bookings from that date.
             if (request.FromDate != default(DateTime))

@@ -19,7 +19,7 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 });
 //configure logger
 var loggerConf = new LoggerConfiguration().MinimumLevel.Information().WriteTo
-    .File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log"); // gjord endring på formatet
+    .File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
 
 //filtrerer loggen
 loggerConf.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceContext", out var value) &&
@@ -31,7 +31,6 @@ builder.Logging.AddSerilog(logger);
 
 
 builder.Services.AddHttpClient();
-//builder.Services.AddScoped<SignInManager<IdentityUser>>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -77,7 +76,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     // Create an instance of DBInit and call Seed
-    using var scope = app.Services.CreateScope();
+    using var scope = app.Services.CreateScope(); 
     await DBInit.Seed(app); // This line calls the Seed method on the DBInit instance.
 }
 

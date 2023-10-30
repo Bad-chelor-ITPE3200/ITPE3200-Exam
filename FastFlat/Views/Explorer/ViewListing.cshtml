@@ -80,7 +80,7 @@
                     <hr>
                     <p class="rental-subtitle">Meet the host:</p>
                     <div class="rental-host-contact">
-                        <img class="rental-host-img" src="data:image/*;base64,@(Convert.ToBase64String(Model.User.ProfilePicture))">
+                        <img class="rental-host-img" src="data:image/*;base64,@(Convert.ToBase64String(Model.User!.ProfilePicture!))">
                         <div class="rental-host-info">
                             <p class="rental-info-sub">Name:</p>
                             <p>@Model.User.FirstName @Model.User.LastName</p>

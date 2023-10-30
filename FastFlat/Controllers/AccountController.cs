@@ -271,12 +271,12 @@ namespace FastFlat.Controllers
        public async Task<IActionResult> UpdateListingAdmin(NewListningViewModel LMM)
         {
             //id 0, should be 1, right id after routing 
-            //todo: update the listing, we use standard account
+            
             try
             {
                 //modelstate not here, so we dont need to create a seperate validation, alts
-                //todo: the veiw model to update the user
-                var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; //becomes null
+                
+                var upDatedUser = _listingRepository.GetById(LMM.Listning.ListningId).Result; 
 
             
 
@@ -298,7 +298,7 @@ namespace FastFlat.Controllers
                         {
                             _logger.LogInformation(
                                 $"The LMM.ListningImage object is {(LMM.ListningImage == null ? "null" : "not null")}");
-                            await LMM.ListningImage!.CopyToAsync(fileStream); //still crashes here tb
+                            await LMM.ListningImage!.CopyToAsync(fileStream); 
                         }
                     } 
 
