@@ -2,6 +2,20 @@
     position: relative;
 }
 
+.page-container {
+    width: 40%;
+    margin: auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-sizing: border-box;
+    margin-bottom: 5rem;
+    box-shadow: 1px 1px 39px -7px rgba(0,0,0,0.3);
+}
+.form-control {
+    width: 96%;
+}
+
 #output {
     position: absolute;
     top: 3rem;

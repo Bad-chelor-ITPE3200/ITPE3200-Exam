@@ -5,82 +5,85 @@
     <title>@ViewData["Update a listing"]</title>
 </head>
             
+<div class="page-container">
+    <h2>Update your listing</h2>
+    <form asp-controller="Account" asp-action="UpdateListing" id="form" enctype="multipart/form-data">
+        <input type="hidden" asp-for="@Model.Listning.ListningId" />
+        <div class="form-group">
+            <label asp-for="@Model.Listning.ListningName"></label>
+            <span class="text-danger">*</span>
+            <input asp-for="@Model.Listning.ListningName" class="form-control" />
+            <span asp-validation-for="@Model.Listning.ListningName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Listning.ListningPrice"></label>
+            <span class="text-danger">*</span>
+            <input asp-for="@Model.Listning.ListningPrice" class="form-control" />
+            <span asp-validation-for="@Model.Listning.ListningPrice" class="text-danger"></span>
+        </div>
 
-<form asp-controller="Account" asp-action="UpdateListing" id ="form" enctype="multipart/form-data">
-    <input type="hidden" asp-for="@Model.Listning.ListningId"/>
-    <div class="form-group">
-        <label asp-for="@Model.Listning.ListningName"></label>
-        <span class="text-danger">*</span>
-        <input asp-for="@Model.Listning.ListningName" class="form-control"/>
-        <span asp-validation-for="@Model.Listning.ListningName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model. Listning.ListningPrice"></label>
-        <span class="text-danger">*</span>
-        <input asp-for="@Model.Listning.ListningPrice" class="form-control"/>
-        <span asp-validation-for="@Model.Listning.ListningPrice" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="ListningImage">Listning Image:</label>
-        <p class="alert-warning"> NOTE: THIS NEED TO BE UPDATED</p>
-        <input asp-for="ListningImage" type="file" accept=".png,.jpg,.jpeg" id="ListningImage"
-        multiple="false" class="form-control-file">
-        <span asp-validation-for="ListningImage" class="text-danger"></span>
-    </div>*
-    <div class="form-group">
-        <label asp-for="@Model.Listning.FromDate">Available From</label>
-        <span class="text-danger">*</span>
-        <input asp-for="@Model.Listning.FromDate" id="fromDateInput" type="date" class="form-control" value="2023-09-30"/>
-        <span asp-validation-for="@Model.Listning.FromDate" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Listning.ToDate">Available To</label>
-        <span class="text-danger">*</span>
-        <input asp-for="@Model.Listning.ToDate" id="toDateInput" type="date" class="form-control" value="2023-10-30"/>
-        <span asp-validation-for="@Model.Listning.ToDate" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Listning.ListningDescription"></label>
-        <input asp-for="@Model.Listning.ListningDescription" class="form-control"/>
-        <span asp-validation-for="@Model.Listning.ListningDescription" class="text-danger"></span>
-    </div>
-  <div class="form-group">
+        <div class="form-group" style="display: flex; flex-direction: column;">
+            <label for="ListningImage">Listning Image:</label>
+            <input asp-for="ListningImage" type="file" accept=".png,.jpg,.jpeg" id="ListningImage"
+                   multiple="false" class="form-control-file">
+            <span asp-validation-for="ListningImage" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Listning.FromDate">Available From</label>
+            <span class="text-danger">*</span>
+            <input asp-for="@Model.Listning.FromDate" id="fromDateInput" type="date" class="form-control" value="2023-09-30" />
+            <span asp-validation-for="@Model.Listning.FromDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Listning.ToDate">Available To</label>
+            <span class="text-danger">*</span>
+            <input asp-for="@Model.Listning.ToDate" id="toDateInput" type="date" class="form-control" value="2023-10-30" />
+            <span asp-validation-for="@Model.Listning.ToDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Listning.ListningDescription"></label>
+            <input asp-for="@Model.Listning.ListningDescription" class="form-control" />
+            <span asp-validation-for="@Model.Listning.ListningDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="Listning.ListningAddress">Address</label>
             <input asp-for="Listning.ListningAddress" class="form-control" id="address" />
             <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
             <div id="addressResults"></div>
         </div>
-    <div class="form-group">
-        <label asp-for="@Model.Listning.SquareMeter"></label>
-        <input asp-for="@Model.Listning.SquareMeter" class="form-control"/>
-        <span asp-validation-for="@Model.Listning.SquareMeter" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Listning.NoOfBeds"></label>
-        <input asp-for="Listning.NoOfBeds" class="form-control"/>
-        <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
-    </div>
-    
-    @** <h4>Select Amenities:</h4>**@
-    @** for this version we also ignore the amenities TODO: hvis noen vil se på dette så værsegod
-    @foreach (var amenity in Model.Amenities)
-    {
+        <div class="form-group">
+            <label asp-for="@Model.Listning.SquareMeter"></label>
+            <input asp-for="@Model.Listning.SquareMeter" class="form-control" />
+            <span asp-validation-for="@Model.Listning.SquareMeter" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Listning.NoOfBeds"></label>
+            <input asp-for="Listning.NoOfBeds" class="form-control" />
+            <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
+        </div>
+
+        @** <h4>Select Amenities:</h4>**@
+        @** for this version we also ignore the amenities TODO: hvis noen vil se på dette så værsegod
+        @foreach (var amenity in Model.Amenities)
+        {
         <input type="checkbox" name="SelectedAmenities" value="@amenity.AmenityId"/>
         @amenity.AmenityName
 
 
         <br/>
-    }**@
-    <button type="submit" class="btn btn-primary">update</button>
-    <span asp-validation-for="SelectedAmenities" class="text-danger"></span>
-    <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
-        <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden/>
-             <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
-             <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden/>
-             <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
+        }**@
+        <button type="submit" class="btn btn-primary">update</button>
+        <span asp-validation-for="SelectedAmenities" class="text-danger"></span>
+        <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden />
+        <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden />
+        <input asp-for="Listning.ListningCountry" class="form-control" id="countryInput" hidden />
+        <input asp-for="Listning.ListningLat" class="form-control" id="latInput" hidden />
+        <input asp-for="Listning.ListningLng" class="form-control" id="lngInput" hidden />
 
-</form>
+    </form>
+</div>
+
+
 <script>
  document.getElementById('fromDateInput').addEventListener('change', function() {
          const selectedDate = this.value;
@@ -165,5 +168,3 @@
              });
      }
 </script>
-
-</html>
