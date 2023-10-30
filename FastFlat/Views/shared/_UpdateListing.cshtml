@@ -9,20 +9,20 @@
     <form asp-controller="Account" asp-action="UpdateListing" id="form" enctype="multipart/form-data">
         <input type="hidden" asp-for="@Model.Listning.ListningId" />
         <div class="form-group">
-            <label asp-for="@Model.Listning.ListningName"></label>
+            <label asp-for="@Model.Listning.ListningName">Listing Name</label>
             <span class="text-danger">*</span>
             <input asp-for="@Model.Listning.ListningName" class="form-control" />
             <span asp-validation-for="@Model.Listning.ListningName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="@Model.Listning.ListningPrice"></label>
+            <label asp-for="@Model.Listning.ListningPrice">Listing Price</label>
             <span class="text-danger">*</span>
             <input asp-for="@Model.Listning.ListningPrice" class="form-control" />
             <span asp-validation-for="@Model.Listning.ListningPrice" class="text-danger"></span>
         </div>
 
         <div class="form-group" style="display: flex; flex-direction: column;">
-            <label for="ListningImage">Listning Image:</label>
+            <label for="ListningImage">Listing Image:</label>
             <input asp-for="ListningImage" type="file" accept=".png,.jpg,.jpeg" id="ListningImage"
                    multiple="false" class="form-control-file">
             <span asp-validation-for="ListningImage" class="text-danger"></span>
@@ -40,7 +40,7 @@
             <span asp-validation-for="@Model.Listning.ToDate" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="@Model.Listning.ListningDescription"></label>
+            <label asp-for="@Model.Listning.ListningDescription">Listing Description</label>
             <input asp-for="@Model.Listning.ListningDescription" class="form-control" />
             <span asp-validation-for="@Model.Listning.ListningDescription" class="text-danger"></span>
         </div>
@@ -51,16 +51,16 @@
             <div id="output"></div>
         </div>
         <div class="form-group">
-            <label asp-for="@Model.Listning.SquareMeter"></label>
+            <label asp-for="@Model.Listning.SquareMeter">Square Meters</label>
             <input asp-for="@Model.Listning.SquareMeter" class="form-control" />
             <span asp-validation-for="@Model.Listning.SquareMeter" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Listning.NoOfBeds"></label>
+            <label asp-for="Listning.NoOfBeds">Number of Beds</label>
             <input asp-for="Listning.NoOfBeds" class="form-control" />
             <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">update</button>
+        <button type="submit" class="btn btn-primary">Update</button>
         <span asp-validation-for="SelectedAmenities" class="text-danger"></span>
         <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden />
         <input asp-for="Listning.ListningCity" class="form-control" id="cityInput" hidden />
