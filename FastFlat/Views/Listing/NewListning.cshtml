@@ -43,11 +43,11 @@
             <input asp-for="Listning.ListningDescription" class="form-control" />
             <span asp-validation-for="Listning.ListningDescription" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="Listning.ListningAddress">Address</label>
+        <div class="form-group address">
+            <label asp-for="Listning.ListningAddress"></label>
             <input asp-for="Listning.ListningAddress" class="form-control" id="address" />
             <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
-            <div id="addressResults"></div>
+            <div id="output"></div>
         </div>
         <div class="form-group">
             <label asp-for="Listning.SquareMeter"></label>
@@ -104,7 +104,7 @@
     });
 
     const addressInput = $("#address")
-    const addressOutput = document.getElementById("addressResults")
+    const addressOutput = document.getElementById("output")
     let addressArray = []
 
     addressInput.keyup(async() => { 
@@ -128,7 +128,7 @@
             if (Array.isArray(addressArray)) {
                 addressArray.forEach(address => {
             
-                    addressOutput.innerHTML += `<button type="button" onclick="onPlaceSelected('${address.place_id}')"><strong>${address.description}</strong></button>`;
+                    addressOutput.innerHTML += `<div class="autocomplete" onclick="onPlaceSelected('${address.place_id}')">${address.description}</div>`;
                 });
             } else {
                 console.error('Data is not an array:', data);

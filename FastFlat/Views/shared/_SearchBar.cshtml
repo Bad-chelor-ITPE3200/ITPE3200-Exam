@@ -104,7 +104,7 @@
             if (Array.isArray(cityArray)) {
                 cityArray.forEach(city => {
               
-                    output.innerHTML += `<button onclick="updateLocation('${city.description.split(",")[0]}')">${city.description}</button>`;
+                    output.innerHTML += `<div class="autocomplete" onclick="updateLocation('${city.description.split(",")[0]}')">${city.description}</div>`;
                 });
             } else {
                 console.error('Data is not an array:', data);
