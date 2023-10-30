@@ -1,9 +1,11 @@
 ================================ FastFlat: Your Ultimate Rental Platform ================================
 
+NB! Since we have already established a viable database, there is no need to perform any migrations and database updates before launching the project.
+NB! We have also implemented a private API key that is to be shared nor used by ANYONE for anything outside of this project. This implementation is for
+educational purposes only and is scheduled for deleted upon grading.
 
 ------------------------------------  Introduction ------------------------------------ 
-Welcome to FastFlat, a cutting-edge web application designed to simplify your rental experience. Whether you're looking to rent a cozy apartment for the weekend or list your own property, FastFlat has got you covered. This README provides a comprehensive guide to help you navigate through the application's features effortlessly.
-
+Welcome to FastFlat, a Minimum Viable Product (MVP) web application designed to simplify your rental experience. Whether you're looking to rent a cozy apartment for the weekend or list your own property, FastFlat has got you covered. This README provides a comprehensive guide to help you navigate through the application's features effortlessly. 
 
 ******************************************* Features *************************************
 

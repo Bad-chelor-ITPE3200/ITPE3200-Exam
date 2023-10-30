@@ -404,16 +404,7 @@ namespace FastFlat.Controllers
 
 
                 _logger.LogInformation(LMM.Listning
-                    .ListningImageURL); //URL to image == null -> maybe  with the form
-
-
-                // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
-                // Change this directory to the appropriate location where you want to save your images
-
-
-                // Save the path to your database
-
-                //image: 
+                    .ListningImageURL); 
 
 
                 upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
@@ -421,11 +412,10 @@ namespace FastFlat.Controllers
                 upDatedUser.ListningAddress = listingVeiwModel.Listning.ListningAddress;
                 upDatedUser.ListningLat = listingVeiwModel.Listning.ListningLat;
                 upDatedUser.ListningLng = listingVeiwModel.Listning.ListningLng; 
-                _logger.LogInformation("LOGGGING OK");
+                _logger.LogInformation("Everything is updated");
                 var result = _listingRepository.Update(upDatedUser);
-                //  _logger.LogInformation(restult.ToString());
 
-                if (User.IsInRole("Admin"))
+                if (User.IsInRole("Admin")) //returns the right veiws based on the role of the admin
                 {
                     return RedirectToAction(nameof(_ManageListings));
                 }
