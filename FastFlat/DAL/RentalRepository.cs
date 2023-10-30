@@ -36,7 +36,7 @@ namespace FastFlat.DAL
         {
             try
             {
-                return await _dbSet.FindAsync(id);
+                return (await _dbSet.FindAsync(id))!;
             }
             catch (Exception e)
             {

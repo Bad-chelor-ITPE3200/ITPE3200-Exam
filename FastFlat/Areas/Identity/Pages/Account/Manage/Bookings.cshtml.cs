@@ -11,7 +11,7 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
     {
         private readonly IRentalRepository<BookingModel> _bookingRepository;
         private readonly IRentalRepository<ListningModel> _rentalRepository;
-        public IEnumerable<BookingViewModel> Bookings { get; set; }
+        public IEnumerable<BookingViewModel> Bookings { get; set; } = null!;
 
         private readonly UserManager<ApplicationUser> _userManager;
 

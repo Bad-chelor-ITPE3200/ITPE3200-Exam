@@ -67,7 +67,7 @@ namespace FastFlat.DAL
             //context.Database.EnsureDeleted();  // ready if we want to use it
             //Amenity
 
-            if (!context.Amenities.Any()) //if the context is empty
+            if (!context.Amenities!.Any()) //if the context is empty
             {
                 var amenities = new List<AmenityModel>
                 {
@@ -155,7 +155,7 @@ namespace FastFlat.DAL
                 await context.SaveChangesAsync();
             }
             
-            if (!context.Roles.Any())
+            if (!context.Roles!.Any())
             //roles for the acess controll
             //we let the controller control everything about what they can edit or not
             {
@@ -186,7 +186,7 @@ namespace FastFlat.DAL
                 }
             }
 
-            if (!context.Users.Any())
+            if (!context.Users!.Any())
             {
                 var users = new List<ApplicationUser>
                 {

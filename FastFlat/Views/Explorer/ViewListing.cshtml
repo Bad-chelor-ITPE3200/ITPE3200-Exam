@@ -25,7 +25,11 @@
                     <hr>
                     <p class="rental-subtitle">Meet the host:</p>
                     <div class="rental-host-contact">
-                        <img class="rental-host-img" src="data:image/*;base64,@(Convert.ToBase64String(Model.User.ProfilePicture))">
+
+                        @{
+                            System.Diagnostics.Debug.Assert(Model.User.ProfilePicture != null, "Model.User.ProfilePicture != null");
+                        }
+                        <img class="rental-host-img" src="data:image/*;base64,@(Convert.ToBase64String(Model.User.ProfilePicture))" alt="Host Image">
                         <div class="rental-host-info">
                             <p class="rental-info-sub">Name:</p>
                             <p>@Model.User.FirstName @Model.User.LastName</p>
@@ -48,9 +52,9 @@
                             foreach (var amenity in Model.Listing.ListningAmenities)
                             {
                                 //var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
-                                <button type="submit" name="SelectedAmenities" value="@amenity.Amenity?.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity?.AmenityName')" id="@amenity.Amenity.AmenityName">
+                                <button type="submit" name="SelectedAmenities" value="@amenity.Amenity?.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity?.AmenityName')" id="@amenity.Amenity!.AmenityName">
                                     @amenity.Amenity.AmenityName
-                                    <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo"/>
+                                    <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo" alt="@amenity.AmenityId"/>
                                 </button>
                             }
                         }
@@ -80,7 +84,7 @@
                     <hr>
                     <p class="rental-subtitle">Meet the host:</p>
                     <div class="rental-host-contact">
-                        <img class="rental-host-img" src="data:image/*;base64,@(Convert.ToBase64String(Model.User.ProfilePicture))">
+                        <img class="rental-host-img" src="data:image/*;base64,@Convert.ToBase64String(Model.User!.ProfilePicture!)" alt="ProfilePicture">
                         <div class="rental-host-info">
                             <p class="rental-info-sub">Name:</p>
                             <p>@Model.User.FirstName @Model.User.LastName</p>
@@ -98,12 +102,12 @@
                     <hr>
                     <p class="rental-subtitle">This rental offers:</p>
                     <div class="rental-amenities">
-                        @foreach (var amenity in Model.Listing.ListningAmenities)
+                        @foreach (var amenity in Model.Listing.ListningAmenities!)
                         {
                         //var isActive = (amenity.AmenityName == (string)ViewBag.SelectedAmenity) ? "active" : ""; // Dette antar at du lagrer den valgte amenity i ViewBag
-                            <button type="submit" name="SelectedAmenities" value="@amenity.Amenity?.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity.AmenityName')" id="@amenity.Amenity.AmenityName">
+                            <button type="submit" name="SelectedAmenities" value="@amenity.Amenity?.AmenityName" class="amenity-button" onclick="addAmenity('@amenity.Amenity!.AmenityName')" id="@amenity.Amenity.AmenityName">
                                 @amenity.Amenity.AmenityName
-                                <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo" />
+                                <img class="amenity-icon" src="@amenity.Amenity.AmenityLogo" alt = @amenity.Amenity.AmenityName/>
                             </button>
                         }
                     </div>
