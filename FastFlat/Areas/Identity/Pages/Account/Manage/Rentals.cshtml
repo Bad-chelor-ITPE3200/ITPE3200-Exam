@@ -4,15 +4,29 @@
     ViewData["Title"] = "Rentals";
     ViewData["ActivePage"] = ManageNavPages.Rentals;
 }
-<h2>@ViewData["Title"]</h2>
 
-<div>
-    @foreach (var rental in Model.Rentals)
-    {
-        <partial name="_RentalCard" model="rental" />
-        <a asp-controller="Account" asp-action="DeleteAlistingNormalUser" class="btn btn-danger" asp-route-id="@rental.ListningId">Delete Listing</a>
-        <a asp-controller="Account" class="btn btn-secondary"asp-action="_UpdateListing" asp-route-id="@rental.ListningId"> update Listing</a>
-    }
+
+<div class="index-settings">
+    <h2 class="settings-title">@ViewData["Title"]</h2>
+    <div class="rentals-result">
+        @foreach (var rental in Model.Rentals)
+        {
+            
+            <div class="rentalcard-wrapper">
+                <partial name="_RentalCard" model="rental" />
+                <div class="rentalcard-btns">
+                    <a class="rental-delete-wrapper" asp-controller="Account" asp-action="DeleteAlistingNormalUser" asp-route-id="@rental.ListningId">
+                        <img class="rental-delete" src="~/images/icons/delete.svg" alt="Delete your rental">
+                    </a>
+                    <a class="rental-edit-wrapper" asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@rental.ListningId">
+                        <img class="rental-edit" src="~/images/icons/edit.svg" alt="Edit your rental">
+                    </a>
+                </div>
+               
+            </div>
+        }
+    </div>
+   
     <br/>
     <a class="btn btn-primary"
        asp-controller="Listing"

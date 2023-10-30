@@ -19,11 +19,11 @@
             </div>
             <img class="rental-banner" src="@Model.Listing.ListningImageURL" alt="Forside bilde." />
             <div class="rental-content">
-                <div class="rental-about">
+                <div class="rental-about" style="width: 100%;">
                     <h1 class="rental-title">@Model.Listing.ListningName</h1>
-                    <p class="rental-info">Antall senger @Model.Listing.NoOfBeds - Størrelse @Model.Listing.SquareMeter</p>
+                    <p class="rental-info">Antall senger @Model.Listing.NoOfBeds · Størrelse @Model.Listing.SquareMeter</p>
                     <hr>
-                    <p class="rental-subtitle">Meet the host:</p>
+                    <p class="rental-subtitle">Your info:</p>
                     <div class="rental-host-contact">
 
                         @{
@@ -60,14 +60,10 @@
                         }
                     </div>
                     <hr>
-                    <p class="rental-subtitle">The close area:</p>
+                    <p class="rental-subtitle">The neighbourhood:</p>
                     <div id="map">
                     </div>
                 </div>
-                <div class="rental-booking">
-                    
-                </div>
-
             </div>
         }
         else
@@ -84,7 +80,7 @@
                     <hr>
                     <p class="rental-subtitle">Meet the host:</p>
                     <div class="rental-host-contact">
-                        <img class="rental-host-img" src="data:image/*;base64,@Convert.ToBase64String(Model.User!.ProfilePicture!)" alt="ProfilePicture">
+                        <img class="rental-host-img" src="data:image/*;base64,@(Convert.ToBase64String(Model.User!.ProfilePicture!))">
                         <div class="rental-host-info">
                             <p class="rental-info-sub">Name:</p>
                             <p>@Model.User.FirstName @Model.User.LastName</p>
@@ -125,14 +121,13 @@
                         <div class="form-dates">
                             <div class="form-group">
                                 <label asp-for="@Model.Booking.FromDate">Available From</label><span class="text-danger">*</span>
-                                <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="text" class="form-control" />
-                                <span asp-validation-for="@Model.Booking.FromDate" class="text-danger"></span>
+                                <input asp-for="@Model.Booking.FromDate" id="fromDateInput" type="text" class="form-control" readonly />
+                               
                             </div>
                             <div class="form-group">
                                 <label asp-for="@Model.Booking.ToDate">Available To</label><span class="text-danger">*</span>
-                                <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="text" class="form-control" />
-                                <span asp-validation-for="@Model.Booking.ToDate" class="text-danger"></span>
-                                
+                                <input asp-for="@Model.Booking.ToDate" id="toDateInput" type="text" class="form-control" readonly />
+                              
                             </div>
                         </div>
                         <div class="booking-summary-wrapper">
@@ -153,12 +148,13 @@
                         
                         @if (loggedInUser != null)
                         {
-                            <button type="submit" class="btn btn-primary">Book now!</button>
+                            <button id="bookBtn" type="submit" class="btn btn-primary">Book now!</button>
                         }
                         else
                         {
-                            <button disabled type="submit" class="btn btn-primary">Login to book.</button>
+                            <button disabled id="bookBtn" type="submit" class="btn btn-primary">Login to book.</button>
                         }
+                        <span id="error-book" asp-validation-for="@Model.Booking.FromDate" class="text-danger"></span>
                     </form>
                 </div>
 
@@ -200,7 +196,7 @@
 
 
     $(document).ready(function () {
-        const listingId = @Model.Listing.ListningId;
+        var listingId = @Model.Listing.ListningId;
 
         // Fetch available dates
         fetchAvailableDates(listingId, function (availabilityData) {
@@ -266,7 +262,7 @@
             minDate: fromDate,
             maxDate: toDate,
             beforeShowDay: function (date) {
-                let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                 return [convertedBookedDates.indexOf(string) === -1];
             },
             onSelect: function (selectedDate) {
@@ -279,7 +275,7 @@
             minDate: fromDate,
             maxDate: toDate,
             beforeShowDay: function (date) {
-                let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                 return [convertedBookedDates.indexOf(string) === -1];
             }
         });
@@ -297,7 +293,10 @@
         if (allDatesBooked) {
             // Disable the input fields if all dates are booked
             $("#fromDateInput, #toDateInput").prop("disabled", true);
-            $("#fromDateInput, #toDateInput").val("Fully booked! Come back later!")
+            $("#fromDateInput, #toDateInput").val("Full")
+            $('#bookBtn').prop("disabled", true)
+            $('#bookBtn').html("Fully booked, come back later")
+            
         } else {
             // ... rest of your datepicker setup code ...
         }
@@ -313,6 +312,7 @@
                 $('#nights-price').html(nightPrice*nightCount + " NOK")
                 $('#booking-fee').html((nightPrice * nightCount) * 0.05 + " NOK")
                 $('#booking-total').html((nightPrice * nightCount) * 1.05 + " NOK")
+                $('#error-book').html(" ")
 
             }
         }
@@ -322,6 +322,7 @@
 
         $("#fromDateInput").change(() => {
             logNumberOfDays();
+            
         })
         $("#toDateInput").change(() => {
             logNumberOfDays();

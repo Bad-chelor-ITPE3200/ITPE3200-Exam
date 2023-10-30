@@ -4,15 +4,20 @@
     ViewData["Title"] = "Bookings";
     ViewData["ActivePage"] = ManageNavPages.Bookings;
 }
-
-@if (Model.Bookings.Any())
-{
-    foreach (var bookingModel in Model.Bookings)
-    {
-        <partial name="_BookingCard" model="bookingModel" />
-    }
-}
-else
-{
-    <p>You have no bookings available at the moment</p>
-}
+<div class="index-settings">
+    <h2 class="settings-title">@ViewData["Title"]</h2>
+    <div class="bookings-result">
+        @if (Model.Bookings.Any())
+        {
+            foreach (var bookingModel in Model.Bookings)
+            {
+                <partial name="_BookingCard" model="bookingModel" />
+            }
+        }
+        else
+        {
+            <p>You have no bookings available at the moment</p>
+        }
+    </div>
+    
+</div>

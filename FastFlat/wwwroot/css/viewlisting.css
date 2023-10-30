@@ -109,10 +109,14 @@ h3, h1, p{
     width: 40px;
     height: 40px;
 }
-.title-top{
+.title-top {
     display: flex;
     align-items: center;
     gap: 1rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: -1px 1px 40px -20px rgba(0,0,0,0.75);
 }
 .amenity-icon {
     width: 35px;

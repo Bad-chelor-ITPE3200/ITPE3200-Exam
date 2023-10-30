@@ -94,11 +94,29 @@ nav {
     font-size: 1rem;
 }
 
-/* .active {
+.active {
     color: #000000 !important;
     font-weight: bolder;
 }
-*/
+.autocomplete{
+    background-color: white;
+    border-bottom: 1px solid #ABB3FF;
+    padding: 5px;
+}
+.autocomplete:hover {
+    cursor: pointer;
+    color: black;
+    background-color: #e1e0ff;
+    border-bottom: 1px solid #ABB3FF;
+}
+#output {
+    position: absolute;
+    top: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-content: start;
+}
 /* Hamburger Menu */
 .icon:hover .out {
     display: block;
@@ -163,3 +181,4 @@ nav {
     font-size: 1.1rem;
     color: white;
 }
+
