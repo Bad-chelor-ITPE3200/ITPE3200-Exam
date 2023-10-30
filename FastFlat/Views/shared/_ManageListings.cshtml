@@ -2,14 +2,19 @@
 <head>
     <title>@ViewData["Title"]</title>
 </head>
-<body>
 
-<table class="table table-striped">
-    <tr><th>Name:</th><th>Adress</th><th>Owned by: </th><th>Actions</th><th></th><th>Image</th></tr>
-    @foreach (var listings in Model)
-    {
-        <tr> <td>@listings.ListningId</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@listings.ListningId">update</a></td> <td><a asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td> <td> <img src="@listings.ListningImageURL" style="width: 10%; height: auto;"/></td></tr> @**used to limit the image sizes*@
-    }
-</table>
+<a asp-controller="Account" asp-action="ManageAllBookings"> Back to Control panel</a>
+<div style="background-color: white; width: 60%; margin: auto; margin-top: 2rem; min-height: calc(100vh - 110px);">
 
-</body>
+
+    <h3>Listings</h3>
+    <table class="table table-striped">
+        <tr><th>Name:</th><th>Adress</th><th>Owned by: </th><th>Actions</th><th></th><th>Image</th></tr>
+        @foreach (var listings in Model)
+        {
+            <tr> <td>@listings.ListningId</td><td>@listings.ListningAddress</td><td>@listings.User</td> <td><a asp-controller="Account" asp-action="_UpdateListing" asp-route-id="@listings.ListningId">update</a></td> <td><a asp-controller="Account" asp-action="DeleteAlisting" asp-route-id="@listings.ListningId">delete</a></td> <td> <img src="@listings.ListningImageURL" style="width: 10%; height: auto;" /></td></tr> @**used to limit the image sizes*@
+        }
+    </table>
+</div>
+
+

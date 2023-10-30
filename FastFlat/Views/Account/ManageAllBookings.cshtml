@@ -3,13 +3,13 @@
     Layout = "_Layout";
 }
 
-<h2>admin</h2>
-<div>
-    <p>booking table</p>
+<h2>Admin</h2>
+<a asp-controller="Account" asp-action="_AdminAccounts" class="btn btn-primary"> account controll panel</a>
+
+<a asp-controller="Account" asp-action="_ManageListings" class="btn btn-primary">All listings on site</a>
+<div style="background-color: white; width: 60%; margin: auto; margin-top: 2rem; min-height: calc(100vh - 110px);">
         <partial name="_AdminPartial"/>
         
 </div>
 
-    <a asp-controller="Account" asp-action="_AdminAccounts" class="btn btn-primary"> account controll panel</a>
-
-    <a asp-controller="Account" asp-action="_ManageListings" class="btn btn-primary">All listings on site</a>
+   
