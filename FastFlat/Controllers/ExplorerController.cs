@@ -156,9 +156,21 @@ namespace FastFlat.Controllers
 
                 // Calculate the total price for the booking based on the daily rate and the total number of days.
                 var totalPrice = input.Listing.ListningPrice * numberOfDays;
+                var toltaldays = toDate - fromDate;  
                 input.Booking.TotalPrice = totalPrice * (decimal)1.05;
                 input.Booking.ListningId = input.Listing.ListningId;
-
+                var bookingsList = _bookingRepo.GetAll().Result.ToList(); 
+                //some kind if date test
+                foreach (var bookings in bookingsList )
+                {
+                    if (bookings.ToDate == toDate || bookings.FromDate == fromDate )
+                    {
+                        if ((toDate - fromDate) == toltaldays)
+                        {
+                            return RedirectToAction(nameof(Explore));
+                        }
+                    }
+                }
                 try
                 {
                     await _bookingRepo.Create(input.Booking);
@@ -239,7 +251,7 @@ namespace FastFlat.Controllers
                 return StatusCode(500, "Failed to fetch available dates.");
             }
         }
-
+        
 
 
     }

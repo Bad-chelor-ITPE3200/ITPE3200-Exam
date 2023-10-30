@@ -188,25 +188,7 @@ namespace FastFlat.Controllers
             return null!; 
         }
 
-
-        // Allows admins to update a user's roles.
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> updateRoles(ApplicationUser user, string newrole)
-        {
-            if (!_userManager.GetRolesAsync(user).Equals(newrole))
-            {
-                _logger.LogInformation($"[AccountController updateRoles()] Role {newrole} added to user with ID {user.Id}.");
-                await _userManager.AddToRoleAsync(user, newrole);
-                return RedirectToAction(nameof(_AdminAccounts));
-            }
-            else
-            {
-                _logger.LogWarning("User already had the role");
-                return RedirectToAction(nameof(_AdminAccounts));
-            }
-        }
-
+        
         // Allows admins to update a user's account using its ID.
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminUpdateAuser(string id)
