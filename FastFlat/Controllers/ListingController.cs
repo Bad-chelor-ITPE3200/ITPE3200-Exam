@@ -40,14 +40,17 @@ namespace FastFlat.Controllers
         {
             try
             {
-                // Henter alle fasiliteter fra databasen ved å bruke _amenityRepository.
+                
+                //gets all fasilites from the database by _amenityRepository
                 var amenities = await _amenityRepository.GetAll();
                 // Oppretter en ny instans av NewListningViewModel med fasilitetene vi nettopp hentet.
-
-                // Vi konverterer amenities fra IEnumerable til List fordi NewListningViewModel forventer en List.
+                //Creates a new instance of NewListningVeiwModel with the facilities we just found
+                
+                //Converts amenities from IEnumerable to list because NewListningVeiwModel expects a list. 
+                
                 var viewModel = new NewListningViewModel(amenities.ToList());
                 _logger.LogInformation("[NewListningController NewListning() GET] Successfully retrieved amenities and available countries.");
-                // Sender viewModel til View for å bli rendret til brukeren.
+                //Sends viewModel to View to user renderning 
                 return View(viewModel);
             }
             catch (Exception e)
@@ -84,7 +87,8 @@ namespace FastFlat.Controllers
                 viewModel.Listning.UserId = userId;
                 await _listningRepository.Create(viewModel.Listning);
 
-                // Sjekk at viewModel.Listning.ListningId nå har en gyldig verdi.
+                
+                //checks if viewModel.Listning.ListningId has a vaild value
                 if (viewModel.Listning.ListningId > 0)
                 {
                     if (viewModel.SelectedAmenities != null)
@@ -132,6 +136,7 @@ namespace FastFlat.Controllers
             }
 
             // Hvis ModelState er ugyldig eller en annen feil oppstår, hent fasilitetene på nytt.
+            //If ModelState is invalid or another error occurs, get the fasility again. 
             var amenityList = await _amenityRepository.GetAll();
             viewModel.Amenities = amenityList.ToList();
 

@@ -22,7 +22,7 @@ namespace FastFlat.DAL
         {
             try
             {
-                // Returner en liste for � utf�re en umiddelbar evaluering, akkurat som i l�rerens eksempel.
+                //returns a list with all the context of the tables
                 return await _context.Set<T>().ToListAsync();
             }
             catch (Exception e)
@@ -36,6 +36,7 @@ namespace FastFlat.DAL
         {
             try
             {
+                //finds an item by id, by using the entityframework
                 return (await _dbSet.FindAsync(id))!;
             }
             catch (Exception e)
@@ -49,6 +50,7 @@ namespace FastFlat.DAL
         {
             try
             {
+                //creates a new entity in the database. 
                 _dbSet.Add(entity);
                 await _context.SaveChangesAsync();
                 return true;
@@ -65,6 +67,7 @@ namespace FastFlat.DAL
         {
             try
             {
+                //updates the enity
                 _dbSet.Update(entity);
                 await _context.SaveChangesAsync();
                 return true;
@@ -81,14 +84,14 @@ namespace FastFlat.DAL
         {
             try
             {
-                var entity = await _dbSet.FindAsync(id);
+                var entity = await _dbSet.FindAsync(id); //finds the thing that needs to be deleted
                 if (entity == null)
                 {
                     _logger.LogError("[RentalRepository] entity not found for the entityId {EntityId:0000}", id);
                     return false;
                 }
-                _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
+                _dbSet.Remove(entity); //removes the entity
+                await _context.SaveChangesAsync(); //saves the changes
                 return true;
 
             }
