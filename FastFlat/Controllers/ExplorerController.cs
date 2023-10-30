@@ -76,11 +76,11 @@ namespace FastFlat.Controllers
 
                     // Then filter these in-memory listings based on the requested amenities.
                     allRentals = allRentals.Where(listing =>
-    listing.ListningAmenities != null &&
-    requestedAmenities.All(requestedAmenity =>
-        listing.ListningAmenities.Any(listingAmenity =>
-            listingAmenity.Amenity != null &&
-            listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
+                        listing.ListningAmenities != null &&
+                            requestedAmenities.All(requestedAmenity =>
+                                listing.ListningAmenities.Any(listingAmenity =>
+                                    listingAmenity.Amenity != null &&
+                                        listingAmenity.Amenity.AmenityName == requestedAmenity))).ToList();
 
 
                     rentalList = allRentals.AsQueryable();
@@ -130,71 +130,75 @@ namespace FastFlat.Controllers
         }
 
 
-
-        // Allows users to book a listing by providing booking details.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ViewListing(ListingViewModel input)
         {
-
             var userId = _userManager.GetUserId(User);
             ModelState.Remove("Booking.UserId");
             input.Booking.UserId = userId;
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("[ExplorerController ViewListing() POST] Modelstate is not valid in VeiwListing");
-            }
 
             if (ModelState.IsValid)
             {
-
-                // Calculate the total number of days between the 'FromDate' and 'ToDate'.
                 DateTime fromDate = Convert.ToDateTime(input.Booking.FromDate);
                 DateTime toDate = Convert.ToDateTime(input.Booking.ToDate);
-                var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
 
+                // Check for existing bookings that overlap with the desired date range.
+                var existingBookings = await _bookingRepo.GetAll();
+                bool isDateRangeAvailable = true;
 
-                // Calculate the total price for the booking based on the daily rate and the total number of days.
-                var totalPrice = input.Listing.ListningPrice * numberOfDays;
-                input.Booking.TotalPrice = totalPrice * (decimal)1.05;
-                input.Booking.ListningId = input.Listing.ListningId;
-
-                try
+                foreach (var booking in existingBookings)
                 {
-                    await _bookingRepo.Create(input.Booking);
-                    _logger.LogInformation($"Creation of new booking succeeded. Booking details: {input.Booking}");
+                    if (booking.ListningId == input.Listing.ListningId && !(toDate < booking.FromDate || fromDate > booking.ToDate))
+                    {
+                        // The dates overlap with an existing booking.
+                        ModelState.AddModelError("Booking.FromDate", "The selected date range is already booked.");
+                        isDateRangeAvailable = false;
+                        break; // Exit the loop since we found an overlap.
+                    }
+                }
 
-                }
-                catch (Exception e)
+                if (isDateRangeAvailable)
                 {
-                    _logger.LogError($"[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
-                    return StatusCode(500, "Failed to create booking.");
+                    var numberOfDays = (decimal)(toDate - fromDate).TotalDays + 1;
+                    var totalPrice = input.Listing.ListningPrice * numberOfDays;
+                    input.Booking.TotalPrice = totalPrice * (decimal)1.05;
+                    input.Booking.ListningId = input.Listing.ListningId;
+
+                    try
+                    {
+                        await _bookingRepo.Create(input.Booking);
+                        _logger.LogInformation($"Creation of new booking succeeded. Booking details: {input.Booking}");
+                        return RedirectToAction(nameof(Explore));
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError($"[ExplorerController ViewListing() POST] Error occurred while creating a booking: {e.Message}");
+                        return StatusCode(500, "Failed to create booking.");
+                    }
                 }
-                return RedirectToAction(nameof(Explore));
             }
 
-            else
-            {
-                // Hvis ModelState er ugyldig, bygg ListingViewModel på nytt
-                var listing = await _rentalRepo.GetById(input.Listing.ListningId);
-                var ownerUserId = listing.UserId;
-                var user = await _userManager.FindByIdAsync(ownerUserId);
-                var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
-                rentalListViewModel.Booking = input.Booking;
-                return View(rentalListViewModel);
-            }
+            // If ModelState is invalid or date range is not available, rebuild the ViewModel and return the view.
+            var listing = await _rentalRepo.GetById(input.Listing.ListningId);
+            var ownerUserId = listing.UserId;
+            var user = await _userManager.FindByIdAsync(ownerUserId);
+            var rentalListViewModel = new ListingViewModel(listing, user, "View rental property");
+            rentalListViewModel.Booking = input.Booking;
+            return View(rentalListViewModel);
         }
+
 
         // AJAX endpoint: Retrieves a list of dates when a specific listing is already booked.
         // This method is designed to work in conjunction with frontend AJAX calls to fetch booked dates and update the datepickers.
         [HttpGet("Explorer/GetBookedDates")]
-        public async Task<ActionResult> GetBookedDates([FromQuery] int listningId)
+        public async Task<ActionResult> GetBookedDates([FromQuery] int listingId)
         {
             try
             {
                 // Fetch all bookings for the specified listing
                 var bookings = await _bookingRepo.GetAll();
-                bookings = bookings.Where(b => b.ListningId == listningId).ToList();
+                bookings = bookings.Where(b => b.ListningId == listingId).ToList();
 
                 var bookedDates = new List<DateTime>();
                 foreach (var booking in bookings)

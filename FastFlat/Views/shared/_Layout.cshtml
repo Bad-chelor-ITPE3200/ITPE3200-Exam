@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = (string)ViewContext.RouteData.Values["controller"];
+    var currentAction = (string)ViewContext.RouteData.Values["action"];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,41 +26,30 @@
     <link rel="stylesheet" href="~/css/searchbar.css" />
     <link rel="stylesheet" href="~/css/feet.css" />
     @RenderSection("Styles", required: false)
-</head>
+</head> 
 <body>
     <header>
         <nav>
-            <h1 id="--nav-logo">Fast&Flat</h1>
+            <a asp-area="" asp-controller="Home" asp-action="Index" style="text-decoration: none; color:gray;"><h1 id="--nav-logo">FastFlat</h1></a>
+            
             <ul class="--nav-tabs">
                 <li class="nav-list">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="active">Home</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="@(currentController == "Home" && currentAction == "Index" ? "active" : "")">Home</a>
                 </li>
                 <li class="nav-list">
-                    <a asp-area="" asp-controller="Explorer" asp-action="Explore">Rentals</a>
+                    <a asp-area="" asp-controller="Explorer" asp-action="Explore" class="@(currentController == "Explorer" && (currentAction == "Explore" || currentAction == "ViewListing") ? "active" : "")">Rentals</a>
                 </li>
 
-            @if(User.IsInRole("Admin"))  {    
-                <li class = "nav-list">
-                    <a asp-area=""  asp-controller="Account" asp-action="ManageAllBookings">Admin dashboard</a>
-                </li>
-            }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-list">
+                        <a asp-area="" asp-controller="Account" asp-action="ManageAllBookings" class="@(currentController == "Account" && currentAction == "ManageAllBookings" ? "active" : "")">Admin dashboard</a>
+                    </li>
+                }
             </ul>
 
             <partial name="_LoginPartial" />
 
-            <!--
-            <div id="--nav-profile">
-                <div class="icon">
-                    <img src="./pictures/profile.png" alt="Picture of the menu button" width = "60" height = 60 >
-                    <div class="out">
-                        <div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>  
-            -->
         </nav>
     </header>
     @RenderBody()
