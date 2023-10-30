@@ -42,27 +42,27 @@
 
 <div class="searchbar">
     <div class="location">
-        <label for="location" class="searchbar-title">Hvor</label>
-        <input type="text" placeholder="Søk etter lokasjon" id="location" value="@Model.Location"/>
+        <label for="location" class="searchbar-title">Where</label>
+        <input type="text" placeholder="Search for a city or a country" id="location" value="@Model.Location"/>
         <div id="output"></div>
     </div>
     <div class="fromDate">
-        <label for="fromDate" class="searchbar-title">Innsjekking</label>
-        <input type="date" placeholder="Legg til dato" id="fromDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+        <label for="fromDate" class="searchbar-title">Check in</label>
+        <input type="date" placeholder="Put in the date" id="fromDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.ToString("yyyy-MM-dd")">
     </div>
     <div class="toDate">
-        <label for="toDate" class="searchbar-title">Utsjekking</label>
-        <input type="date" placeholder="Legg til dato" id="toDate" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")">
+        <label for="toDate" class="searchbar-title">Check Out</label>
+        <input type="date" placeholder="Put in the date" id="toDate" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")">
     </div>
     <div class="guests">
-        <label for="guests" class="searchbar-title">Gjester</label>
+        <label for="guests" class="searchbar-title">Guests</label>
         @if(Model.Guests == 0)
         {
-            <input type="number" placeholder="Legg til gjester" id="guests" value="1">
+            <input type="number" placeholder="Add guests" id="guests" value="1">
         }
         else
         {
-            <input type="number" placeholder="Legg til gjester" id="guests" value="@Model.Guests">
+            <input type="number" placeholder="Add guests" id="guests" value="@Model.Guests">
         }
     </div>
     <div id="submit-btn" onclick="search()">

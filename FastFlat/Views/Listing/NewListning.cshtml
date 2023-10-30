@@ -10,12 +10,12 @@
 
     <form asp-action="NewListning" method="post" enctype="multipart/form-data" id="form">
         <div class="form-group">
-            <label asp-for="Listning.ListningName"></label><span class="text-danger">*</span>
+            <label asp-for="Listning.ListningName">Name</label><span class="text-danger">*</span>
             <input asp-for="Listning.ListningName" class="form-control" />
             <span asp-validation-for="Listning.ListningName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Listning.ListningPrice"></label><span class="text-danger">*</span>
+            <label asp-for="Listning.ListningPrice">Price per night</label><span class="text-danger">*</span>
             <input asp-for="Listning.ListningPrice" class="form-control" />
             <span asp-validation-for="Listning.ListningPrice" class="text-danger"></span>
         </div>
@@ -39,24 +39,24 @@
         </div>
         
         <div class="form-group">
-            <label asp-for="Listning.ListningDescription"></label>
+            <label asp-for="Listning.ListningDescription">Listing Description</label>
             <input asp-for="Listning.ListningDescription" class="form-control" />
             <span asp-validation-for="Listning.ListningDescription" class="text-danger"></span>
         </div>
         <div class="form-group address">
-            <label asp-for="Listning.ListningAddress"></label>
+            <label asp-for="Listning.ListningAddress">Address</label>
             <input asp-for="Listning.ListningAddress" class="form-control" id="address" />
             <span asp-validation-for="Listning.ListningAddress" class="text-danger"></span>
             <div id="output"></div>
         </div>
         <div class="form-group">
-            <label asp-for="Listning.SquareMeter"></label>
+            <label asp-for="Listning.SquareMeter">Square Meters</label>
             <input asp-for="Listning.SquareMeter" class="form-control" />
             <span asp-validation-for="Listning.SquareMeter" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Listning.NoOfBeds"></label>
+            <label asp-for="Listning.NoOfBeds">Number of beds</label>
             <input asp-for="Listning.NoOfBeds" class="form-control" />
             <span asp-validation-for="Listning.NoOfBeds" class="text-danger"></span>
         </div>

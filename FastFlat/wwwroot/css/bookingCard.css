@@ -1,5 +1,5 @@
 ﻿.booking-card {
-    width: 550px;
+    width: 600px;
     background-color: white;
     height: fit-content;
     padding: 1.5rem;
@@ -33,7 +33,7 @@
     justify-content: space-evenly;
 }
 .booking-img{
-    width: 40%;
+    width: 100%;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 10px;
