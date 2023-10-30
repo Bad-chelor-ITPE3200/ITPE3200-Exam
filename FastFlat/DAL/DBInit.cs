@@ -17,7 +17,7 @@ namespace FastFlat.DAL
                 serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>(); //Hostingprovider
 
             //Paths for pbs
-
+            //standard profile picture
             //Oli PB
             byte[] oliarr; //declears the array
             using (var filestreamOli =
@@ -67,7 +67,7 @@ namespace FastFlat.DAL
             //context.Database.EnsureDeleted();  // ready if we want to use it
             //Amenity
 
-            if (!context.Amenities.Any()) //if the context is empty
+            if (!context.Amenities!.Any()) //if the context is empty
             {
                 var amenities = new List<AmenityModel>
                 {
@@ -154,50 +154,8 @@ namespace FastFlat.DAL
                 await context.AddRangeAsync(amenities); 
                 await context.SaveChangesAsync();
             }
-
-
-            //City
-            /*
-            if(!context.Cities.Any())
-            {
-                var cities = new List<CityModel>
-                {
-                    new CityModel
-                    {
-                        CityName="Oslo",
-                        Country="Norway"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Bergen",
-                        Country="Norway"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Trondheim",
-                        Country="Norway"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Stockholm",
-                        Country="Sweden"
-                    },
-
-                    new CityModel
-                    {
-                        CityName="Stockholm",
-                        Country="Gothenburg"
-                    },
-                };
-                context.AddRange(cities);
-                context.SaveChanges();
-            }*/
             
-
-            if (!context.Roles.Any())
+            if (!context.Roles!.Any())
             //roles for the acess controll
             //we let the controller control everything about what they can edit or not
             {
@@ -228,7 +186,7 @@ namespace FastFlat.DAL
                 }
             }
 
-            if (!context.Users.Any())
+            if (!context.Users!.Any())
             {
                 var users = new List<ApplicationUser>
                 {
@@ -276,6 +234,9 @@ namespace FastFlat.DAL
                         //Bookings = new List<BookingModel> { },
                     }
                 };
+                // Adds account that are not admin
+                ApplicationUser[] applicationUsers = { new ApplicationUser(){UserName = "test1", FirstName = "tester", LastName = "testsønn", Email = "testerjr@gmail.com", PhoneNumber = "123456789", ProfilePicture = oliarr}};
+              
                 try
                 {
                     foreach (ApplicationUser u in users) //for loop for all the users
@@ -291,6 +252,15 @@ namespace FastFlat.DAL
                         else
                         {
                             Console.Write("error in creating user " + u); //if there is a error 
+                        }
+                    }
+
+                    foreach (var u in applicationUsers)
+                    {
+                        var ok = await userman.CreateAsync(u, "Password123!");
+                        if (ok.Succeeded)
+                        {
+                            await userman.AddToRoleAsync(u, "Renter"); 
                         }
                     }
                 }

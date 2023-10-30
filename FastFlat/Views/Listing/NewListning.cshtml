@@ -74,12 +74,16 @@
 
         <h4>Select Amenities:</h4>
 
-        @foreach (var amenity in Model.Amenities)
+        @if (Model.Amenities != null)
         {
-            <input type="checkbox" name="SelectedAmenities" value="@amenity.AmenityId" /> @amenity.AmenityName
-            
+            foreach (var amenity in Model.Amenities)
+            {
+                <input type="checkbox" name="SelectedAmenities" value="@amenity.AmenityId"/>
+                @amenity.AmenityName
 
-            <br />
+
+                <br/>
+            }
         }
         <button type="submit" class="btn btn-primary">Create</button>
         <span asp-validation-for="SelectedAmenities" class="text-danger"></span>

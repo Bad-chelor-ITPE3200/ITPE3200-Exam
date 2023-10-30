@@ -19,13 +19,14 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         public RentalsModel(IRentalRepository<ListningModel> listningRepository,
             UserManager<ApplicationUser> userManager,
             IRentalRepository<AmenityModel> amenityRepository,
-            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ListingController> logger)
+            IRentalRepository<ListningAmenity> listningAmenityRepository, ILogger<ListingController> logger, IEnumerable<ListningModel> rentals)
         {
             _listningRepository = listningRepository;
             _userManager = userManager;
             _amenityRepository = amenityRepository;
             _listningAmenityRepository = listningAmenityRepository;
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Rentals = rentals;
         }
 
         //--------------------------
@@ -37,8 +38,8 @@ namespace FastFlat.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             var userRentalsWithAmenities = (await _listningRepository.GetAll())
-    .AsQueryable() // Konverterer til IQueryable<T>
-    .Include(l => l.ListningAmenities)
+                .AsQueryable() // Konverterer til IQueryable<T>
+                .Include(l => l.ListningAmenities)!
     .ThenInclude(la => la.Amenity)
     .Where(r => r.UserId == user.Id)
     .ToList();

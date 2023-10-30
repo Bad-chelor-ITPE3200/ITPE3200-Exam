@@ -12,7 +12,11 @@
 
         <div class="submenu">
             <div class="user-info">
-                <img style="width:50px;height:50px; object-fit:cover; object-position: 25% center; border-radius:50px; cursor: pointer;"
+
+                @{
+                    System.Diagnostics.Debug.Assert(user.ProfilePicture != null, "user.ProfilePicture != null");
+                }
+                <img style="width:50px;height:50px; object-fit:cover; object-position: 25% center; border-radius:50px; cursor: pointer;" alt="@user.FirstName"
                      src="data:image/*;base64,@(Convert.ToBase64String(user.ProfilePicture))">
                 <h2> @UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName </h2>
             </div>
@@ -25,7 +29,7 @@
             <a asp-area="Identity" asp-page="/Account/Manage/Rentals" title="Your Rentals" class="submenu-link">
                 <img src="~/images/icons/rental.png" style="width: 35px; height: 35px;">
                 <p>Your Rentals</p>
-                <span>></span>
+                <span></span>
             </a>
             <a asp-area="Identity" asp-page="/Account/Manage/Bookings" title="Your Rentals" class="submenu-link">
                 <img src="~/images/icons/booking.png" style="width: 35px; height: 35px;">

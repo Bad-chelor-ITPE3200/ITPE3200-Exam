@@ -73,12 +73,12 @@ namespace FastFlat.Controllers
 
         // Displays a view with all admin accounts for admins
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> _AdminAccounts()
+        public async Task<IActionResult> _AdminAccounts() //todo: async?
         {
             try
             {
-                var users = _userManager.Users;
-                _logger.LogInformation("[AccountController _AdminAccounts()] Users retrieved successfully.");
+                var users = await _userManager.Users.ToListAsync();
+                _logger.LogInformation("[AccountController _AdminAccounts()] Users retrieved successfully");
                 return View(users);
             }
             catch (Exception e)
@@ -153,55 +153,42 @@ namespace FastFlat.Controllers
 
 
                 var newuser = _userManager.FindByEmailAsync(user.Email).Result;
-                var applicationUserVeiwModel = new ApplicationUserVeiwModel(user.UserName, user.FirstName,
-                    user.LastName, user.Email, user.PhoneNumber, user.ProfilePicture, "UpdateAdminAccount");
-                try
+                if (user.LastName != null && user.FirstName != null && user.ProfilePicture != null)
                 {
-                    newuser.FirstName = applicationUserVeiwModel.FirstName;
-                    newuser.LastName = applicationUserVeiwModel.LastName;
-                    newuser.PhoneNumber = applicationUserVeiwModel.PhoneNumber;
-                    newuser.Email = applicationUserVeiwModel.Email;
-                    newuser.ProfilePicture = applicationUserVeiwModel.ProfilePicture;
-                    var ok = await _userManager.UpdateAsync(newuser);
-                    if (ok.Succeeded)
+                    var applicationUserVeiwModel = new ApplicationUserVeiwModel(user.UserName, user.FirstName,
+                        user.LastName, user.Email, user.PhoneNumber, user.ProfilePicture, "UpdateAdminAccount");
+                    try
                     {
-                        _logger.LogInformation($"[AccountController AdminUpdateAuser()] User with email {user.Email} updated successfully.");
-                        return RedirectToAction(nameof(_AdminAccounts));
+                        newuser.FirstName = applicationUserVeiwModel.FirstName;
+                        newuser.LastName = applicationUserVeiwModel.LastName;
+                        newuser.PhoneNumber = applicationUserVeiwModel.PhoneNumber;
+                        newuser.Email = applicationUserVeiwModel.Email;
+                        newuser.ProfilePicture = applicationUserVeiwModel.ProfilePicture;
+                        var ok = await _userManager.UpdateAsync(newuser);
+                        if (ok.Succeeded)
+                        {
+                            _logger.LogInformation($"[AccountController AdminUpdateAuser()] User with email {user.Email} updated successfully.");
+                            return RedirectToAction(nameof(_AdminAccounts));
+                        }
+                        else
+                        {
+                            _logger.LogWarning("[AccountController AdminUpdateAuser()] Error updating user with email {user.Email}. Errors: {string.Join(", ", result.Errors.Select(err => err.Description))}");
+                            _logger.LogCritical(ok.ToString());
+                            return NotFound();
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        _logger.LogWarning("[AccountController AdminUpdateAuser()] Error updating user with email {user.Email}. Errors: {string.Join(", ", result.Errors.Select(err => err.Description))}");
-                        _logger.LogCritical(ok.ToString());
-                        return NotFound();
+                        _logger.LogCritical(e.ToString());
+                        return RedirectToAction("_AdminAccounts");
                     }
                 }
-                catch (Exception e)
-                {
-                    _logger.LogCritical(e.ToString());
-                    return RedirectToAction("_AdminAccounts");
-                }
             }
+
+            return null!; 
         }
 
-
-        // Allows admins to update a user's roles.
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> updateRoles(ApplicationUser user, string newrole)
-        {
-            if (!_userManager.GetRolesAsync(user).Equals(newrole))
-            {
-                _logger.LogInformation($"[AccountController updateRoles()] Role {newrole} added to user with ID {user.Id}.");
-                await _userManager.AddToRoleAsync(user, newrole);
-                return RedirectToAction(nameof(_AdminAccounts));
-            }
-            else
-            {
-                _logger.LogWarning("User already had the role");
-                return RedirectToAction(nameof(_AdminAccounts));
-            }
-        }
-
+        
         // Allows admins to update a user's account using its ID.
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminUpdateAuser(string id)
@@ -271,7 +258,7 @@ namespace FastFlat.Controllers
         [Authorize]
         public async Task<IActionResult> _UpdateListing(int id)
         {
-            var findListing = _listingRepository.GetById(id).Result;
+            var findListing = await _listingRepository.GetById(id);
 
             NewListningViewModel listings = new NewListningViewModel();
             listings.Listning = findListing;
@@ -307,21 +294,17 @@ namespace FastFlat.Controllers
                         _logger.LogInformation("a " + fileStream.Name + " " + fileName.Length);
                         _logger.LogInformation(
                             $"The filStream object itself is {(fileStream == null ? "null" : "not null")}");
-                        //becomes null, cant be overwritten
-                        //  listingVeiwModel.ListningImage.OpenReadStream();
-                        //_logger.LogInformation("c"+  LMM.ListningImage.ToString());
-                        if (fileStream != null)
+                          if (fileStream != null)
                         {
                             _logger.LogInformation(
                                 $"The LMM.ListningImage object is {(LMM.ListningImage == null ? "null" : "not null")}");
-                            await LMM.ListningImage.CopyToAsync(fileStream); //still crashes here tb
+                            await LMM.ListningImage!.CopyToAsync(fileStream); //still crashes here tb
                         }
-                    } //why
+                    } 
 
                     LMM.Listning.ListningImageURL = "/images/listnings/" + fileName;
                 }
-
-                _logger.LogInformation("Yo mama" + LMM.Listning.ListningImageURL);
+                
                 NewListningViewModel listingVeiwModel =
                     new NewListningViewModel(LMM.Listning, "_UpdateListing", LMM.ListningImage);
                 upDatedUser.ListningName = listingVeiwModel.Listning.ListningName;
@@ -332,24 +315,28 @@ namespace FastFlat.Controllers
                 // if it is updated
 
 
-                _logger.LogInformation(LMM.Listning
-                    .ListningImageURL); //URL to image == null -> maybe  with the form
+                if (LMM.Listning != null)
+                {
+                    _logger.LogInformation(LMM.Listning
+                        .ListningImageURL); //URL to image == null -> maybe  with the form
 
 
-                // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
-                // Change this directory to the appropriate location where you want to save your images
+                    // upDatedUser.ListningImageURL = listingVeiwModel.Listning.ListningImageURL;
+                    // Change this directory to the appropriate location where you want to save your images
 
 
-                // Save the path to your database
+                    // Save the path to your database
 
-                //image: 
+                    //image: 
 
 
-                upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
-                upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
-                upDatedUser.ListningAddress = listingVeiwModel.Listning.ListningAddress;
-                upDatedUser.ListningLat = listingVeiwModel.Listning.ListningLat;
-                upDatedUser.ListningLng = listingVeiwModel.Listning.ListningLng;
+                    upDatedUser.FromDate = listingVeiwModel.Listning.FromDate;
+                    upDatedUser.ToDate = listingVeiwModel.Listning.ToDate;
+                    upDatedUser.ListningAddress = listingVeiwModel.Listning.ListningAddress;
+                    upDatedUser.ListningLat = listingVeiwModel.Listning.ListningLat;
+                    upDatedUser.ListningLng = listingVeiwModel.Listning.ListningLng;
+                }
+
                 _logger.LogInformation("LOGGGING OK");
                 var result = _listingRepository.Update(upDatedUser);
                 //  _logger.LogInformation(restult.ToString());
@@ -398,7 +385,7 @@ namespace FastFlat.Controllers
                         {
                             _logger.LogInformation(
                                 $"The LMM.ListningImage object is {(LMM.ListningImage == null ? "null" : "not null")}");
-                            await LMM.ListningImage.CopyToAsync(fileStream); //still crashes here tb
+                            await LMM.ListningImage!.CopyToAsync(fileStream); //still crashes here tb
                         }
                     } //why
 

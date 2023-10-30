@@ -1,13 +1,13 @@
 @using System.Collections
 @model IEnumerable<ApplicationUser>
 <a asp-controller="Account" asp-action="ManageAllBookings"> Back to Control panel</a>
-<table>
+<table class="table table-striped">
     <tr><th>User Id</th><th>User Name</th><th>First Name</th><th>Last Name</th><th></th></tr>
     @foreach (var u in Model)
     {
 
 
-        <tr> <td> @u.Id</td><td>@u.UserName</td><td>@u.FirstName</td> <td>@u.LastName</td><td> <a asp-controller="Account" asp-action="AdminUpdateAuser" asp-route-Id="@u.Id"> update </a> <a asp-controller="Account" asp-action="DeleteAdminAccount" asp-route-userId="@u.Id"> delete</a></td></tr>
+        <tr> <td> @u.Id</td><td>@u.UserName</td><td>@u.FirstName</td> <td>@u.LastName</td><td> <a asp-controller="Account" asp-action="AdminUpdateAuser" asp-route-Id="@u.Id" class="btn btn-primary"> update </a> <a asp-controller="Account" asp-action="DeleteAdminAccount" asp-route-userId="@u.Id" class="btn btn-danger"> delete</a></td></tr>
 
     }
 </table>

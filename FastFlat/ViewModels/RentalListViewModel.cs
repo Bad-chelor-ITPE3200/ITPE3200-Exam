@@ -4,9 +4,9 @@ namespace FastFlat.ViewModels
 {
     public class RentalListViewModel
     {
-        public IEnumerable<ListningModel> Rentals;
-        public IEnumerable<AmenityModel> Amenities;
-        public List<String> SelectedAmenities { get; set; } // For å holde IDene til valgte amenities
+        public IEnumerable<ListningModel> Rentals = null!;
+        public IEnumerable<AmenityModel> Amenities = null!;
+        public List<string>? SelectedAmenities { get; set; } = null!; // For å holde IDene til valgte amenities
         public string? CurrentViewName;
 
         public string? Location;

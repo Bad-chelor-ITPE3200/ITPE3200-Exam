@@ -1,9 +1,9 @@
+@model   IEnumerable<BookingModel>
 
-
-     @model   IEnumerable<BookingModel>
-    
-<table>
-    <tr><th>Booking id</th><th>user id</th><th>booked from</th> <th>booked to</th> <th>Total price</th></tr>
+<table class="table table-striped">
+    <tr>
+        <th>Booking id</th><th>user id</th><th>booked from</th> <th>booked to</th> <th>Total price</th>
+    </tr>
     @foreach (var Li in Model)
     {
         <tr>
@@ -14,8 +14,10 @@
             <td>@Li.FromDate</td>
             <td>@Li.ToDate</td>
             <td>@Li.TotalPrice</td>
-            <td> <a asp-controller="Account" asp-action="DeleteAdmin" asp-route-id = "@Li.BookingId"> Delete</a></td>
-            </tr>
+            <td>
+                <a asp-controller="Account" asp-action="DeleteAdmin" asp-route-id="@Li.BookingId" class="btn btn-danger"> Delete</a>
+            </td>
+        </tr>
     }
-    
+
 </table>

@@ -28,7 +28,7 @@ namespace FastFlat.DAL
             catch (Exception e)
             {
                 _logger.LogError("[RentalRepository] Set<T> failed when GetAll(), error message: {e}", e.Message);
-                return null;
+                return null!;
             }
         }
 
@@ -36,12 +36,12 @@ namespace FastFlat.DAL
         {
             try
             {
-                return await _dbSet.FindAsync(id);
+                return (await _dbSet.FindAsync(id))!;
             }
             catch (Exception e)
             {
                 _logger.LogError("[RentalRepository] <T> FindAsync(id) failed when GetById for id {id:0000}, error message: {e}", id, e.Message);
-                return null;
+                return null!;
             }
         }
 

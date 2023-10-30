@@ -9,7 +9,7 @@ namespace FastFlat.Models
         public int ListningAmenityId { get; set; }
 
         public int ListningId { get; set; }
-        public virtual ListningModel Listning { get; set; }
+        public virtual ListningModel? Listning { get; set; }
 
         public int AmenityId { get; set; }
         public virtual AmenityModel? Amenity { get; set; }
