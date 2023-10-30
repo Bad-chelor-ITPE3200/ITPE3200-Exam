@@ -15,7 +15,17 @@ namespace FastFlat.DAL
             var roleman = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>(); //rolemanager
             var hostingprovider =
                 serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>(); //Hostingprovider
-
+            byte[] standarr;
+            using (var filestream =
+                   new FileStream(Path.Combine(hostingprovider.WebRootPath, "images", "profilepicture", "standard.jpg"),
+                       FileMode.Open, FileAccess.Read)) //filestream to "load" in the profile pictures
+            {
+                using var
+                    Reader =
+                        new BinaryReader(filestream); //converting the filestream of the opend file to binary
+                 standarr= Reader.ReadBytes((int)filestream
+                    .Length); //reading the bytes and turning them to a arrays byte array
+            }
             //Paths for pbs
             //standard profile picture
             //Oli PB
@@ -235,8 +245,13 @@ namespace FastFlat.DAL
                     }
                 };
                 // Adds account that are not admin
-                ApplicationUser[] applicationUsers = { new ApplicationUser(){UserName = "test1", FirstName = "tester", LastName = "testsønn", Email = "testerjr@gmail.com", PhoneNumber = "123456789", ProfilePicture = oliarr}};
-              
+                ApplicationUser[] applicationUsers = { new ApplicationUser(){UserName = "test1", FirstName = "tester", LastName = "testsønn", Email = "testerjr@gmail.com", PhoneNumber = "123456789", ProfilePicture = standarr}};
+                ApplicationUser admin = new ApplicationUser()
+                    { UserName = "Root",FirstName = "Admin", LastName = "boss", Email = "root@gmail.com", PhoneNumber = "889389281", ProfilePicture = standarr }; 
+                //adding the admind
+             await userman.CreateAsync(admin, "Bossman123!");
+             await  userman.AddToRoleAsync(admin, "Admin"); 
+             //adds the rest of the users
                 try
                 {
                     foreach (ApplicationUser u in users) //for loop for all the users
@@ -247,7 +262,7 @@ namespace FastFlat.DAL
                         {
                             Console.Write(u.NormalizedEmail + "is created at: " +
                                           DateTime.Now); //writes where is was created
-                            await userman.AddToRoleAsync(u, "Admin"); //adds to the admin role
+                            await userman.AddToRoleAsync(u, "Renter"); //adds to the admin role
                         }
                         else
                         {
@@ -274,5 +289,4 @@ namespace FastFlat.DAL
         }
     }
 }
-//TODO: Vi bør vurdere om vi skal ha bookings i initdb, tror det kan bli mye krøll (spess mye kræsj hvis vi shipper med database, så kan være lurt å ha det i INITDB isteden, er samme funksjon, men vi slipper en del struggle)
-
+//TODO: We have decided to not have listings in db init
